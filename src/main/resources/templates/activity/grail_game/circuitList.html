@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+    <style>
+        #cname{
+            outline: 0;
+            -webkit-appearance: none;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+            box-sizing: border-box;
+            width:160px;
+            height:40px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>活动线路</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <input type="text" class="cname" style="height:33px;"  name="cname" id="cname"  placeholder="请输入线路名称" />
+                                <div class="layui-btn-group demoTable">
+                                    <button class="layui-btn" data-type="getField">查询线路</button>
+                                    <a class="layui-btn" href="#" onclick="javascript:history.back(-1);"> 返回上一页</a>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="game_filed" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/html" id="field_operator">
+    <input type="checkbox" value="{{d.cid}}" lay-skin="switch" lay-text="已添加|添加" lay-filter="sexDemo" {{ d.cstatus== 1
+           ? 'checked' : '' }} />
+<!--
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+-->
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+        let ggId = [[${ggId}]];
+        table.render({
+            id:"cid"
+            ,elem: '#game_filed'
+            ,url:context+'/activity/selectAllCircuitList?ggId='+ggId
+            ,cols: [[
+                {field:'cid', title: 'ID', sort: true, align:'center'}
+                ,{field:'cname', title: '标题',  align:'center'}
+                ,{field:'clockpoints', title: '地点',  align:'center'}
+                ,{field:'cinitials', title: '初始积分',  align:'center'}
+                ,{fixed:'right',  align:'center', toolbar:'#field_operator', title:'操作'}//
+            ]]
+            ,page:true
+        });
+
+
+
+        form.on('switch(sexDemo)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+                $.post(context + "/activity/addCircuitListToGrailGame", {"id": this.value ,"ggId":ggId ,"status":1}, function (res) {
+                    console.log(res);
+                    if (res.code==100) {
+                        form.render();
+                        layer.msg("添加成功");
+                    } else {
+                        obj.elem.checked = !x;
+                        layer.msg("添加失败");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/activity/addCircuitListToGrailGame", {"id": this.value ,"ggId":ggId ,"status":0}, function (res) {
+
+                    if (res.code==100) {
+                        layer.msg("取消成功");
+                    }
+                })
+            }
+        });
+
+
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            let _this = $(this);
+            let data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    layer.close(index);
+                    $.get(context+"/activity/updateStatusByCircuitListId?cId="+data.cid+"&hId="+hId+"&cstatus="+"0", function(res){
+                        // console.log(res);
+                        if(res.code == 100){
+                            layer.msg("删除成功！", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                /*obj.delete();
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭*/
+                                _this.parent().parent().parent().remove();
+                            });
+                        }
+                    })
+
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2,
+                    title: '编辑场次',
+                    area: ['850px', '600px'],
+                    content: context+"/game/edit_field/"+data.gafeId
+                });
+            }
+        });
+
+        var $ = layui.$, active = {
+            getField: function() {
+                var cname=$("#cname").val();
+                window.location.href=context+"/activity/select_CircuitList?cname="+cname+"&hId="+hId;
+            }
+        }
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</html>

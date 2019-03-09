@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!--,toolbar: '#images'-->
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>活动管理</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <!--<div class="layui-card-header"></div>-->
+                            <div class="layui-tab layui-tab-card">
+                                <!--<ul class="layui-tab-title">
+                                    <li class="layui-this"><a href="javascript:;window.location.href=context+'/activity/activity2'">活动管理</a></li>
+                                    <li ><a href="javascript:;window.location.href=context+'/activity/activity'">定向旅游</a></li>
+                                </ul>-->
+                                <div class="layui-tab-content">
+                                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="add_activity">增加活动</button>
+                                    <div class="layui-tab-item layui-show">
+                                        <table class="layui-hide" id="activity" lay-filter="activity"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" value="{{d.hId}}" lay-skin="switch" lay-text="已推荐|推荐" lay-filter="sexDemo" {{ d.hReco== 1
+           ?'checked' : '' }} >
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm"  lay-event="select_activity">查看</a>
+    <a class="layui-btn layui-btn-sm"  lay-event="edit_activity">编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="del_activity">删除</a>
+</script>
+<script th:replace="common/script::copy"></script>
+
+<script type="text/javascript" th:src="@{/statics/custom_js/activity/activity2.js}"></script>
+</html>

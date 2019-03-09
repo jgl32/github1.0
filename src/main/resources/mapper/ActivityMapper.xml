@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daohuo.springboot2.mapper.ActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.daohuo.springboot2.entity.Activity" >
+    <id column="h_id" property="hId" jdbcType="INTEGER" />
+    <result column="h_activity_name" property="hActivityName" jdbcType="VARCHAR" />
+    <result column="h_content" property="hContent" jdbcType="VARCHAR" />
+    <result column="h_picture" property="hPicture" jdbcType="VARCHAR" />
+    <result column="h_activity_city" property="hActivityCity" jdbcType="VARCHAR" />
+    <result column="h_activity_address" property="hActivityAddress" jdbcType="VARCHAR" />
+    <result column="h_activity_destination" property="hActivityDestination" jdbcType="VARCHAR" />
+    <result column="h_activity_sTime" property="hActivityStime" jdbcType="VARCHAR" />
+    <result column="h_activity_eTime" property="hActivityEtime" jdbcType="VARCHAR" />
+    <result column="h_activity_week" property="hActivityWeek" jdbcType="VARCHAR" />
+    <result column="h_activity_sDate" property="hActivitySdate" jdbcType="VARCHAR" />
+    <result column="h_activity_eDate" property="hActivityEdate" jdbcType="VARCHAR" />
+    <result column="h_activity_place" property="hActivityPlace" jdbcType="VARCHAR" />
+    <result column="h_latitude" property="hLatitude" jdbcType="DOUBLE" />
+    <result column="h_longitude" property="hLongitude" jdbcType="DOUBLE" />
+    <result column="h_circuitList_count" property="hCircuitlistCount" jdbcType="VARCHAR" />
+    <result column="h_butt_joint" property="hButtJoint" jdbcType="INTEGER" />
+    <result column="h_interaction" property="hInteraction" jdbcType="INTEGER" />
+    <result column="h_attend_people_count" property="hAttendPeopleCount" jdbcType="INTEGER" />
+    <result column="h_max_people" property="hMaxPeople" jdbcType="INTEGER" />
+    <result column="h_conscientious" property="hConscientious" jdbcType="VARCHAR" />
+    <result column="card_uuid" property="cardUuid" jdbcType="VARCHAR" />
+    <result column="h_organizer" property="hOrganizer" jdbcType="VARCHAR" />
+    <result column="h_contactway" property="hContactway" jdbcType="VARCHAR" />
+    <result column="h_cTime" property="hCtime" jdbcType="VARCHAR" />
+    <result column="h_mTime" property="hMtime" jdbcType="VARCHAR" />
+    <result column="h_status" property="hStatus" jdbcType="INTEGER" />
+    <result column="h_reco" property="hReco" jdbcType="INTEGER" />
+    <result column="h_QRCode" property="hQrcode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    h_id, h_activity_name, h_content, h_picture, h_activity_city, h_activity_address, 
+    h_activity_destination, h_activity_sTime, h_activity_eTime, h_activity_week, h_activity_sDate, 
+    h_activity_eDate, h_activity_place, h_latitude, h_longitude, h_circuitList_count, 
+    h_butt_joint, h_interaction, h_attend_people_count, h_max_people, h_conscientious, 
+    card_uuid, h_organizer, h_contactway, h_cTime, h_mTime, h_status, h_reco, h_QRCode
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.daohuo.springboot2.entity.ActivityExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from activity
+    where h_id = #{hId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from activity
+    where h_id = #{hId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.daohuo.springboot2.entity.ActivityExample" >
+    delete from activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.daohuo.springboot2.entity.Activity" >
+    insert into activity (h_id, h_activity_name, h_content, 
+      h_picture, h_activity_city, h_activity_address, 
+      h_activity_destination, h_activity_sTime, h_activity_eTime, 
+      h_activity_week, h_activity_sDate, h_activity_eDate, 
+      h_activity_place, h_latitude, h_longitude, 
+      h_circuitList_count, h_butt_joint, h_interaction, 
+      h_attend_people_count, h_max_people, h_conscientious, 
+      card_uuid, h_organizer, h_contactway, 
+      h_cTime, h_mTime, h_status, 
+      h_reco, h_QRCode)
+    values (#{hId,jdbcType=INTEGER}, #{hActivityName,jdbcType=VARCHAR}, #{hContent,jdbcType=VARCHAR}, 
+      #{hPicture,jdbcType=VARCHAR}, #{hActivityCity,jdbcType=VARCHAR}, #{hActivityAddress,jdbcType=VARCHAR}, 
+      #{hActivityDestination,jdbcType=VARCHAR}, #{hActivityStime,jdbcType=VARCHAR}, #{hActivityEtime,jdbcType=VARCHAR}, 
+      #{hActivityWeek,jdbcType=VARCHAR}, #{hActivitySdate,jdbcType=VARCHAR}, #{hActivityEdate,jdbcType=VARCHAR}, 
+      #{hActivityPlace,jdbcType=VARCHAR}, #{hLatitude,jdbcType=DOUBLE}, #{hLongitude,jdbcType=DOUBLE}, 
+      #{hCircuitlistCount,jdbcType=VARCHAR}, #{hButtJoint,jdbcType=INTEGER}, #{hInteraction,jdbcType=INTEGER}, 
+      #{hAttendPeopleCount,jdbcType=INTEGER}, #{hMaxPeople,jdbcType=INTEGER}, #{hConscientious,jdbcType=VARCHAR}, 
+      #{cardUuid,jdbcType=VARCHAR}, #{hOrganizer,jdbcType=VARCHAR}, #{hContactway,jdbcType=VARCHAR}, 
+      #{hCtime,jdbcType=VARCHAR}, #{hMtime,jdbcType=VARCHAR}, #{hStatus,jdbcType=INTEGER}, 
+      #{hReco,jdbcType=INTEGER}, #{hQrcode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.daohuo.springboot2.entity.Activity" >
+    insert into activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hId != null" >
+        h_id,
+      </if>
+      <if test="hActivityName != null" >
+        h_activity_name,
+      </if>
+      <if test="hContent != null" >
+        h_content,
+      </if>
+      <if test="hPicture != null" >
+        h_picture,
+      </if>
+      <if test="hActivityCity != null" >
+        h_activity_city,
+      </if>
+      <if test="hActivityAddress != null" >
+        h_activity_address,
+      </if>
+      <if test="hActivityDestination != null" >
+        h_activity_destination,
+      </if>
+      <if test="hActivityStime != null" >
+        h_activity_sTime,
+      </if>
+      <if test="hActivityEtime != null" >
+        h_activity_eTime,
+      </if>
+      <if test="hActivityWeek != null" >
+        h_activity_week,
+      </if>
+      <if test="hActivitySdate != null" >
+        h_activity_sDate,
+      </if>
+      <if test="hActivityEdate != null" >
+        h_activity_eDate,
+      </if>
+      <if test="hActivityPlace != null" >
+        h_activity_place,
+      </if>
+      <if test="hLatitude != null" >
+        h_latitude,
+      </if>
+      <if test="hLongitude != null" >
+        h_longitude,
+      </if>
+      <if test="hCircuitlistCount != null" >
+        h_circuitList_count,
+      </if>
+      <if test="hButtJoint != null" >
+        h_butt_joint,
+      </if>
+      <if test="hInteraction != null" >
+        h_interaction,
+      </if>
+      <if test="hAttendPeopleCount != null" >
+        h_attend_people_count,
+      </if>
+      <if test="hMaxPeople != null" >
+        h_max_people,
+      </if>
+      <if test="hConscientious != null" >
+        h_conscientious,
+      </if>
+      <if test="cardUuid != null" >
+        card_uuid,
+      </if>
+      <if test="hOrganizer != null" >
+        h_organizer,
+      </if>
+      <if test="hContactway != null" >
+        h_contactway,
+      </if>
+      <if test="hCtime != null" >
+        h_cTime,
+      </if>
+      <if test="hMtime != null" >
+        h_mTime,
+      </if>
+      <if test="hStatus != null" >
+        h_status,
+      </if>
+      <if test="hReco != null" >
+        h_reco,
+      </if>
+      <if test="hQrcode != null" >
+        h_QRCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hId != null" >
+        #{hId,jdbcType=INTEGER},
+      </if>
+      <if test="hActivityName != null" >
+        #{hActivityName,jdbcType=VARCHAR},
+      </if>
+      <if test="hContent != null" >
+        #{hContent,jdbcType=VARCHAR},
+      </if>
+      <if test="hPicture != null" >
+        #{hPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityCity != null" >
+        #{hActivityCity,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityAddress != null" >
+        #{hActivityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityDestination != null" >
+        #{hActivityDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityStime != null" >
+        #{hActivityStime,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityEtime != null" >
+        #{hActivityEtime,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityWeek != null" >
+        #{hActivityWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivitySdate != null" >
+        #{hActivitySdate,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityEdate != null" >
+        #{hActivityEdate,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityPlace != null" >
+        #{hActivityPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="hLatitude != null" >
+        #{hLatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="hLongitude != null" >
+        #{hLongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="hCircuitlistCount != null" >
+        #{hCircuitlistCount,jdbcType=VARCHAR},
+      </if>
+      <if test="hButtJoint != null" >
+        #{hButtJoint,jdbcType=INTEGER},
+      </if>
+      <if test="hInteraction != null" >
+        #{hInteraction,jdbcType=INTEGER},
+      </if>
+      <if test="hAttendPeopleCount != null" >
+        #{hAttendPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="hMaxPeople != null" >
+        #{hMaxPeople,jdbcType=INTEGER},
+      </if>
+      <if test="hConscientious != null" >
+        #{hConscientious,jdbcType=VARCHAR},
+      </if>
+      <if test="cardUuid != null" >
+        #{cardUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="hOrganizer != null" >
+        #{hOrganizer,jdbcType=VARCHAR},
+      </if>
+      <if test="hContactway != null" >
+        #{hContactway,jdbcType=VARCHAR},
+      </if>
+      <if test="hCtime != null" >
+        #{hCtime,jdbcType=VARCHAR},
+      </if>
+      <if test="hMtime != null" >
+        #{hMtime,jdbcType=VARCHAR},
+      </if>
+      <if test="hStatus != null" >
+        #{hStatus,jdbcType=INTEGER},
+      </if>
+      <if test="hReco != null" >
+        #{hReco,jdbcType=INTEGER},
+      </if>
+      <if test="hQrcode != null" >
+        #{hQrcode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.daohuo.springboot2.entity.ActivityExample" resultType="java.lang.Integer" >
+    select count(*) from activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update activity
+    <set >
+      <if test="record.hId != null" >
+        h_id = #{record.hId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hActivityName != null" >
+        h_activity_name = #{record.hActivityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hContent != null" >
+        h_content = #{record.hContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hPicture != null" >
+        h_picture = #{record.hPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityCity != null" >
+        h_activity_city = #{record.hActivityCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityAddress != null" >
+        h_activity_address = #{record.hActivityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityDestination != null" >
+        h_activity_destination = #{record.hActivityDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityStime != null" >
+        h_activity_sTime = #{record.hActivityStime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityEtime != null" >
+        h_activity_eTime = #{record.hActivityEtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityWeek != null" >
+        h_activity_week = #{record.hActivityWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivitySdate != null" >
+        h_activity_sDate = #{record.hActivitySdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityEdate != null" >
+        h_activity_eDate = #{record.hActivityEdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hActivityPlace != null" >
+        h_activity_place = #{record.hActivityPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hLatitude != null" >
+        h_latitude = #{record.hLatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.hLongitude != null" >
+        h_longitude = #{record.hLongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.hCircuitlistCount != null" >
+        h_circuitList_count = #{record.hCircuitlistCount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hButtJoint != null" >
+        h_butt_joint = #{record.hButtJoint,jdbcType=INTEGER},
+      </if>
+      <if test="record.hInteraction != null" >
+        h_interaction = #{record.hInteraction,jdbcType=INTEGER},
+      </if>
+      <if test="record.hAttendPeopleCount != null" >
+        h_attend_people_count = #{record.hAttendPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.hMaxPeople != null" >
+        h_max_people = #{record.hMaxPeople,jdbcType=INTEGER},
+      </if>
+      <if test="record.hConscientious != null" >
+        h_conscientious = #{record.hConscientious,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardUuid != null" >
+        card_uuid = #{record.cardUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hOrganizer != null" >
+        h_organizer = #{record.hOrganizer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hContactway != null" >
+        h_contactway = #{record.hContactway,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hCtime != null" >
+        h_cTime = #{record.hCtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hMtime != null" >
+        h_mTime = #{record.hMtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hStatus != null" >
+        h_status = #{record.hStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.hReco != null" >
+        h_reco = #{record.hReco,jdbcType=INTEGER},
+      </if>
+      <if test="record.hQrcode != null" >
+        h_QRCode = #{record.hQrcode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update activity
+    set h_id = #{record.hId,jdbcType=INTEGER},
+      h_activity_name = #{record.hActivityName,jdbcType=VARCHAR},
+      h_content = #{record.hContent,jdbcType=VARCHAR},
+      h_picture = #{record.hPicture,jdbcType=VARCHAR},
+      h_activity_city = #{record.hActivityCity,jdbcType=VARCHAR},
+      h_activity_address = #{record.hActivityAddress,jdbcType=VARCHAR},
+      h_activity_destination = #{record.hActivityDestination,jdbcType=VARCHAR},
+      h_activity_sTime = #{record.hActivityStime,jdbcType=VARCHAR},
+      h_activity_eTime = #{record.hActivityEtime,jdbcType=VARCHAR},
+      h_activity_week = #{record.hActivityWeek,jdbcType=VARCHAR},
+      h_activity_sDate = #{record.hActivitySdate,jdbcType=VARCHAR},
+      h_activity_eDate = #{record.hActivityEdate,jdbcType=VARCHAR},
+      h_activity_place = #{record.hActivityPlace,jdbcType=VARCHAR},
+      h_latitude = #{record.hLatitude,jdbcType=DOUBLE},
+      h_longitude = #{record.hLongitude,jdbcType=DOUBLE},
+      h_circuitList_count = #{record.hCircuitlistCount,jdbcType=VARCHAR},
+      h_butt_joint = #{record.hButtJoint,jdbcType=INTEGER},
+      h_interaction = #{record.hInteraction,jdbcType=INTEGER},
+      h_attend_people_count = #{record.hAttendPeopleCount,jdbcType=INTEGER},
+      h_max_people = #{record.hMaxPeople,jdbcType=INTEGER},
+      h_conscientious = #{record.hConscientious,jdbcType=VARCHAR},
+      card_uuid = #{record.cardUuid,jdbcType=VARCHAR},
+      h_organizer = #{record.hOrganizer,jdbcType=VARCHAR},
+      h_contactway = #{record.hContactway,jdbcType=VARCHAR},
+      h_cTime = #{record.hCtime,jdbcType=VARCHAR},
+      h_mTime = #{record.hMtime,jdbcType=VARCHAR},
+      h_status = #{record.hStatus,jdbcType=INTEGER},
+      h_reco = #{record.hReco,jdbcType=INTEGER},
+      h_QRCode = #{record.hQrcode,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.daohuo.springboot2.entity.Activity" >
+    update activity
+    <set >
+      <if test="hActivityName != null" >
+        h_activity_name = #{hActivityName,jdbcType=VARCHAR},
+      </if>
+      <if test="hContent != null" >
+        h_content = #{hContent,jdbcType=VARCHAR},
+      </if>
+      <if test="hPicture != null" >
+        h_picture = #{hPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityCity != null" >
+        h_activity_city = #{hActivityCity,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityAddress != null" >
+        h_activity_address = #{hActivityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityDestination != null" >
+        h_activity_destination = #{hActivityDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityStime != null" >
+        h_activity_sTime = #{hActivityStime,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityEtime != null" >
+        h_activity_eTime = #{hActivityEtime,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityWeek != null" >
+        h_activity_week = #{hActivityWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivitySdate != null" >
+        h_activity_sDate = #{hActivitySdate,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityEdate != null" >
+        h_activity_eDate = #{hActivityEdate,jdbcType=VARCHAR},
+      </if>
+      <if test="hActivityPlace != null" >
+        h_activity_place = #{hActivityPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="hLatitude != null" >
+        h_latitude = #{hLatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="hLongitude != null" >
+        h_longitude = #{hLongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="hCircuitlistCount != null" >
+        h_circuitList_count = #{hCircuitlistCount,jdbcType=VARCHAR},
+      </if>
+      <if test="hButtJoint != null" >
+        h_butt_joint = #{hButtJoint,jdbcType=INTEGER},
+      </if>
+      <if test="hInteraction != null" >
+        h_interaction = #{hInteraction,jdbcType=INTEGER},
+      </if>
+      <if test="hAttendPeopleCount != null" >
+        h_attend_people_count = #{hAttendPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="hMaxPeople != null" >
+        h_max_people = #{hMaxPeople,jdbcType=INTEGER},
+      </if>
+      <if test="hConscientious != null" >
+        h_conscientious = #{hConscientious,jdbcType=VARCHAR},
+      </if>
+      <if test="cardUuid != null" >
+        card_uuid = #{cardUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="hOrganizer != null" >
+        h_organizer = #{hOrganizer,jdbcType=VARCHAR},
+      </if>
+      <if test="hContactway != null" >
+        h_contactway = #{hContactway,jdbcType=VARCHAR},
+      </if>
+      <if test="hCtime != null" >
+        h_cTime = #{hCtime,jdbcType=VARCHAR},
+      </if>
+      <if test="hMtime != null" >
+        h_mTime = #{hMtime,jdbcType=VARCHAR},
+      </if>
+      <if test="hStatus != null" >
+        h_status = #{hStatus,jdbcType=INTEGER},
+      </if>
+      <if test="hReco != null" >
+        h_reco = #{hReco,jdbcType=INTEGER},
+      </if>
+      <if test="hQrcode != null" >
+        h_QRCode = #{hQrcode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where h_id = #{hId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.daohuo.springboot2.entity.Activity" >
+    update activity
+    set h_activity_name = #{hActivityName,jdbcType=VARCHAR},
+      h_content = #{hContent,jdbcType=VARCHAR},
+      h_picture = #{hPicture,jdbcType=VARCHAR},
+      h_activity_city = #{hActivityCity,jdbcType=VARCHAR},
+      h_activity_address = #{hActivityAddress,jdbcType=VARCHAR},
+      h_activity_destination = #{hActivityDestination,jdbcType=VARCHAR},
+      h_activity_sTime = #{hActivityStime,jdbcType=VARCHAR},
+      h_activity_eTime = #{hActivityEtime,jdbcType=VARCHAR},
+      h_activity_week = #{hActivityWeek,jdbcType=VARCHAR},
+      h_activity_sDate = #{hActivitySdate,jdbcType=VARCHAR},
+      h_activity_eDate = #{hActivityEdate,jdbcType=VARCHAR},
+      h_activity_place = #{hActivityPlace,jdbcType=VARCHAR},
+      h_latitude = #{hLatitude,jdbcType=DOUBLE},
+      h_longitude = #{hLongitude,jdbcType=DOUBLE},
+      h_circuitList_count = #{hCircuitlistCount,jdbcType=VARCHAR},
+      h_butt_joint = #{hButtJoint,jdbcType=INTEGER},
+      h_interaction = #{hInteraction,jdbcType=INTEGER},
+      h_attend_people_count = #{hAttendPeopleCount,jdbcType=INTEGER},
+      h_max_people = #{hMaxPeople,jdbcType=INTEGER},
+      h_conscientious = #{hConscientious,jdbcType=VARCHAR},
+      card_uuid = #{cardUuid,jdbcType=VARCHAR},
+      h_organizer = #{hOrganizer,jdbcType=VARCHAR},
+      h_contactway = #{hContactway,jdbcType=VARCHAR},
+      h_cTime = #{hCtime,jdbcType=VARCHAR},
+      h_mTime = #{hMtime,jdbcType=VARCHAR},
+      h_status = #{hStatus,jdbcType=INTEGER},
+      h_reco = #{hReco,jdbcType=INTEGER},
+      h_QRCode = #{hQrcode,jdbcType=VARCHAR}
+    where h_id = #{hId,jdbcType=INTEGER}
+  </update>
+</mapper>

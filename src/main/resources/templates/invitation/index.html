@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/invitation/homepage">帖子管理</a>
+                <a><cite>发帖列表</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <button class="layui-btn layui-btn-warm layui-btn-sm" data-type="add_inv">增加</button>
+                                <button class="layui-btn layui-btn-sm" data-type="batch_del" id="batch_delete">批量删除</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-table" lay-data="{cellMinWidth: 80, page: true, limit:10, url:context+'/invitation/list',id:'idTest'}" lay-filter="demo">
+                                    <thead>
+                                        <tr>
+                                            <th lay-data="{type:'checkbox', align:'center', width:'5%'}">ID</th>
+                                            <th lay-data="{field:'id', sort: true, align:'center', width: '10%'}">ID</th>
+                                            <th lay-data="{field:'lName', align:'center', width: '10%'}">用户名</th>
+                                            <th lay-data="{field:'lType', align:'center', width: '10%'}">主题</th>
+                                            <th lay-data="{field:'paceDeparture', align:'center', width: '10%'}">起点</th>
+                                            <th lay-data="{field:'thumpUp', align:'center', width: '10%'}">评论数</th>
+                                            <th lay-data="{field:'startTime', sort: true, align:'center', width: '25%'}">起始时间</th>
+                                            <th lay-data="{fixed: 'right', width: '20%', align:'center', toolbar: '#barDemo'}">操作</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    console.log(context);
+
+    layui.use(['table', 'jquery'], function() {
+        var table = layui.table;
+        var $ = layui.jquery;
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确认要删除吗?', function(index){
+                    $.get(context+"/invitation/load_del/"+data.id, function(res){
+                        console.log(res);
+                        if(res.code == 100){
+                            layer.open({
+                                title: '提示'
+                                ,content: res.extend.msg
+                            });
+                            obj.del();
+                        }
+
+                    });
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2,
+                    title: '编辑录书',
+                    area: ['850px', '600px'],
+
+                    content: context+"/invitation/load_edit/"+data.id
+                });
+            } else if(obj.event === 'detail'){
+                layer.open({
+                    type: 2,
+                    title: '查看详情',
+                    area: ['850px', '600px'],
+                    content: context+"/invitation/load_detail/"+data.id
+                });
+            }
+
+        });
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_inv: function(){
+                layer.open({
+                    type: 2,
+                    title: '新增录书',
+                    area: ['850px', '600px'],
+                    content: context+'/invitation/load_add'
+                });
+            }
+            ,batch_del: function(){
+                var data_list = '', checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                $.each(data, function(k, v){
+                    data_list += v.id + "-";
+                });
+                var new_list = data_list.substring(0, data_list.length-1);
+                layer.confirm('确定全部删除?', {icon: 3, title:'提示'}, function(index){
+                    //do something
+                    console.log(new_list);
+                    layer.close(index);
+                    $("#batch_delete").addClass("layui-btn-disabled");
+                    $.get(context+"/invitation/batch_del/"+new_list, function(res){
+                        // console.log(res);
+                        layer.msg('删除成功！', {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            document.location.reload();
+                        });
+                    });
+                });
+            }
+        };
+    })
+</script>
+</body>
+</html>

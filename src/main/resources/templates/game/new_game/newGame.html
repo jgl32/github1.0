@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<link rel="stylesheet" th:href="@{/statics/custom_css/new_game/newGame.css}">
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'newGame')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/game/gameMap">游戏管理</a>
+                <a><cite>新建活动</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <button class="layui-btn layui-btn-normal layui-btn-sm" id="game_add">增加活动</button>
+                                <div id="demo6" class="game_page"></div>
+                            </div>
+                            <div class="layui-card-body">
+                                <div class="layui-row my_game_card" style="margin: 2% auto;">
+                                    <div class="layui-col-xs2" th:each="gameList : ${gameLists}">
+                                        <div class="grid-demo game_block">
+                                            <a href=""><img th:src="${gameList.gamePic}" alt="" class="game_pic" th:onerror="'this.src=\''+@{/statics/images/backgroup.jpg}+'\''"></a>
+                                        </div>
+                                        <div class="game_card">
+                                            <div class="game_title">
+                                                <span style="font-size: 20px;" th:text="${gameList.gameName}">北海定向越野</span><br>
+                                                <!--<span style="color: #867777;" th:text="${gameList.gameStime}">2018-10-25</span> / <span style="color: #3b43a9;" th:if="${gameList.status eq 0}" th:text="已经结束"></span>-->
+                                                <!--<span style="color: #3b43a9;" th:if="${gameList.status eq 1}" th:text="正在进行"></span>-->
+                                                <!--<span style="color: #3b43a9;" th:if="${gameList.status eq 2}" th:text="正在报名"></span>-->
+                                            </div>
+                                            <div class="operator_btn">
+                                                <button class="layui-btn layui-btn-warm layui-btn-xs game_field_btn" th:attr="data-id=${gameList.gameId}">场次</button>
+                                                <button class="layui-btn layui-btn-warm layui-btn-xs game_edit_btn"  th:attr="data-id=${gameList.gameId}">编辑</button>
+                                                <button class="layui-btn layui-btn-danger layui-btn-xs game_upload_btn"  th:attr="data-id=${gameList.gameId}">下载</button>
+                                                <button class="layui-btn layui-btn-xs game_del_btn" th:attr="data-id=${gameList.gameId}">删除</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:src="@{/statics/custom_js/new_game/newGame.js}"></script>
+</body>

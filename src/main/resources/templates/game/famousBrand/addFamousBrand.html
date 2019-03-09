@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+
+</head>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+
+<style type="text/css">
+
+    .divcss5{width:600px;
+        height:200px;
+        border:1px solid rgba(0, 0, 0, 0.01);
+
+        word-wrap:break-word;
+        overflow-y:scroll; }
+</style>
+
+<style>
+
+    .dtDistance {
+        outline: 0;
+        -webkit-appearance: none;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        width:175px;
+        height:40px;
+    }
+    .dtTime {
+        outline: 0;
+        -webkit-appearance: none;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        width:160px;
+        height:40px;
+    }
+</style>
+
+<style>
+    .inputTable{width:138px;
+        height:40px;}
+</style>
+
+
+
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+
+
+        <input type="hidden" name="dtId" id="dtId" value="-1" />
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block">
+                    <input name="name"  lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">介绍</label>
+                <div class="layui-input-block">
+                    <input name="introduce"  lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">封面图</label>
+            <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                <div class="layui-upload-list" style="margin: 0;">
+                    <img class="layui-upload-img" name="bImg" id="demo1" >
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">游戏规则</label>
+                <div class="layui-input-inline">
+                    <input name="gameRule"  lay-verify="required" autocomplete="off"  class="layui-input" min="0" max="9000" type="number" >
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">限定人数</label>
+                <div class="layui-input-inline">
+                    <input name="userMax"  lay-verify="required" type="number" autocomplete="off" class="layui-input" min="1" max="9000">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">一次扫码 的加减积分</label>
+                <div class="layui-input-block">
+                    <input name="scoreUpdate"  lay-verify="required" autocomplete="off" placeholder="请输入旅游路程"  type="number" class="dtDistance"  min="1" width="240px" height="40px" >公里
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">游戏时长</label>
+                <div class="layui-input-inline">
+                    <div>
+                        <input name="duration"  lay-verify="required" autocomplete="off" type="number" class="dtTime" width="100px" height="40px" min="1" max="100">小时
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">队伍创建的有效期</label>
+                <div class="layui-input-block">
+                    <input name="teamExpiry"  lay-verify="required" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">负责人id</label>
+                <div class="layui-input-block">
+                    <input name="chargeOpenid"  lay-verify="required" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="insertDirectional" >立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">立即重置</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+<script th:replace="common/script::copy"></script>
+
+
+
+
+<script type="text/javascript" data-th-inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_directional : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增定向旅游',
+                    area: ['850px', '500px'],
+                    content: context+"/game/find_dingwei"
+                });
+            }
+        };
+
+
+        $("#sel").val("1");
+        var status=$("#dtStatus2").val();
+        // alert(status);
+        $("#dtStatus option[value='"+status+"']").attr("selected","selected")
+
+        form.render('select','selFilter');
+
+
+
+        //日期
+        laydate.render({
+            elem: '#apply_start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#apply_end_date'
+            ,type: 'datetime'
+        });
+        //日期
+        laydate.render({
+            elem: '#start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_date'
+            ,type: 'datetime'
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: context+'/first/upload_one_directionalTravel/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        // $("input[name='dtImg']").val(res.extend.msg);
+                        $("#demo1").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                // $("input[name='dtImg']").val(res.extend.msg);
+            }
+        });
+
+        // 监听提交
+        form.on('submit(insertDirectional)', function(data){
+            var sub_data = {
+                "name":                 $("input[name='name']").val(),
+                "introduce":                 $("input[name='introduce']").val(),
+                "gameRule":                $("input[name='gameRule']").val(),
+                "userMax":                   $("input[name='userMax']").val(),
+                "scoreUpdate":              $("input[name='scoreUpdate']").val(),
+
+                "duration":              $("input[name='duration']").val(),
+                "teamExpiry":          $("input[name='teamExpiry']").val(),
+                "chargeOpenid":                $("input[name='chargeOpenid']").val(),
+                "bImg":                $("#demo1").attr("src"),
+                // "dtAddress":            $("input[name='dtAddress']").val(),
+                //
+                // "dtPeople":             $("input[name='dtPeople']").val(),
+                // "dtMaxPeople":           $("input[name='dtMaxPeople']").val(),
+                // "dtMessage":                $("input[name='dtMessage']").val(),
+                // "dtMileage":           $("input[name='dtMileage']").val(),
+                // "dtIntegral":                $("input[name='dtIntegral']").val(),
+
+            };
+            $.post(context+"/famousBrand/addFamousBrand", sub_data, function(res){
+
+                if(res.code == 100){
+                    layer.msg('新增成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+
+                        function(){
+                            parent.window.location.href=context+"/famousBrand/famousBrand";
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }
+
+                console.log(res);
+            });
+            return false;
+        });
+
+    })
+</script>

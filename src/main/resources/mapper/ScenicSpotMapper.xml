@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daohuo.springboot2.mapper.ScenicSpotMapper" >
+  <resultMap id="BaseResultMap" type="com.daohuo.springboot2.entity.ScenicSpot" >
+    <id column="ss_id" property="ssId" jdbcType="INTEGER" />
+    <result column="ss_category" property="ssCategory" jdbcType="VARCHAR" />
+    <result column="ss_level" property="ssLevel" jdbcType="VARCHAR" />
+    <result column="ss_u_openid" property="ssUOpenid" jdbcType="VARCHAR" />
+    <result column="ss_city" property="ssCity" jdbcType="VARCHAR" />
+    <result column="ss_title" property="ssTitle" jdbcType="VARCHAR" />
+    <result column="ss_brief" property="ssBrief" jdbcType="VARCHAR" />
+    <result column="ss_phone" property="ssPhone" jdbcType="VARCHAR" />
+    <result column="ss_sponsor" property="ssSponsor" jdbcType="VARCHAR" />
+    <result column="ss_url" property="ssUrl" jdbcType="VARCHAR" />
+    <result column="ss_latitude" property="ssLatitude" jdbcType="DOUBLE" />
+    <result column="ss_longitude" property="ssLongitude" jdbcType="DOUBLE" />
+    <result column="lat_deviation" property="latDeviation" jdbcType="DOUBLE" />
+    <result column="long_deviation" property="longDeviation" jdbcType="DOUBLE" />
+    <result column="ss_create_time" property="ssCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ss_modified_time" property="ssModifiedTime" jdbcType="TIMESTAMP" />
+    <result column="ss_recommend" property="ssRecommend" jdbcType="TIMESTAMP" />
+    <result column="ss_status" property="ssStatus" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="BaseResultMapAndActivity" type="com.daohuo.springboot2.entity.ScenicSpot">
+    <id column="ss_id" jdbcType="INTEGER" property="ssId" />
+    <result column="ss_category" jdbcType="VARCHAR" property="ssCategory" />
+    <result column="ss_level" jdbcType="VARCHAR" property="ssLevel" />
+    <result column="ss_u_openid" jdbcType="VARCHAR" property="ssUOpenid" />
+    <result column="ss_city" jdbcType="VARCHAR" property="ssCity" />
+    <result column="ss_title" jdbcType="VARCHAR" property="ssTitle" />
+    <result column="ss_brief" jdbcType="VARCHAR" property="ssBrief" />
+    <result column="ss_phone" jdbcType="VARCHAR" property="ssPhone" />
+    <result column="ss_sponsor" jdbcType="VARCHAR" property="ssSponsor" />
+    <result column="ss_url" jdbcType="VARCHAR" property="ssUrl" />
+    <result column="ss_latitude" jdbcType="DOUBLE" property="ssLatitude" />
+    <result column="ss_longitude" jdbcType="DOUBLE" property="ssLongitude" />
+    <result column="lat_deviation" jdbcType="DOUBLE" property="latDeviation" />
+    <result column="long_deviation" jdbcType="DOUBLE" property="longDeviation" />
+    <result column="ss_create_time" jdbcType="TIMESTAMP" property="ssCreateTime" />
+    <result column="ss_modified_time" jdbcType="TIMESTAMP" property="ssModifiedTime" />
+    <result column="ss_recommend" jdbcType="TIMESTAMP" property="ssRecommend" />
+    <result column="ss_status" jdbcType="TIMESTAMP" property="ssStatus" />
+    <collection property="activityList" ofType="Activity">
+      <id column="h_id" property="hId" jdbcType="INTEGER" />
+      <result column="h_activity_name" property="hActivityName" jdbcType="VARCHAR" />
+      <result column="h_content" property="hContent" jdbcType="VARCHAR" />
+      <result column="h_picture" property="hPicture" jdbcType="VARCHAR" />
+      <result column="h_activity_city" property="hActivityCity" jdbcType="VARCHAR" />
+      <result column="h_activity_address" property="hActivityAddress" jdbcType="VARCHAR" />
+      <result column="h_activity_destination" property="hActivityDestination" jdbcType="VARCHAR" />
+      <result column="h_activity_sTime" property="hActivityStime" jdbcType="DATE" />
+      <result column="h_activity_eTime" property="hActivityEtime" jdbcType="VARCHAR" />
+      <result column="h_activity_week" property="hActivityWeek" jdbcType="VARCHAR" />
+      <result column="h_activity_sDate" property="hActivitySdate" jdbcType="TIMESTAMP" />
+      <result column="h_activity_eDate" property="hActivityEdate" jdbcType="TIMESTAMP" />
+      <result column="h_activity_place" property="hActivityPlace" jdbcType="VARCHAR" />
+      <result column="h_latitude" property="hLatitude" jdbcType="DOUBLE" />
+      <result column="h_longitude" property="hLongitude" jdbcType="DOUBLE" />
+      <result column="h_circuitList_count" property="hCircuitlistCount" jdbcType="VARCHAR" />
+      <result column="h_butt_joint" property="hButtJoint" jdbcType="INTEGER" />
+      <result column="h_interaction" property="hInteraction" jdbcType="INTEGER" />
+      <result column="h_attend_people_count" property="hAttendPeopleCount" jdbcType="INTEGER" />
+      <result column="h_max_people" property="hMaxPeople" jdbcType="INTEGER" />
+      <result column="h_conscientious" property="hConscientious" jdbcType="VARCHAR" />
+      <result column="card_uuid" property="cardUuid" jdbcType="VARCHAR" />
+      <result column="h_organizer" property="hOrganizer" jdbcType="VARCHAR" />
+      <result column="h_contactway" property="hContactway" jdbcType="VARCHAR" />
+      <result column="h_cTime" property="hCtime" jdbcType="TIMESTAMP" />
+      <result column="h_mTime" property="hMtime" jdbcType="TIMESTAMP" />
+      <result column="h_status" property="hStatus" jdbcType="INTEGER" />
+      <result column="h_reco" property="hReco" jdbcType="INTEGER" />
+      <result column="h_QRCode" property="hQrcode" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ss_id, ss_category, ss_level, ss_u_openid, ss_city, ss_title, ss_brief, ss_phone, 
+    ss_sponsor, ss_url, ss_latitude, ss_longitude, lat_deviation, long_deviation, ss_create_time, 
+    ss_modified_time, ss_recommend, ss_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.daohuo.springboot2.entity.ScenicSpotExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from scenic_spot
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from scenic_spot
+    where ss_id = #{ssId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from scenic_spot
+    where ss_id = #{ssId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.daohuo.springboot2.entity.ScenicSpotExample" >
+    delete from scenic_spot
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.daohuo.springboot2.entity.ScenicSpot" >
+    insert into scenic_spot (ss_id, ss_category, ss_level, 
+      ss_u_openid, ss_city, ss_title, 
+      ss_brief, ss_phone, ss_sponsor, 
+      ss_url, ss_latitude, ss_longitude, 
+      lat_deviation, long_deviation, ss_create_time, 
+      ss_modified_time, ss_recommend, ss_status
+      )
+    values (#{ssId,jdbcType=INTEGER}, #{ssCategory,jdbcType=VARCHAR}, #{ssLevel,jdbcType=VARCHAR}, 
+      #{ssUOpenid,jdbcType=VARCHAR}, #{ssCity,jdbcType=VARCHAR}, #{ssTitle,jdbcType=VARCHAR}, 
+      #{ssBrief,jdbcType=VARCHAR}, #{ssPhone,jdbcType=VARCHAR}, #{ssSponsor,jdbcType=VARCHAR}, 
+      #{ssUrl,jdbcType=VARCHAR}, #{ssLatitude,jdbcType=DOUBLE}, #{ssLongitude,jdbcType=DOUBLE}, 
+      #{latDeviation,jdbcType=DOUBLE}, #{longDeviation,jdbcType=DOUBLE}, #{ssCreateTime,jdbcType=TIMESTAMP}, 
+      #{ssModifiedTime,jdbcType=TIMESTAMP}, #{ssRecommend,jdbcType=TIMESTAMP}, #{ssStatus,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.daohuo.springboot2.entity.ScenicSpot" >
+    insert into scenic_spot
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ssId != null" >
+        ss_id,
+      </if>
+      <if test="ssCategory != null" >
+        ss_category,
+      </if>
+      <if test="ssLevel != null" >
+        ss_level,
+      </if>
+      <if test="ssUOpenid != null" >
+        ss_u_openid,
+      </if>
+      <if test="ssCity != null" >
+        ss_city,
+      </if>
+      <if test="ssTitle != null" >
+        ss_title,
+      </if>
+      <if test="ssBrief != null" >
+        ss_brief,
+      </if>
+      <if test="ssPhone != null" >
+        ss_phone,
+      </if>
+      <if test="ssSponsor != null" >
+        ss_sponsor,
+      </if>
+      <if test="ssUrl != null" >
+        ss_url,
+      </if>
+      <if test="ssLatitude != null" >
+        ss_latitude,
+      </if>
+      <if test="ssLongitude != null" >
+        ss_longitude,
+      </if>
+      <if test="latDeviation != null" >
+        lat_deviation,
+      </if>
+      <if test="longDeviation != null" >
+        long_deviation,
+      </if>
+      <if test="ssCreateTime != null" >
+        ss_create_time,
+      </if>
+      <if test="ssModifiedTime != null" >
+        ss_modified_time,
+      </if>
+      <if test="ssRecommend != null" >
+        ss_recommend,
+      </if>
+      <if test="ssStatus != null" >
+        ss_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ssId != null" >
+        #{ssId,jdbcType=INTEGER},
+      </if>
+      <if test="ssCategory != null" >
+        #{ssCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="ssLevel != null" >
+        #{ssLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="ssUOpenid != null" >
+        #{ssUOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="ssCity != null" >
+        #{ssCity,jdbcType=VARCHAR},
+      </if>
+      <if test="ssTitle != null" >
+        #{ssTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="ssBrief != null" >
+        #{ssBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="ssPhone != null" >
+        #{ssPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ssSponsor != null" >
+        #{ssSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="ssUrl != null" >
+        #{ssUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ssLatitude != null" >
+        #{ssLatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="ssLongitude != null" >
+        #{ssLongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latDeviation != null" >
+        #{latDeviation,jdbcType=DOUBLE},
+      </if>
+      <if test="longDeviation != null" >
+        #{longDeviation,jdbcType=DOUBLE},
+      </if>
+      <if test="ssCreateTime != null" >
+        #{ssCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssModifiedTime != null" >
+        #{ssModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssRecommend != null" >
+        #{ssRecommend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssStatus != null" >
+        #{ssStatus,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.daohuo.springboot2.entity.ScenicSpotExample" resultType="java.lang.Integer" >
+    select count(*) from scenic_spot
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update scenic_spot
+    <set >
+      <if test="record.ssId != null" >
+        ss_id = #{record.ssId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ssCategory != null" >
+        ss_category = #{record.ssCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssLevel != null" >
+        ss_level = #{record.ssLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssUOpenid != null" >
+        ss_u_openid = #{record.ssUOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssCity != null" >
+        ss_city = #{record.ssCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssTitle != null" >
+        ss_title = #{record.ssTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssBrief != null" >
+        ss_brief = #{record.ssBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssPhone != null" >
+        ss_phone = #{record.ssPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssSponsor != null" >
+        ss_sponsor = #{record.ssSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssUrl != null" >
+        ss_url = #{record.ssUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssLatitude != null" >
+        ss_latitude = #{record.ssLatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ssLongitude != null" >
+        ss_longitude = #{record.ssLongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.latDeviation != null" >
+        lat_deviation = #{record.latDeviation,jdbcType=DOUBLE},
+      </if>
+      <if test="record.longDeviation != null" >
+        long_deviation = #{record.longDeviation,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ssCreateTime != null" >
+        ss_create_time = #{record.ssCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ssModifiedTime != null" >
+        ss_modified_time = #{record.ssModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ssRecommend != null" >
+        ss_recommend = #{record.ssRecommend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ssStatus != null" >
+        ss_status = #{record.ssStatus,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update scenic_spot
+    set ss_id = #{record.ssId,jdbcType=INTEGER},
+      ss_category = #{record.ssCategory,jdbcType=VARCHAR},
+      ss_level = #{record.ssLevel,jdbcType=VARCHAR},
+      ss_u_openid = #{record.ssUOpenid,jdbcType=VARCHAR},
+      ss_city = #{record.ssCity,jdbcType=VARCHAR},
+      ss_title = #{record.ssTitle,jdbcType=VARCHAR},
+      ss_brief = #{record.ssBrief,jdbcType=VARCHAR},
+      ss_phone = #{record.ssPhone,jdbcType=VARCHAR},
+      ss_sponsor = #{record.ssSponsor,jdbcType=VARCHAR},
+      ss_url = #{record.ssUrl,jdbcType=VARCHAR},
+      ss_latitude = #{record.ssLatitude,jdbcType=DOUBLE},
+      ss_longitude = #{record.ssLongitude,jdbcType=DOUBLE},
+      lat_deviation = #{record.latDeviation,jdbcType=DOUBLE},
+      long_deviation = #{record.longDeviation,jdbcType=DOUBLE},
+      ss_create_time = #{record.ssCreateTime,jdbcType=TIMESTAMP},
+      ss_modified_time = #{record.ssModifiedTime,jdbcType=TIMESTAMP},
+      ss_recommend = #{record.ssRecommend,jdbcType=TIMESTAMP},
+      ss_status = #{record.ssStatus,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.daohuo.springboot2.entity.ScenicSpot" >
+    update scenic_spot
+    <set >
+      <if test="ssCategory != null" >
+        ss_category = #{ssCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="ssLevel != null" >
+        ss_level = #{ssLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="ssUOpenid != null" >
+        ss_u_openid = #{ssUOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="ssCity != null" >
+        ss_city = #{ssCity,jdbcType=VARCHAR},
+      </if>
+      <if test="ssTitle != null" >
+        ss_title = #{ssTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="ssBrief != null" >
+        ss_brief = #{ssBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="ssPhone != null" >
+        ss_phone = #{ssPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ssSponsor != null" >
+        ss_sponsor = #{ssSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="ssUrl != null" >
+        ss_url = #{ssUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ssLatitude != null" >
+        ss_latitude = #{ssLatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="ssLongitude != null" >
+        ss_longitude = #{ssLongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latDeviation != null" >
+        lat_deviation = #{latDeviation,jdbcType=DOUBLE},
+      </if>
+      <if test="longDeviation != null" >
+        long_deviation = #{longDeviation,jdbcType=DOUBLE},
+      </if>
+      <if test="ssCreateTime != null" >
+        ss_create_time = #{ssCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssModifiedTime != null" >
+        ss_modified_time = #{ssModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssRecommend != null" >
+        ss_recommend = #{ssRecommend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssStatus != null" >
+        ss_status = #{ssStatus,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ss_id = #{ssId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.daohuo.springboot2.entity.ScenicSpot" >
+    update scenic_spot
+    set ss_category = #{ssCategory,jdbcType=VARCHAR},
+      ss_level = #{ssLevel,jdbcType=VARCHAR},
+      ss_u_openid = #{ssUOpenid,jdbcType=VARCHAR},
+      ss_city = #{ssCity,jdbcType=VARCHAR},
+      ss_title = #{ssTitle,jdbcType=VARCHAR},
+      ss_brief = #{ssBrief,jdbcType=VARCHAR},
+      ss_phone = #{ssPhone,jdbcType=VARCHAR},
+      ss_sponsor = #{ssSponsor,jdbcType=VARCHAR},
+      ss_url = #{ssUrl,jdbcType=VARCHAR},
+      ss_latitude = #{ssLatitude,jdbcType=DOUBLE},
+      ss_longitude = #{ssLongitude,jdbcType=DOUBLE},
+      lat_deviation = #{latDeviation,jdbcType=DOUBLE},
+      long_deviation = #{longDeviation,jdbcType=DOUBLE},
+      ss_create_time = #{ssCreateTime,jdbcType=TIMESTAMP},
+      ss_modified_time = #{ssModifiedTime,jdbcType=TIMESTAMP},
+      ss_recommend = #{ssRecommend,jdbcType=TIMESTAMP},
+      ss_status = #{ssStatus,jdbcType=TIMESTAMP}
+    where ss_id = #{ssId,jdbcType=INTEGER}
+  </update>
+
+  <!--根据经度纬度查询景点-->
+  <select id="selectByLatitudeAndLongitude" parameterType="com.daohuo.springboot2.entity.ScenicSpot" resultMap="BaseResultMapAndActivity">
+
+    select ss.*,a.* from scenic_spot ss
+
+    ,scenic_spot_relation_activity ssra
+
+    ,activity a
+
+    where ss.ss_id=ssra.scenic_spot_id
+
+    and a.h_id=ssra.activity_id
+
+    and ss.ss_latitude-#{ssLatitude,jdbcType=DOUBLE} &lt; ss.lat_deviation
+
+    and ss.ss_longitude-#{ssLongitude,jdbcType=DOUBLE} &lt; ss.long_deviation
+
+    and a.h_reco=1
+  </select>
+
+</mapper>

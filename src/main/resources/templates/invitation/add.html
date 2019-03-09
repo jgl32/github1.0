@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+    <div class="layui-container">
+        <form class="layui-form" onsubmit="return false;">
+            <input type="hidden" name="adminId" th:value="${session.admin}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input name="lName" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">内容</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" id="content"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-inline">
+                        <input name="lType" placeholder="请输入出行类型" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">起点</label>
+                    <div class="layui-input-inline">
+                        <input name="paceDeparture" placeholder="出发点城市" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">开始</label>
+                    <div class="layui-input-inline">
+                        <input name="startTime" placeholder="开始时间" autocomplete="off" class="layui-input" type="text" id="start_date">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">结束</label>
+                    <div class="layui-input-inline">
+                        <input name="endTime" placeholder="结束时间" autocomplete="off" class="layui-input" type="text" id="end_date">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">封面图</label>
+                <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                    <div class="layui-upload-list" style="margin: 0;">
+                        <img class="layui-upload-img" id="demo1">
+                    </div>
+                </div>
+                <input type="hidden" name="lImage" value="" >
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">附加图片</label>
+                <div class="layui-input-block" id="test2">
+                    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                        预览图(可上传多张)：
+                        <div class="layui-upload-list" id="demo2">
+                        </div>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1" id="sub_add">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">立即重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#start_date'
+        });
+        laydate.render({
+            elem: '#end_date'
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: context+'/invitation/upload_one/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                $("input[name='lImage']").val(res.extend.msg);
+            }
+        });
+
+        //多图片上传
+        upload.render({
+            elem: '#test2'
+            ,url: context+'/invitation/upload_one/'
+            ,multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+                });
+            }
+            ,done: function(res){
+                //上传完毕
+                console.log(res);
+                $("#demo2").append('<input type="hidden" name="add_pic" value="'+ res.extend.msg +'"/>');
+            }
+        });
+
+        $("#sub_add").click(function(){
+            var lName = $("input[name='lName']").val();
+            var lMessage = $("#content").val();
+            var lType = $("input[name='lType']").val();
+            var paceDeparture = $("input[name='paceDeparture']").val();
+            var startTime = $("input[name='startTime']").val();
+            var endTime = $("input[name='endTime']").val();
+            var lImage = $("input[name='lImage']").val();
+            var add_pic = "";
+            $("input[name='add_pic']").each(function(){
+                add_pic += $(this).val() + ";";
+            });
+            add_pic = add_pic.substring(0, add_pic.length-1);
+            console.log(add_pic);
+            var data = {
+                'lName': lName,
+                'lMessage': lMessage,
+                'lType': lType,
+                'paceDeparture': paceDeparture,
+                'startTime': startTime,
+                'endTime': endTime,
+                'lImage': lImage,
+                'add_pic': add_pic
+            };
+            console.log(data);
+            $.post(context+"/invitation/sub_add", data, function(res){
+                console.log(res);
+                if(res.code == 100){
+                    layer.msg("增加成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        parent.window.location.href=context+"/invitation/index";//刷新父窗口
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                }else{
+                    layer.msg("增加失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+
+                    });
+                }
+            })
+        })
+
+    })
+
+</script>
+</html>

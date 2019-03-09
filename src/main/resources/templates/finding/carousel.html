@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/invitation/carousel">热榜发现</a>
+                <a><cite>轮播图</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <button class="layui-btn" id="getCheckData">添加</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="Finshs" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script th:replace="common/script::copy"></script>
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" value="{{d.sowmId}}" lay-skin="switch" lay-text="否|是" lay-filter="sexDemo" {{ d.status== 1
+           ? 'checked' : '' }} >
+</script>
+<script type="text/javascript" th:inline="javascript">
+
+
+
+
+    layui.use('table', function () {
+        var table = layui.table
+            , $ = layui.$
+            ,form=layui.form;
+        table.render({
+            elem: '#Finshs'
+            , url: context + '/invitation/sowingMapAll'
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'sowmId', title: 'ID', sort: true}
+                , {
+                    field: 'imageAddress',
+                    title: '图片',
+                    align: 'center',
+                    templet: '#imgTpl',
+                    event: 'browse'
+                }
+                , {field: 'status', title: '是否展示', templet: '#switchTpl', unresize: true, align: 'center'}
+                , {title: '操作', toolbar: '#barDemo', align: 'center'}//
+            ]]
+            , page: true,
+            done: function (res, curr, count) {
+                hoverOpenImg();//显示大图
+            }
+        });
+
+        function hoverOpenImg() {
+            var img_show = null; // tips提示
+            $('td img').hover(function () {
+                var img = "<img class='img_msg' src='" + $(this).attr('src') + "' style='width:130px;' />";
+                img_show = layer.tips(img, this, {
+                    tips: [2, 'rgba(41,41,41,.5)']
+                    , area: ['160px']
+                });
+            }, function () {
+                layer.close(img_show);
+            });
+            $('td img').attr('style', 'max-width:70px');
+        }
+
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            var sowmId=data.sowmId;
+            console.log(data);
+            var imaAddress = data.imageAddress;
+            if (obj.event === 'browse') {
+                window.open(imaAddress);
+            }else if(obj.event==='detail'){
+
+                    layer.confirm('真的取消推荐吗', function (index) {
+                        $.post(context+"/invitation/deleteSowingMap",{"sowmId":sowmId},function (res) {
+                            layer.msg("取消推荐成功");
+                            obj.del();
+                            layer.close(index);
+                        })
+                    });
+            }
+
+        });
+        $("#getCheckData").click(function () {
+            layer.open({
+                type: 2,
+                title: '添加轮播图',
+                area: ['850px', '600px'],
+                shadeClose: true,
+                // offset: ['100px', '50px'],
+                content: context + "/invitation/addCarousel"
+                // end: function () {
+                //     location.reload();
+                // }
+            });
+        });
+
+
+        form.on('switch(sexDemo)', function (obj) {
+            console.log(this.value)
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+                $.post(context + "/invitation/updateowingMap", {
+                    "sowmId": this.value,
+                    "status": 1
+                }, function (res) {
+                    console.log(res);
+                    if (res.extend.message == "展示失败") {
+                        obj.elem.checked = !x;
+                        form.render();
+                        layer.confirm('轮播图已超出4张，请取消展示后再次操作', {
+                                btn: '确定'
+                            }
+                        );
+                    } else {
+                        layer.alert("展示成功");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/invitation/updateowingMap", {"sowmId": this.value,"status":0}, function (res) {
+                    if (res.extend.message) {
+                        layer.alert("取消展示成功");
+                    }
+                })
+            }
+        });
+
+    })
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">取消展示</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.imageAddress}}"/>
+</script>
+</body>
+</html>

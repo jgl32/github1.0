@@ -1,0 +1,821 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<div class="layui-side layui-bg-black" th:fragment="copy (title, portion)">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item"><a th:href="@{/work/index}" style="margin: auto 25%;">工作台</a></li>
+        </ul>
+
+        <!-- 首页管理 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" th:if="${title} eq 'first'" th:attrappend="class=' layui-nav-itemed'">
+                <a class="" href="javascript:;"><i class="fa fa-share-square-o fa-lg"></i>&nbsp;&nbsp;首页管理</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'commodity'" th:class="layui-this">
+                        <a th:href="@{/first/commodity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg" ></i>&nbsp;&nbsp;首页推荐</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'commodity'">
+                        <a th:href="@{/first/commodity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg" ></i>&nbsp;&nbsp;首页推荐</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'spot'" th:class="layui-this">
+                        <a th:href="@{/first/spot}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;旅游路线</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'spot'">
+                        <a th:href="@{/first/spot}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;旅游路线</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'directional'" th:class="layui-this">
+                        <a th:href="@{/first/directional}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向旅游</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'directional'">
+                        <a th:href="@{/first/directional}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向旅游</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'sports'" th:class="layui-this">
+                        <a th:href="@{/first/sports}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;户外活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'sports'">
+                        <a th:href="@{/first/sports}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;户外活动</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'hostory'" th:class="layui-this">
+                        <a th:href="@{/first/hostory}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史记录</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'hostory'">
+                        <a th:href="@{/first/hostory}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史记录</a>
+                    </dd>
+
+                    <!-- 定向管理 -->
+                    <!--<dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向管理</a>
+                    </dd>
+                    &lt;!&ndash; 探索管理 &ndash;&gt;
+                    <dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;探索管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;探索管理</a>
+                    </dd>
+                    &lt;!&ndash; 线路管理 &ndash;&gt;
+                    <dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路管理</a>
+                    </dd>-->
+                </dl>
+            </li>
+            <li class="layui-nav-item" th:if="${title} ne 'first'">
+                <a class="" href="javascript:;"><i class="fa fa-share-square-o fa-lg"></i>&nbsp;&nbsp;首页管理</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'commodity'" th:class="layui-this">
+                        <a th:href="@{/first/commodity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg" ></i>&nbsp;&nbsp;首页推荐</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'commodity'">
+                        <a th:href="@{/first/commodity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg" ></i>&nbsp;&nbsp;首页推荐</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'spot'" th:class="layui-this">
+                        <a th:href="@{/first/spot}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;旅游路线</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'spot'">
+                        <a th:href="@{/first/spot}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;旅游路线</a>
+                    </dd>
+
+                    <dd th:if="${portion} eq 'directional'" th:class="layui-this">
+                        <a th:href="@{/first/directional}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向旅游</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'directional'">
+                        <a th:href="@{/first/directional}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向旅游</a>
+                    </dd>
+
+                    <dd th:if="${portion} eq 'sports'" th:class="layui-this">
+                        <a th:href="@{/first/sports}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;户外活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'sports'">
+                        <a th:href="@{/first/sports}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;户外活动</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'hostory'" th:class="layui-this">
+                        <a th:href="@{/first/hostory}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史记录</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'hostory'">
+                        <a th:href="@{/first/hostory}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史记录</a>
+                    </dd>
+
+                    <!-- 定向管理 -->
+                    <!--<dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;定向管理</a>
+                    </dd>
+                    &lt;!&ndash; 管理探索 &ndash;&gt;
+                    <dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;探索管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;探索管理</a>
+                    </dd>
+                    &lt;!&ndash; 线路管理 &ndash;&gt;
+                    <dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路管理</a>
+                    </dd>-->
+                </dl>
+            </li>
+        </ul>
+
+        <!-- 定向管理 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" th:if="${title} eq 'game'" th:attrappend="class=' layui-nav-itemed'">
+                <a class="" href="javascript:;"><i class="fa fa-gamepad fa-lg"></i>&nbsp;&nbsp;定向管理</a>
+                <dl class="layui-nav-child">
+                    <!--上传卡点-->
+                    <dd th:if="${portion} eq 'newdakayem'" th:class="layui-this">
+                        <a th:href="@{/cards/cardsYm}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newdakayem'">
+                        <a th:href="@{/cards/cardsYm}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传卡点</a>
+                    </dd>
+
+                    <!--历史卡点-->
+                    <!--<dd th:if="${portion} eq 'pointAll'" th:class="layui-this">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'pointAll'">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>-->
+
+                    <!--新历史卡点-->
+                    <dd th:if="${portion} eq '12pointAll'" th:class="layui-this">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne '12pointAll'">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>
+
+                    <!--线路地图-->
+                    <dd th:if="${portion} eq 'gameMap'" th:class="layui-this">
+                        <a th:href="@{/game/gameMap}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路地图</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'gameMap'">
+                        <a th:href="@{/game/gameMap}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路地图</a>
+                    </dd>
+
+                    <!--路生成线-->
+                    <dd th:if="${portion} eq 'createPoint'" th:class="layui-this">
+                        <a th:href="@{/game/createPoint}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'createPoint'">
+                        <a th:href="@{/game/createPoint}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建卡点</a>
+                    </dd>
+
+                    <!--毒圈管理-->
+                    <dd th:if="${portion} eq 'showCircleMapParent'" th:class="layui-this">
+                        <a th:href="@{/cmParent/showCircleMapParent}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;毒圈管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'showCircleMapParent'">
+                        <a th:href="@{/cmParent/showCircleMapParent}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;毒圈管理</a>
+                    </dd>
+
+                    <!--电子名牌-->
+                    <dd th:if="${portion} eq 'famousBrand'" th:class="layui-this">
+                        <a th:href="@{/famousBrand/famousBrand}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;电子名牌</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'famousBrand'">
+                        <a th:href="@{/famousBrand/famousBrand}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;电子名牌</a>
+                    </dd>
+
+                    <!--大盘游戏-->
+                    <dd th:if="${portion} eq 'grailGame'" th:class="layui-this">
+                        <a th:href="@{/activity/grailGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;大盘游戏</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'grailGame'">
+                        <a th:href="@{/activity/grailGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;大盘游戏</a>
+                    </dd>
+
+                    <!--物品库-->
+
+
+
+                        <dd th:if="${portion} eq 'goods'" th:class="layui-this">
+                             <a th:href="@{/goods/showGoods}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;物品库</a>
+                        </dd>
+                        <dd th:if="${portion} ne 'goods'">
+                            <a th:href="@{/goods/showGoods}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;物品库</a>
+                        </dd>
+
+                         <dd th:if="${portion} eq 'taskGoods'" th:class="layui-this">
+                             <a th:href="@{/taskGoods/showTaskGoodsTask}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;任务品库</a>
+                         </dd>
+                         <dd th:if="${portion} ne 'showTaskGoodsTask'">
+                                <a th:href="@{/goods/showTaskGoodsTask}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;任务品库</a>
+                         </dd>
+
+
+
+                    <!-- <dd th:if="${portion} eq 'newActivity'" th:class="layui-this">
+                         <a th:href="@{/cards/Activity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                     </dd>
+                     <dd th:if="${portion} ne 'newActivity'">
+                         <a th:href="@{/cards/Activity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                     </dd>-->
+
+                    <dd th:if="${portion} eq 'activity2'" th:class="layui-this">
+                        <a th:href="@{/activity/activity2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'activity2'">
+                        <a th:href="@{/activity/activity2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+
+                    <!--上传活动-->
+                    <!--<dd th:if="${portion} eq 'newGame'" th:class="layui-this">
+                        <a th:href="@{/game/newGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newGame'">
+                        <a th:href="@{/game/newGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>-->
+
+                    <!--报名管理-->
+                    <dd th:if="${portion} eq 'gameApply'" th:class="layui-this">
+                        <a th:href="@{/game/gameApply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;报名管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'gameApply'">
+                        <a th:href="@{/game/gameApply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;报名管理</a>
+                    </dd>
+
+                    <!--积分管理-->
+                    <dd th:if="${portion} eq 'gameIntegral'" th:class="layui-this">
+                        <a th:href="@{/game/gameIntegral}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;积分管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'gameIntegral'">
+                        <a th:href="@{/game/gameIntegral}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;积分管理</a>
+                    </dd>
+
+                    <!-- 上传线路页面 -->
+                    <dd th:if="${portion} eq 'newshangchuangxianlu'" th:class="layui-this">
+                        <a th:href="@{/cards/newshangchuangxianlu}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传线路</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newshangchuangxianlu'">
+                        <a th:href="@{/cards/newshangchuangxianlu}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传线路</a>
+                    </dd>
+
+                </dl>
+            </li>
+            <li class="layui-nav-item" th:if="${title} ne 'game'">
+                <a class="" href="javascript:;"><i class="fa fa-gamepad fa-lg"></i>&nbsp;&nbsp;定向管理</a>
+                <dl class="layui-nav-child">
+                    <!--上传卡点-->
+                    <dd th:if="${portion} eq 'newdakayem'" th:class="layui-this">
+                        <a th:href="@{/cards/cardsYm}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newdakayem'">
+                        <a th:href="@{/cards/cardsYm}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传卡点</a>
+                    </dd>
+
+                    <!--历史卡点-->
+                    <!--<dd th:if="${portion} eq 'pointAll'" th:class="layui-this">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'pointAll'">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>-->
+
+                    <!--新历史卡点-->
+                    <dd th:if="${portion} eq '12pointAll'" th:class="layui-this">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newpointAll'">
+                        <a th:href="@{/game/pointAll}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;历史卡点</a>
+                    </dd>
+
+                    <!--线路地图-->
+                    <dd th:if="${portion} eq 'gameMap'" th:class="layui-this">
+                        <a th:href="@{/game/gameMap}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路地图</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'gameMap'">
+                        <a th:href="@{/game/gameMap}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;线路地图</a>
+                    </dd>
+
+                    <!--线路生成-->
+                    <dd th:if="${portion} eq 'createPoint'" th:class="layui-this">
+                        <a th:href="@{/game/createPoint}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建卡点</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'createPoint'">
+                        <a th:href="@{/game/createPoint}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建卡点</a>
+                    </dd>
+
+                    <!--毒圈管理-->
+                    <dd th:if="${portion} eq 'showCircleMapParent'" th:class="layui-this">
+                        <a th:href="@{/cmParent/showCircleMapParent}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;毒圈管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'showCircleMapParent'">
+                        <a th:href="@{/cmParent/showCircleMapParent}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;毒圈管理</a>
+                    </dd>
+
+                    <!--电子名牌-->
+                    <dd th:if="${portion} eq 'famousBrand'" th:class="layui-this">
+                        <a th:href="@{/famousBrand/famousBrand}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;电子名牌</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'famousBrand'">
+                        <a th:href="@{/famousBrand/famousBrand}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;电子名牌</a>
+                    </dd>
+
+                    <!--大盘游戏-->
+                    <dd th:if="${portion} eq 'grailGame'" th:class="layui-this">
+                        <a th:href="@{/activity/grailGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;大盘游戏</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'grailGame'">
+                        <a th:href="@{/activity/grailGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;大盘游戏</a>
+                    </dd>
+
+                    <!--物品库-->
+                    <dd th:if="${portion} eq 'goods'" th:class="layui-this">
+                        <a th:href="@{/goods/showGoods}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;物品库</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'goods'">
+                        <a th:href="@{/goods/showGoods}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;物品库</a>
+                    </dd>
+
+
+                    <!--任务品库-->
+                    <dd th:if="${portion} eq 'taskGoods'" th:class="layui-this">
+                        <a th:href="@{/taskGoods/showTaskGoodsTask}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;任务品库</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'taskGoods'">
+                        <a th:href="@{/taskGoods/showTaskGoodsTask}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;任务品库</a>
+                    </dd>
+
+
+                    <!--<dd th:if="${portion} eq 'newActivity'" th:class="layui-this">
+                        <a th:href="@{/cards/Activity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newActivity'">
+                        <a th:href="@{/cards/Activity}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>-->
+
+                    <dd th:if="${portion} eq 'activity2'" th:class="layui-this">
+                        <a th:href="@{/activity/activity2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'activity2'">
+                        <a th:href="@{/activity/activity2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+
+                    <!--上传活动-->
+                    <!--<dd th:if="${portion} eq 'newGame'" th:class="layui-this">
+                        <a th:href="@{/game/newGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newGame'">
+                        <a th:href="@{/game/newGame}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传活动</a>
+                    </dd>-->
+
+                    <!--报名管理-->
+                    <dd th:if="${portion} eq 'gameApply'" th:class="layui-this">
+                        <a th:href="@{/game/gameApply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;报名管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'gameApply'">
+                        <a th:href="@{/game/gameApply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;报名管理</a>
+                    </dd>
+
+                    <!--积分管理-->
+                    <dd th:if="${portion} eq 'gameIntegral'" th:class="layui-this">
+                        <a th:href="@{/game/gameIntegral}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;积分管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'gameIntegral'">
+                        <a th:href="@{/game/gameIntegral}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;积分管理</a>
+                    </dd>
+
+                    <!-- 上传线路页面 -->
+                    <dd th:if="${portion} eq 'newshangchuangxianlu'" th:class="layui-this">
+                        <a th:href="@{/cards/newshangchuangxianlu}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传线路</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'newshangchuangxianlu'">
+                        <a th:href="@{/cards/newshangchuangxianlu}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;上传线路</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+
+        <!-- 旅游管理 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" th:if="${title} eq 'travel'" th:attrappend="class=' layui-nav-itemed'">
+                <a class="" href="javascript:;"><i class="fa fa-tablet fa-lg"></i>&nbsp;&nbsp;旅游管理</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'travelRoute'" th:class="layui-this">
+                        <a th:href="@{/travel/travelRoute}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建路线</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'travelRoute'">
+                        <a th:href="@{/travel/travelRoute}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建路线</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateTheTrip'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateTheTrip}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成行程</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateTheTrip'">
+                        <a th:href="@{/travel/getGenerateTheTrip}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成行程</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateDevelopment'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateDevelopment}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成拓展</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateDevelopment'">
+                        <a th:href="@{/travel/getGenerateDevelopment}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成拓展</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateCamp'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateCamp}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成营地</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateCamp'">
+                        <a th:href="@{/travel/getGenerateCamp}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成营地</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateMovement'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateMovement}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成运动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateMovement'">
+                        <a th:href="@{/travel/getGenerateMovement}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成运动</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" th:if="${title} ne 'travel'">
+                <a class="" href="javascript:;"><i class="fa fa-tablet fa-lg"></i>&nbsp;&nbsp;旅游管理</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'travelRoute'" th:class="layui-this">
+                        <a th:href="@{/travel/travelRoute}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建路线</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'travelRoute'">
+                        <a th:href="@{/travel/travelRoute}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;创建路线</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateTheTrip'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateTheTrip}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成行程</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateTheTrip'">
+                        <a th:href="@{/travel/getGenerateTheTrip}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成行程</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateDevelopment'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateDevelopment}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成拓展</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateDevelopment'">
+                        <a th:href="@{/travel/getGenerateDevelopment}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成拓展</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateCamp'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateCamp}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成营地</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateCamp'">
+                        <a th:href="@{/travel/getGenerateCamp}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成营地</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'GenerateMovement'" th:class="layui-this">
+                        <a th:href="@{/travel/getGenerateMovement}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成运动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'GenerateMovement'">
+                        <a th:href="@{/travel/getGenerateMovement}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;生成运动</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+
+        <!-- 发现模块 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" th:if="${title} eq 'invitation'" th:attrappend="class=' layui-nav-itemed'">
+                <a class="" href="javascript:;"><i class="fa fa-signal fa-lg"></i>&nbsp;&nbsp;热榜发现</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'homepage'" th:class="layui-this">
+                        <a th:href="@{/invitation/homepage}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发现推荐</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'homepage'">
+                        <a th:href="@{/invitation/homepage}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发现推荐
+                        </a>
+                    </dd>
+                    <dd th:if="${portion} eq 'carousel'" th:class="layui-this">
+                        <a th:href="@{/invitation/carousel}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;轮播图</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'carousel'">
+                        <a th:href="@{/invitation/carousel}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;轮播图</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'index'" th:class="layui-this">
+                        <a th:href="@{/invitation/index}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;帖子管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'index'">
+                        <a th:href="@{/invitation/index}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;帖子管理</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" th:if="${title} ne 'invitation'">
+                <a class="" href="javascript:;"><i class="fa fa-signal fa-lg"></i>&nbsp;&nbsp;热榜发现</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'homepage'" th:class="layui-this">
+                        <a th:href="@{/invitation/homepage}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发现推荐</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'homepage'">
+                        <a th:href="@{/invitation/homepage}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发现推荐
+                        </a>
+                    </dd>
+                    <dd th:if="${portion} eq 'carousel'" th:class="layui-this">
+                        <a th:href="@{/invitation/carousel}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;轮播图</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'carousel'">
+                        <a th:href="@{/invitation/carousel}">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;轮播图</a>
+                    </dd>
+                    <dd th:if="${portion} eq 'index'" th:class="layui-this">
+                        <a th:href="@{/invitation/index}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;帖子管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'index'">
+                        <a th:href="@{/invitation/index}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;帖子管理</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+
+        <!-- 普通用户 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" th:if="${title} eq 'error'" th:attrappend="class=' layui-nav-itemed'">
+                <a class="" href="javascript:;"><i class="fa fa-wechat fa-lg"></i>&nbsp;&nbsp;与我相关</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'development1'" th:class="layui-this">
+                        <a th:href="@{/work/error1}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;参与活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'development1'">
+                        <a th:href="@{/work/error1}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;参与活动</a>
+                    </dd>
+
+                    <dd th:if="${portion} eq 'development2'" th:class="layui-this">
+                        <a th:href="@{/work/error2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发布录书</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'development2'">
+                        <a th:href="@{/work/error2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发布录书</a>
+                    </dd>
+
+                    <dd th:if="${portion} eq 'development3'" th:class="layui-this">
+                        <a th:href="@{/work/error3}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;我的商品</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'development3'">
+                        <a th:href="@{/work/error3}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;我的商品</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" th:if="${title} ne 'error'">
+                <a class="" href="javascript:;"><i class="fa fa-wechat fa-lg"></i>&nbsp;&nbsp;与我相关</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq 'development1'" th:class="layui-this">
+                        <a th:href="@{/work/error1}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;参与活动</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'development1'">
+                        <a th:href="@{/work/error1}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;参与活动</a>
+                    </dd>
+
+                    <dd th:if="${portion} eq 'development2'" th:class="layui-this">
+                        <a th:href="@{/work/error2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发布录书</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'development2'">
+                        <a th:href="@{/work/error2}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;发布录书</a>
+                    </dd>
+
+                    <dd th:if="${portion} eq 'development3'" th:class="layui-this">
+                        <a th:href="@{/work/error3}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;我的商品</a>
+                    </dd>
+                    <dd th:if="${portion} ne 'development3'">
+                        <a th:href="@{/work/error3}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;我的商品</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+
+        <!--管理员-->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" th:if="${title} eq 'error'" th:attrappend="class=' layui-nav-itemed'">
+                <a class="" href="javascript:;"><i class="fa fa-wechat fa-lg"></i>&nbsp;&nbsp;管理员</a>
+                <dl class="layui-nav-child">
+                    <!--管理员管理-->
+                    <dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;管理员管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;管理员管理</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" th:if="${title} ne 'error'">
+                <a class="" href="javascript:;"><i class="fa fa-wechat fa-lg"></i>&nbsp;&nbsp;管理员</a>
+                <dl class="layui-nav-child">
+                    <dd th:if="${portion} eq ''" th:class="layui-this">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;管理员管理</a>
+                    </dd>
+                    <dd th:if="${portion} ne ''">
+                        <a th:href="@{//}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;管理员管理</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+
+        <!-- 商家管理 -->
+        <!--<ul class="layui-nav layui-nav-tree"  lay-filter="test">-->
+        <!--<li class="layui-nav-item" th:if="${title} eq 'merchant'" th:attrappend="class=' layui-nav-itemed'">-->
+        <!--<a class="" href="javascript:;"><i class="fa fa-opencart fa-lg"></i>&nbsp;&nbsp;商家管理</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd th:if="${portion} eq 'apply'" th:class="layui-this">-->
+        <!--<a th:href="@{/merchant/apply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;申请列表</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'apply'">-->
+        <!--<a th:href="@{/merchant/apply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;申请列表</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'list'" th:class="layui-this">-->
+        <!--<a th:href="@{/merchant/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商家列表</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'list'">-->
+        <!--<a th:href="@{/merchant/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商家列表</a>-->
+        <!--</dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--<li class="layui-nav-item" th:if="${title} ne 'merchant'">-->
+        <!--<a class="" href="javascript:;"><i class="fa fa-opencart fa-lg"></i>&nbsp;&nbsp;商家管理</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd th:if="${portion} eq 'apply'" th:class="layui-this">-->
+        <!--<a th:href="@{/merchant/apply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;申请列表</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'apply'">-->
+        <!--<a th:href="@{/merchant/apply}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;申请列表</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'list'" th:class="layui-this">-->
+        <!--<a th:href="@{/merchant/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商家列表</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'list'">-->
+        <!--<a th:href="@{/merchant/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商家列表</a>-->
+        <!--</dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--</ul>-->
+
+        <!-- 商品管理 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item"><a href="http://www.zonguo.club
+" target="_blank"><i class="fa fa-shopping-basket fa-lg"></i>&nbsp;&nbsp;商品管理</a></li>
+            <!--<li class="layui-nav-item" th:if="${title} eq 'goods'" th:attrappend="class=' layui-nav-itemed'">-->
+            <!--<a class="" href="javascript:;"><i class="fa fa-shopping-basket fa-lg"></i>&nbsp;&nbsp;商品管理</a>-->
+            <!--<dl class="layui-nav-child">-->
+            <!--<dd th:if="${portion} eq 'add'" th:class="layui-this">-->
+            <!--<a th:href="@{/goods/add}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品添加</a>-->
+            <!--</dd>-->
+            <!--<dd th:if="${portion} ne 'add'">-->
+            <!--<a th:href="@{/goods/add}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品添加</a>-->
+            <!--</dd>-->
+
+            <!--<dd th:if="${portion} eq 'list'" th:class="layui-this">-->
+            <!--<a th:href="@{/goods/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品列表</a>-->
+            <!--</dd>-->
+            <!--<dd th:if="${portion} ne 'list'">-->
+            <!--<a th:href="@{/goods/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品列表</a>-->
+            <!--</dd>-->
+
+            <!--<dd th:if="${portion} eq 'type'" th:class="layui-this">-->
+            <!--<a th:href="@{/goods/type}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品分类</a>-->
+            <!--</dd>-->
+            <!--<dd th:if="${portion} ne 'type'">-->
+            <!--<a th:href="@{/goods/type}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品分类</a>-->
+            <!--</dd>-->
+            <!--</dl>-->
+            <!--</li>-->
+            <!--<li class="layui-nav-item" th:if="${title} ne 'goods'">-->
+            <!--<a class="" href="javascript:;"><i class="fa fa-shopping-basket fa-lg"></i>&nbsp;&nbsp;商品管理</a>-->
+            <!--<dl class="layui-nav-child">-->
+            <!--<dd th:if="${portion} eq 'add'" th:class="layui-this">-->
+            <!--<a th:href="@{/goods/add}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品添加</a>-->
+            <!--</dd>-->
+            <!--<dd th:if="${portion} ne 'add'">-->
+            <!--<a th:href="@{/goods/add}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品添加</a>-->
+            <!--</dd>-->
+
+            <!--<dd th:if="${portion} eq 'list'" th:class="layui-this">-->
+            <!--<a th:href="@{/goods/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品列表</a>-->
+            <!--</dd>-->
+            <!--<dd th:if="${portion} ne 'list'">-->
+            <!--<a th:href="@{/goods/list}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品列表</a>-->
+            <!--</dd>-->
+
+            <!--<dd th:if="${portion} eq 'type'" th:class="layui-this">-->
+            <!--<a th:href="@{/goods/type}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品分类</a>-->
+            <!--</dd>-->
+            <!--<dd th:if="${portion} ne 'type'">-->
+            <!--<a th:href="@{/goods/type}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;商品分类</a>-->
+            <!--</dd>-->
+            <!--</dl>-->
+            <!--</li>-->
+        </ul>
+
+        <!-- 权限管理 -->
+        <!--<ul class="layui-nav layui-nav-tree"  lay-filter="test">-->
+        <!--<li class="layui-nav-item" th:if="${title} eq 'powers'" th:attrappend="class=' layui-nav-itemed'">-->
+        <!--<a class="" href="javascript:;"><i class="fa fa-users fa-lg"></i>&nbsp;&nbsp;权限管理</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd th:if="${portion} eq 'user'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/user}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;用户管理</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'user'">-->
+        <!--<a th:href="@{/powers/user}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;用户管理</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'role'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/role}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;角色管理</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'role'">-->
+        <!--<a th:href="@{/powers/role}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;角色管理</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'author'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/author}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;资源管理</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'author'">-->
+        <!--<a th:href="@{/powers/author}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;资源管理</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'log'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/log}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;操作日志</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'log'">-->
+        <!--<a th:href="@{/powers/log}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;操作日志</a>-->
+        <!--</dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--<li class="layui-nav-item" th:if="${title} ne 'powers'">-->
+        <!--<a class="" href="javascript:;"><i class="fa fa-users fa-lg"></i>&nbsp;&nbsp;权限管理</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd th:if="${portion} eq 'user'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/user}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;用户管理</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'user'">-->
+        <!--<a th:href="@{/powers/user}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;用户管理</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'role'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/role}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;角色管理</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'role'">-->
+        <!--<a th:href="@{/powers/role}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;角色管理</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'author'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/author}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;资源管理</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'author'">-->
+        <!--<a th:href="@{/powers/author}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;资源管理</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'log'" th:class="layui-this">-->
+        <!--<a th:href="@{/powers/log}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;操作日志</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'log'">-->
+        <!--<a th:href="@{/powers/log}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;操作日志</a>-->
+        <!--</dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--</ul>-->
+
+        <!-- 系统设置 -->
+        <!--<ul class="layui-nav layui-nav-tree"  lay-filter="test">-->
+        <!--<li class="layui-nav-item" th:if="${title} eq 'system'" th:attrappend="class=' layui-nav-itemed'">-->
+        <!--<a class="" href="javascript:;"><i class="fa fa-gears fa-lg"></i>&nbsp;&nbsp;系统管理</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd th:if="${portion} eq 'systems'" th:class="layui-this">-->
+        <!--<a th:href="@{/system/systems}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;系统详情</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'systems'">-->
+        <!--<a th:href="@{/system/systems}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;系统详情</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'chart'" th:class="layui-this">-->
+        <!--<a th:href="@{/system/chart}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;统计图表</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'chart'">-->
+        <!--<a th:href="@{/system/chart}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;统计图表</a>-->
+        <!--</dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--<li class="layui-nav-item" th:if="${title} ne 'system'">-->
+        <!--<a class="" href="javascript:;"><i class="fa fa-gears fa-lg"></i>&nbsp;&nbsp;系统管理</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd th:if="${portion} eq 'systems'" th:class="layui-this">-->
+        <!--<a th:href="@{/system/systems}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;系统详情</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'systems'">-->
+        <!--<a th:href="@{/system/systems}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;系统详情</a>-->
+        <!--</dd>-->
+
+        <!--<dd th:if="${portion} eq 'chart'" th:class="layui-this">-->
+        <!--<a th:href="@{/system/chart}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;统计图表</a>-->
+        <!--</dd>-->
+        <!--<dd th:if="${portion} ne 'chart'">-->
+        <!--<a th:href="@{/system/chart}">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o fa-lg"></i>&nbsp;&nbsp;统计图表</a>-->
+        <!--</dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--</ul>-->
+
+
+    </div>
+</div>
+</html>

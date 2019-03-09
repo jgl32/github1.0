@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+    <style>
+        .shengLi div{
+            float: left;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'lineSign')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body" style="padding: 10px 145px;border: 1px solid #009688">
+                            <div class="layui-form-item" style="position: relative">
+                                <button class="layui-btn layui-btn-normal layui-btn-sm" id="game_js" name="">添加角色</button>
+                            </div>
+                            <table class="layui-hide" id="test" lay-filter="demo" style="border: 1px solid lightgray;"></table>
+                        </div>
+                        <div class="layui-card-body" style="padding: 40px 145px;border: 1px solid #009688">
+                            <div class="layui-form-item" style="position: relative">
+                                <button class="layui-btn layui-btn-normal layui-btn-sm" id="game_zy">添加阵营</button>
+                            </div>
+                            <table class="layui-hide" id="test2" lay-filter="demo" style="border: 1px solid lightgray;"></table>
+                        </div>
+                        <div class="layui-card-body" style="padding: 70px 145px;border: 1px solid #009688">
+                            <div style="margin-left: -102px;margin-top: -51px;">
+                                <h3>杀人流程</h3>
+                                <h3 style="font-weight: bold">剧情环节</h3>
+                            </div>
+                            <div class="layui-form-item" style="position: relative">
+                                <button class="layui-btn layui-btn-normal layui-btn-sm" id="game_jq">添加剧情</button>
+                            </div>
+                            <table class="layui-hide" id="test3" lay-filter="demo" style="border: 1px solid lightgray;"></table>
+                        </div>
+                        <div class="layui-card-body" style="padding: 70px 145px;border: 1px solid #009688;border-bottom: 1px solid transparent;">
+                            <div style="margin-left: -102px;margin-top: -51px;">
+                                <h3 style="font-weight: bold">胜利设置</h3>
+                            </div>
+                            <div class="layui-input-inline" style="margin-top: 28px;">
+                                <select style="width: 200px;height: 40px;">
+                                    <option value="">胜利阵营选择</option>
+                                    <option value="阵营1">阵营1</option>
+                                    <option value="阵营2">阵营2</option>
+                                    <option value="阵营3">阵营3</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline" style="margin-top: 28px;">
+                                <select style="width: 200px;height: 40px;">
+                                    <option value="">全灭阵营选择</option>
+                                    <option value="阵营1">阵营1</option>
+                                    <option value="阵营2">阵营2</option>
+                                    <option value="阵营3">阵营3</option>
+                                </select>
+                            </div>
+                            <hr>
+                            <div class="layui-input-inline" style="margin-top: 22px;">
+                                <select style="width: 200px;height: 40px;">
+                                    <option value="">阵营选择</option>
+                                    <option value="阵营1">阵营1</option>
+                                    <option value="阵营2">阵营2</option>
+                                    <option value="阵营3">阵营3</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-item" style="margin-top: 73px;margin-left: 641px;">
+                                <div class="layui-inline">
+                                    <button class="layui-btn" id="cardSubmit">保存</button>
+                                    <a class="layui-btn" href="#" onclick="javascript:history.back(-1);">返回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script type="text/html" id="barDemo">
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color:#ffffff;background-color: #009688;height: 23px;line-height: 23px;">打卡查看</a>-->
+    <button type="button" onclick="selectRole()" class="layui-btn layui-btn-xs" style="width: 50px;">编辑</button>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" style="width: 50px;" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-xs" style="width: 50px;">向上</a>
+    <a class="layui-btn layui-btn-xs" style="width: 50px;">向下</a>
+    <button type="button" onclick="selectRole()" class="layui-btn layui-btn-xs" style="width: 50px;">编辑</button>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" style="width: 50px;" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.cUrl}}"/>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var table = layui.table;
+
+        /*跳转到添加角色页面*/
+        $("#game_js").click(function () {
+            window.location.href = context + "/select/getjsym";
+        });
+
+        /*跳转到添加阵营页面*/
+        $("#game_zy").click(function () {
+            window.location.href = context + "/select/getzyym";
+        });
+
+        /*跳转到添加剧情页面*/
+        $("#game_jq").click(function () {
+            window.location.href = context + "/select/getjqym";
+        });
+
+        table.render({
+            elem: '#test'
+            ,url: context+'/cards/getAll'
+            ,cols: [[
+                {field:'cOrder', width: '15%', title: '序号', sort: true, align:'center'}
+                ,{field:'cNames', width: '15%', title:'名称', align:'center'}
+                 ,{field:'cClassification', width: '15%', title:'任务品类别', align:'center'}
+                 ,{field:'cCamp', width: '15%', title: '阵营', sort: true, align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        table.render({
+            elem: '#test2'
+            ,url: context+'/cards/getAll'
+            ,cols: [[
+                {field:'cOrder', width: '15%', title: '序号', sort: true, align:'center'}
+                ,{field:'cNames', width: '15%', title:'名称', align:'center'}
+                ,{field:'cFriendship', width: '15%', title:'友好', align:'center'}
+                ,{field:'cNeutral', width: '15%', title: '中立', sort: true, align:'center'}
+                ,{field:'cOppose', width: '15%', title: '敌对', sort: true, align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        table.render({
+            elem: '#test3'
+            ,url: context+'/cards/getAll'
+            ,cols: [[
+                {field:'cOrder', width: '15%', title: '顺序号', sort: true, align:'center'}
+                ,{field:'cNames', width: '15%', title:'名称', align:'center'}
+                ,{field:'cFriendship', width: '25%', title:'剧情标题', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '30%', align:'center', toolbar: '#barDemo2'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+
+
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+
+            if(obj.event == 'detail') {
+                layer.open({
+                    /*content: "/cards/getId",*///请求的URL
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.cUrl
+                });
+            }else if(obj.event == '1detail'){
+                layer.open({
+                    /*content: "/cards/getId",*///请求的URL
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.cPic
+                });
+            }
+        });
+    })
+</script>
+</body>
+</html>

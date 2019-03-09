@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'cmParent', portion = 'editor_circleParent')"></div>
+    <div class="layui-body">
+        <!--内容主体-->
+        <div style="padding: 15px;">
+            <div style="padding: 20px; border: 1px solid #009688">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card-body">
+                            <!-- 卡点表单提交 -->
+                            <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                <div class="layui-form-item" style="display: none">
+                                    <label class="layui-form-label">毒圈主题主键</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" readonly="readonly" name="id" th:value="${circleMapParent.id}"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">毒圈主题</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cmpName" th:value="${circleMapParent.cmpName}" autocomplete="off" placeholder="请输入名称"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">上传图片</label>
+                                    <div class="layui-input-block" id="demo" style="min-height:260px;margin-left: 109px;border: 1px solid #9F9F9F;margin-top: -35px;">
+                                        <div class="layui-upload-list">
+                                            <img class="layui-upload-img" name="dtImg" id="demo1" th:src="${circleMapParent.cmpUrl}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item" id="">
+                                    <label class="layui-form-label">备注</label>
+                                    <div>
+                                        <textarea name="cmpInfo" th:text="${circleMapParent.cmpInfo}" id="cmpInfo" cols="210" rows="10" lay-verify="validateMoney" placeholder=""></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <input type="hidden" name="cardUrl">
+                                    <div class="layui-inline" style="margin-left: 50%;">
+                                        <button type="reset" class="layui-btn" id="cmParent_Submit" >保存新建物品</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><a class="layui-btn" href="showCircleMapParent">返回毒圈主题列表</a></span>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script th:replace="common/script::copy"></script>
+
+
+
+<script type="text/javascript" th:inline="javascript" >
+
+
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        let form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var i;
+        var date_list = i++;
+        var che ="checked";
+
+
+
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#demo'
+            ,url: context+'/first/upload_one_directionalTravel/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='dtImg']").val(res.extend.msg);
+                        $("#demo1").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+
+                $("input[name='dtImg']").val(res.extend.msg);
+            }
+        });
+
+
+
+
+        $("#cmParent_Submit").click(function () {
+            var cmp_date = {
+                "id": $("input[name='id']").val(),
+                "cmpUrl": $("input[name='tourPic']").val(),
+                "cmpInfo": $("#cmpInfo").val(),
+                "cmpStatus": $("input[name='cmpStatus']:checked").val(),
+                "cmpName": $("input[name='cmpName']").val()
+            };
+
+
+
+            $.post(context + '/cmParent/edit_cmpPrent',cmp_date, function(res) {
+
+                if(res.code == 100){
+                    layer.msg("修改物品成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+
+                    }, function(){
+
+                        parent.window.location.href = context + "/cmParent/showCircleMapParent";
+                        let index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+
+
+            });
+
+
+
+            var index_load = layer.load(1, {
+                offset: '220px',
+            });
+
+        })
+    })
+</script>
+
+</body>
+</html>

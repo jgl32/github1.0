@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'pointAll')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/game/gameMap">游戏管理</a>
+                <a><cite>历史卡点</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="position: relative;margin-left: 50px;" class="layui-card-header demoTable">
+                <span style="font-size:16px; ">地址:</span> <input type="text" style="border:1px solid lightgray;position: absolute;left:54px;top:3px;width:300px;" name="cAddress" autocomplete="off" placeholder="地址" class="layui-input" lay-verify="validateMoney">
+                <span style="position: absolute;top:0;left:367px;font-size: 16px;">时间：</span><input type="text" style="border:1px solid lightgray;width:300px;position: absolute;left:426px;top:3px;" name="cTimes" id="test1" autocomplete="off" placeholder="yyyy-MM-dd" class="layui-input" lay-verify="validateMoney">
+                <button class="layui-btn layui-btn-sm" data-type="batch_search" id="batch_search" style="height:36px;font-size: 14px;margin-left: 704px;">搜索</button>
+                <button class="layui-btn layui-btn-sm" data-type="batch_del" id="batch_delete" style="height:36px;font-size: 14px;margin-left: 825px;margin-top: -85px;">批量删除</button>
+            </div>
+
+            <div style=" background-color: #F2F2F2;margin-top: -15px;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <form class="layui-form" onsubmit="return false;">
+                                    <div class="layui-form-item">
+
+                                        <!--<div class="layui-inline">
+                                            <button class="layui-btn" lay-submit="" lay-filter="submit_btn">搜索</button>
+                                        </div>-->
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color:#ffffff;background-color: #009688;height: 23px;line-height: 23px;">打卡查看</a>
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="1detail">线路查看</a>-->
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit" style="width: 50px;" href="/game/newCards">编辑</a>-->
+    <button type="button" onclick="selectRole()" class="layui-btn layui-btn-xs" style="width: 50px;">编辑</button>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" style="width: 50px;" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.cUrl}}"/>
+</script>
+<!--<script type="text/html" id="1imgTpl">
+    <img src="{{ d.cAddress}}"/>
+</script>-->
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var table = layui.table;
+
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+            ,type: 'date'
+        });
+        $("#batch_search").on('click', function(){
+           var address = $("input[name='cAddress']").val();
+           var time = $("input[name='cTimes']").val();
+
+           $.get(context+"/cards/solrById?cAddress="+address+"&cTimes="+time+"", function(res){
+                console.log(res);
+
+           });
+
+
+        });
+
+        table.render({
+            elem: '#test'
+            ,url: context+'/cards/getAll'
+            ,cols: [[
+                {type: 'checkbox', width: '5%', title: 'id', sort: true, align: 'center'}
+                ,{field:'cUuid', width: '15%', title: '卡点ID', sort: true, align:'center'}
+                ,{field:'cAddress', width: '15%', title:'打卡地址', align:'center'}
+                ,{field:'cOrder', width: '15%', title:'打卡序号', align:'center'}
+                ,{field:'cNames', width: '15%', title: '名称', sort: true, align:'center'}
+                ,{field:'cTimes', width: '15%', title:'时间', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            // add_inv: function(){
+            //     layer.open({
+            //         type: 2,
+            //         title: '新增录书',
+            //         area: ['850px', '600px'],
+            //         content: context+'/invitation/load_add'
+            //     });
+            // }
+            batch_del: function(){
+                var data_list = '', checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                $.each(data, function(k, v){
+                    data_list += v.id + "-";
+                });
+                var new_list = data_list.substring(0, data_list.length-1);
+                layer.confirm('确定全部删除?', {icon: 3, title:'提示'}, function(index){
+                    //do something
+                    //console.log(new_list);
+                    layer.close(index);
+                    $("#batch_delete").addClass("layui-btn-disabled");
+                    $.get(context+"/cards/deleteById/"+new_list, function(res){
+                        // console.log(res);
+                        layer.msg('删除成功！', {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            document.location.reload();
+                        });
+                    });
+                });
+            }
+        };
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+
+            if(obj.event == 'detail') {
+                layer.open({
+                    /*content: "/cards/getId",*///请求的URL
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.cUrl
+                });
+            }else if(obj.event == '1detail'){
+                layer.open({
+                    /*content: "/cards/getId",*///请求的URL
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.cPic
+                });
+            }
+        });
+
+        form.on('submit(submit_btn)', function(data){
+            let gameId = data.field.cardGameId;
+            table.reload("test",{
+                url: context+'/game/getAll'
+                ,where: { //设定异步数据接口的额外参数，任意设
+                    gameId: gameId
+                }
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        });
+
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确认要删除吗?', function(index){
+                    // console.log(data.mapId); return false;
+
+                    $.get(context+'/game/del_circleMap/?circle_id='+data.circleId, function (res) {
+
+                        if(res.code == 100){
+                            layer.msg('删除成功！', {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                obj.del();
+                            });
+                        }else{
+                            layer.msg("删除失败！", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+
+                            });
+                        }
+                    });
+                    layer.close(index);
+                });
+            }else if(obj.event == 'detail') {
+                layer.open({
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.circleMapUrl
+                });
+            }
+        });
+    })
+</script>
+<script>
+    function selectRole() {
+        window.open(context+"/game/newCards", "_self");
+    }
+</script>
+</body>
+</html>

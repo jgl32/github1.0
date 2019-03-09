@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">帖子管理</a>
+                <a><cite>历史记录</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="test"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="delete">删除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="regain">恢复</a>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        table.render({
+            elem: '#test'
+            , toolbar: '#toolbarDemo'
+            , title: '户外活动表'
+            , url: context + '/first/history_list'
+            , cols: [[
+                {field: 'tourId', width: '10%', title: 'ID', sort: true, align: 'center'}
+                , {field: 'tourName', width: '15%', title: '主题', align: 'center'}
+                , {field: 'tourMoney', width: '10%', title: '费用', sort: true, align: 'center'}
+                , {field: 'tourSponsor', width: '15%', title: '主办方', align: 'center'}
+                , {field: 'tourLimitPeople', title: '额定人数', width: '10%', minWidth: 100, align: 'center'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                , {field: 'tourApplyPeople', title: '参与人数', sort: true, width: '10%', align: 'center'}
+                , {field: 'tourStime', title: '开始时间', sort: true, width: '15%', align: 'center'}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: '15%', align: 'center'}
+            ]]
+            , size: 'lg'
+            , page: true
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'delete'){
+                layer.confirm('确定要删除这个活动吗？', function(index){
+                    $.get(context+"/first/history_del/"+data.tourId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            } else if(obj.event === 'regain'){
+                layer.confirm('确定要重新上架这个活动吗？', function(index){
+                    $.get(context+"/first/history_re/"+data.tourId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+        });
+    })
+</script>
+</body>
+</html>

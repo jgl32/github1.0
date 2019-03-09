@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'goods', portion = 'editTaskGoods')"></div>
+    <div class="layui-body">
+        <!--内容主体-->
+        <div style="padding: 15px;">
+            <div style="padding: 20px; border: 1px solid #009688">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-goods-body">
+                            <!-- 卡点表单提交 -->
+                            <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+
+                                <div class="layui-form-item" style="display: none" >
+                                    <label class="layui-form-label">任务品ID</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" readonly="readonly" name="taskId" th:value="${taskGoodsTask.taskId}"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item" >
+                                    <label class="layui-form-label">物品ID</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" readonly="readonly" name="goodsId" th:value="${taskGoodsTask.goodsId}"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="names"  readonly="readonly" th:value="${taskGoodsTask.names}" autocomplete="off" placeholder="请输入名称"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+
+
+
+                                <!-- 物品基础上新加具体任务属性----------------------------------------------------->
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">出现时间</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="staTime" th:value="${taskGoodsTask.staTime}"   autocomplete="off" placeholder="出现时间"
+                                               class="layui-input" id="sta_time" style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">商店数量</label>
+                                    <div class="layui-input-inline">
+                                        <input name="storeNumber" th:value="${taskGoodsTask.storeNumber}" type="number" autocomplete="off" class="layui-input" min="0" max="1000000" placeholder="请输入数字">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">限购</label>
+                                    <div class="layui-input-inline">
+                                        <input name="limitTaskGoods" th:value="${taskGoodsTask.limitTaskGoods}" type="number" autocomplete="off" class="layui-input" min="0" max="1000000" placeholder="请输入数字">
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item" style="margin-top: 26px;">
+                                    <label class="layui-form-label">前置任务品</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="preGoodsName" th:value="${taskGoodsTask.preGoodsName}" style="border:1px solid #d2d2d2;position: absolute;left:1px;top:0px;width:325px;"  autocomplete="off" placeholder="前置任务品" class="layui-input" lay-verify="validateMoney"/>
+                                        <button  id="selectPreGoods"  class="layui-btn" style="height:36px;font-size: 14px;margin-left: 345px;margin-top: -1px;">选择任务品</button>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">兑换积分</label>
+                                    <div class="layui-input-inline">
+                                        <input name="goodsIntegral" th:value="${taskGoodsTask.goodsIntegral}"  type="number" autocomplete="off" class="layui-input" min="0" max="1000000" placeholder="请输入数字">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="layui-form-item" >
+
+                                    <div class="layui-inline" style="margin-left: 40%;">
+                                        <button type="reset" class="layui-btn" id="goodsTaskSubmit" >保存修改物品</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><a class="layui-btn" a href="/weCharGameCms/taskGoods/showTaskGoodsTask">返回任务品列表</a></span>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+
+<script>
+    $('#selectPreGoods').on('click',function () {
+        $.ajax({
+
+            url:context+''
+        });
+    })
+</script>
+
+<script th:replace="common/script::copy"></script>
+
+<script type="text/javascript" th:inline="javascript" >
+
+
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        let form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var i;
+        var date_list = i++;
+        var che ="checked";
+
+        laydate.render({
+            elem: '#sta_time' //指定元素
+            ,type: 'time'
+        });
+
+
+
+
+        $("#goodsTaskSubmit").click(function () {
+
+            var taskGoodsTask = {
+
+                "taskId" :$("input[name='taskId']").val(),
+                "goodsId" : $("input[name='goodsId']").val(),
+                // "goodsUrl" : $('#demo1').attr('src'), //图片链接（base64）
+                // "goodsX" : $("input[name='gid']").val(),
+                "names" : $("input[name='names']").val(),
+                // "goodsType" : $("input[name='goodsType']").val(),
+                // "isbuy" : $("input[name='isbuy']:checked").val(),
+                // "price" : $("input[name='price']").val(),
+                // "getby" : $("input[name='getby']:checked").val(),
+                // "goodsInfo" : $("#goodsInfo").val(),
+                // "goodsRemark" : $("#goodsRemark").val(),
+                // "goodsY" : $("input[name='goodsY']").val(),
+
+                "storeNumber" :$("input[name='storeNumber']").val(),
+                "limitTaskGoods" :$("input[name='limitTaskGoods']").val(),
+                "preGoodsName" :$("input[name='preGoodsName']").val(),
+                "goodsIntegral" : $("input[name='goodsIntegral']").val(),
+                "staTime" : $("input[name='staTime']").val()
+
+
+            };
+
+
+
+            $.post(context + '/taskGoods/updateTaskGoods',taskGoodsTask, function(res) {
+
+                if(res.code == 100){
+                    layer.msg("修改任务品成功！", {
+                        icon: 1,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+
+                    }, function(){
+
+                       window.location.href = context + "/taskGoods/showTaskGoodsTask";
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+
+
+            });
+
+
+
+            var index_load = layer.load(1, {
+                offset: '220px',
+            });
+
+        })
+    })
+</script>
+
+</body>
+</html>

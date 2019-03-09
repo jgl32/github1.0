@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'newshangchuangxianlu')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>上传线路页面</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <button class="layui-btn" data-type="add_famousBrand" id="add_famousBrand">设计线路</button>
+                                <button class="layui-btn layui-btn-sm" data-type="batch_del" id="batch_delete" style="height:36px;font-size: 14px;margin-left: 825px;margin-top: -85px;">批量删除</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="test"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_famousBrand2" id="edit_famousBrand2">查看</a>
+    <button class="layui-btn layui-btn-sm" lay-event="edit_famousBrand" id="edit_famousBrand">编辑</button>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteFamousBrand">删除</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_famousBrand" >导出二维码</a>
+</script>
+<script type="text/html" id="ctime">
+    <time datetime="{{d.ctime}}"/>
+</script>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table', 'jquery', 'form'], function () {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        // layer.msg('Hello World');
+
+
+        table.render({
+            id: 'cid'
+            , elem: '#test'
+            , toolbar: '#toolbarDemo'/*工具栏*/
+            , title: '上传线路页面'
+            , url: context + '/select/getAll'
+            , cols: [[
+                {type: 'checkbox', width: '10%', title: 'id', sort: true, align: 'center'}
+                , {field: 'cid', width: '10%', title: 'id', sort: true, align: 'center'}
+                , {field: 'cname', width: '20%', title: '名称', sort: true, align: 'center'}
+                , {field: 'ctype', width: '15%', title: '类型', sort: true, align: 'center'}
+                , {field: 'cUrl', width: '20%', title: '二维码', sort: true, align: 'center'}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: '25%', sort: true, align: 'center'}
+            ]]
+            , page: true
+        });
+
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+
+
+        var $ = layui.$, active = {
+            batch_del: function () {
+                var data_list = '', checkStatus = table.checkStatus('cid')
+                    , data = checkStatus.data;
+                $.each(data, function (k, v) {
+                    data_list += v.cid + ",";
+                });
+                var new_list = data_list.substring(0, data_list.length - 1);
+                console.log(new_list);
+                layer.confirm('确定全部删除?', {icon: 3, title: '提示'}, function (index) {
+                    //do something
+                    layer.close(index);
+                    $("#batch_delete").addClass("layui-btn-disabled");
+                    $.get(context + "/select/batch_delete?cid=" + new_list, function (res) {
+                        // console.log(res);
+                        layer.msg('删除成功！', {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            document.location.reload();
+                        });
+                    });
+                });
+            }
+
+
+        };
+
+        $("#edit_select").click(function () {
+            window.location.href = context + "/cardsCircuitList/findById";
+        });
+
+        $("#add_famousBrand").click(function () {
+            window.location.href = context + "/cards/addxianlu";
+        });
+
+
+        /*var $ = layui.$, active = {
+            add_famousBrand: function () {
+                layer.open({
+                    type: 2,
+                    title: '设计线路',
+                    area: ['850px', '600px'],
+                    content: context + "/cards/addxianlu"
+                });
+            }
+        };*/
+
+        /*编辑修改线路*/
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            /*console.log(obj)*/
+            //点击编辑
+            if (obj.event === 'edit_famousBrand') {
+                /*layer.open({
+                    type: 2,
+                    title: '上传线路修改',
+                    area: ['1200px', '900px'],
+                    content: context + '/select/getItemDate/' + data.cid
+                });*/
+                window.location.href = context + "/select/getItemDate/ " + data.cid;
+            }
+            //点击查看
+            if (obj.event === 'edit_famousBrand2') {
+                window.location.href = context + "/select/getItemDate2/ " + data.cid;
+            }
+            if (obj.event === 'info') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.email
+                }, function (value, index) {
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+
+            //监听行工具事件
+            if (obj.event === 'deleteFamousBrand') {
+                layer.confirm('确定要删除吗？', function (index) {
+                    $.get(context + "/select/deleteById/" + data.cid, function (res) {
+                        if (res.code == 100) {
+                            obj.del();
+                            layer.close(index);
+                        } else {
+                            alert("删除失败");
+                        }
+                    })
+                });
+            } else if (obj.event === 'regain') {
+                layer.confirm('确定要重新上架这个活动吗？', function (index) {
+                    $.get(context + "/first/history_re/" + data.tourId, function (res) {
+                        if (res.code == 100) {
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+        });
+
+    })
+</script>
+</body>
+</html>

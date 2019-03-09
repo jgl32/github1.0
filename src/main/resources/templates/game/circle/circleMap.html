@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<link rel="stylesheet" th:href="@{/statics/custom_css/game_map/gameMap.css}">
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'circleMap')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>毒圈设置</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 10px; background-color: #71f2bc;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script type="text/html" id="barDemo">
+
+    <a href= "show_circleMap?map_id={{ d.mapId}}">查看编辑毒圈</a>
+     <!--<a class="layui-btn layui-btn-xs" lay-event="edit"></a>-->
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
+
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.mapUrl}}"/>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var table = layui.table;
+
+
+        table.render({
+            elem: '#test'
+            ,url: context+'/game/page_list'
+            ,cols: [[
+                {field:'mapId', width: '20%', title: 'ID', sort: true, align:'center'}
+                ,{field:'mapInfo', width: '20%', title:'地图主题', align:'center'}
+                ,{field:'mapTime', width: '20%', title: '上传时间', sort: true, align:'center'}
+                ,{field:'mapUrl', title: '图片', align: 'center',templet: '#imgTpl',event: 'browse'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 8
+        });
+
+
+
+
+        //设定文件大小限制
+
+    })
+
+
+
+
+</script>
+</body>
+</html>

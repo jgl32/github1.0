@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form layui-form-pane" onsubmit="return false;">
+        <input type="hidden" name="game_id" th:value="${game_id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">场次标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="gafeName" lay-verify="title" autocomplete="off" placeholder="请输入场次标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">游戏简介</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" id="gafeIntroduce"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">主办方</label>
+            <div class="layui-input-block">
+                <input type="text" name="gafeSponsor" lay-verify="title" autocomplete="off" placeholder="请输游戏主办方" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">游戏地点</label>
+            <div class="layui-input-block">
+                <input type="text" name="gafeAddress" lay-verify="title" autocomplete="off" placeholder="请输入游戏地点" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-block">
+                <input type="text" name="gafeContactWay" lay-verify="phone" autocomplete="off" placeholder="请输入联系方式" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="gafeStartTime" id="start_date" lay-verify="datetime" autocomplete="off" class="layui-input" placeholder="请输入开始时间">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="gafeEndTime" id="end_date" lay-verify="datetime" autocomplete="off" class="layui-input" placeholder="请输入结束时间">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">最大人数</label>
+                <div class="layui-input-block">
+                    <input type="text" name="gafeMaxpoeple" autocomplete="off" class="layui-input" placeholder="请输入最大人数">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">当前人数</label>
+                <div class="layui-input-block">
+                    <input type="text" name="gafePoeple" autocomplete="off" class="layui-input" placeholder="请输入当前人数·">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">总积分</label>
+                <div class="layui-input-block">
+                    <input type="text" name="integral" autocomplete="off" class="layui-input" placeholder="请输入积分数">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否开启</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" checked="" name="status" lay-skin="switch" lay-filter="switchTest" title="开关">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">游戏封面</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-danger" id="upload_pic"><i class="layui-icon"></i>上传图片</button>
+                <input type="hidden" name="gafeUrl">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">告知书</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" id="gafeRule"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="field_submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+            , upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#start_date'
+            ,type: 'datetime'
+        });
+        //
+        laydate.render({
+            elem: '#end_date'
+            ,type: 'datetime'
+        });
+
+        //创建一个编辑器
+        // var editIndex = layedit.build('gafeRule');
+
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#upload_pic'
+            ,url: context+'/game/upload_field/'
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }else{
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        $("input[name='gafeUrl']").val(res.extend.msg);
+                    });
+                }
+            }
+        });
+
+        $("#field_submit").click(function () {
+            let gameId = $("input[name='game_id']").val();
+            let gafeName = $("input[name='gafeName']").val();
+            let gafeIntroduce = $("#gafeIntroduce").val();
+            let gafeSponsor = $("input[name='gafeSponsor']").val();
+            let gafeAddress = $("input[name='gafeAddress']").val();
+            let gafeStartTime = $("input[name='gafeStartTime']").val();
+            let gafeEndTime = $("input[name='gafeEndTime']").val();
+            let gafeMaxpoeple = $("input[name='gafeMaxpoeple']").val();
+            let gafePoeple = $("input[name='gafePoeple']").val();
+            let integral = $("input[name='integral']").val();
+            let gafeContactWay = $("input[name='gafeContactWay']").val();
+            let status = $("input[name='status']").val() == "on" ? 1 : 0;
+            let gafeUrl = $("input[name='gafeUrl']").val();
+            let gafeRule = $("#gafeRule").val();
+            let date_field = {
+                gameId : gameId,
+                gafeName : gafeName,
+                gafeIntroduce : gafeIntroduce,
+                gafeSponsor : gafeSponsor,
+                gafeAddress : gafeAddress,
+                gafeStartTime : gafeStartTime,
+                gafeEndTime : gafeEndTime,
+                gafeMaxpoeple : gafeMaxpoeple,
+                gafePoeple : gafePoeple,
+                gafeContactWay : gafeContactWay,
+                integral : integral,
+                status : status,
+                gafeUrl : gafeUrl,
+                gafeRule : gafeRule
+            };
+            $.post(context+"/game/add_field_submit", date_field, function(res){
+                if(res.code == 100){
+                    layer.msg("编辑成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+
+                }
+
+
+
+            })
+
+
+
+
+        })
+
+
+    })
+
+</script>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-card-header demoTable">
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-hide" id="camp_relation_table" lay-filter="camp_relation_table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_travel_route">查看</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteTravelRoute">编辑</a>
+</script>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        table.render({
+            id:"id"
+            ,elem: '#camp_relation_table'
+            ,title: '阵营关系'
+            ,url:context+'/activity/selectCampRelationByActivity'
+            ,cols: [[
+                {field:'campName', width:'10%', title: '阵营',sort: true, align: 'center'}
+                ,{field:'enemy', width:'10%', title: '敌对',sort: true, align: 'center'}
+                ,{field:'neutrality', width:'10%', title: '中立', sort: true, align: 'center'}
+                // ,{field:'ggImg', width:'10%',  title: '活动图片',templet:"#imgTpl", event: 'browse', align: 'center'}
+                // ,{field:'ggBrief', title: '活动简介', width:'10%', minWidth: 100,sort: true, align: 'center'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                // ,{field:'ggRule', title: '活动规则', sort: true, width:'10%', align: 'center'}
+                // ,{field:'ggApplyPeople', title: '参加人数', sort: true, width:'10%', align: 'center'}
+                ,{field:'friendly', title: '友好', width:'10%',sort: true, align: 'center'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'25%',sort: true, align: 'center'}
+            ]]
+            ,page: true
+        });
+
+
+
+        table.on('tool(camp_relation_table)', function(obj){
+            var data = obj.data;
+            console.log(obj)
+            if(obj.event === 'edit_travel_route'){
+                layer.open({
+                    type: 2,
+                    title: '修改旅游路线',
+                    area: ['850px', '600px'],
+                    content: context+'/travel/edit_travel_route/'+data.id
+                });
+            }
+
+            //监听行工具事件
+            if(obj.event === 'deleteTravelRoute'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/travel/deleteTravelRoute/"+data.id, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            } else if(obj.event === 'regain'){
+                layer.confirm('确定要重新上架这个活动吗？', function(index){
+                    $.get(context+"/travel/history_re/"+data.tourId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+
+        });
+
+    })
+</script>
+</body>
+</html>
+

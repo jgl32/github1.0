@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<link rel="stylesheet" th:href="@{/statics/custom_css/game_map/gameMap.css}">
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'circleMap')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/weCharGameCms/cmParent/showCircleMapParent">毒圈主题</a>
+                <a><cite>毒圈地图</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <button class="layui-btn"  onclick="selectRole()" >
+                                    <i class="layui-icon">&#xe608;</i> 添加毒圈
+                                </button>
+
+
+                                <button type="button" id="back" class="layui-btn layui-btn-normal">返回毒圈主题</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script type="text/html" id="barDemo">
+
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.circleMapUrl}}"/>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" src="js/service.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $("#back").click(function () {
+        history.go(-1);
+    });
+
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table','layer'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var table = layui.table;
+
+        var router = layui.router();
+
+
+        var mapId=router.search.mapId;
+
+
+        var  url=window.location.href;
+        var world = url.split('=');
+        var url_e = world[1];
+        table.render({
+            elem: '#test'
+            ,url: context+'/game/list_circleMap?map_id='+url_e
+            ,cols: [[
+                {field:'circleId', width: '20%', title: '毒圈ID', sort: true, align:'center'}
+                ,{field:'originX', width: '20%', title: '毒圈经度', sort: true, align:'center'}
+                ,{field:'originY', width: '20%', title: '毒圈纬度', sort: true, align:'center'}
+                ,{field:'circleRadius', width: '20%', title:'毒圈半径', align:'center'}
+                ,{field:'circleMapRuler', width: '20%', title: '积分变量（H）', sort: true, align:'center'}
+                ,{field:'circleMapTime', width: '20%', title: '开始时间', sort: true, align:'center'}
+                ,{field:'circleMapLife', width: '20%', title: '结束时间', sort: true, align:'center'}
+                ,{field:'circleMapUrl', title: '毒圈图片', align: 'center',templet: '#imgTpl',event: 'browse'}
+                ,{field:'circleMapStatus', width: '20%', title: '毒圈状态', sort: true, align:'center'}
+                ,{field:'circleMapInfo', width: '20%', title: '毒圈备注', sort: true, align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 8
+        });
+
+
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确认要删除吗?', function(index){
+                    // console.log(data.mapId); return false;
+
+                    $.get(context+'/game/del_circleMap/?circle_id='+data.circleId, function (res) {
+
+                        if(res.code == 100){
+                            layer.msg('删除成功！', {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                obj.del();
+                            });
+                        }else{
+                            layer.msg("删除失败！", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+
+                            });
+                        }
+                    });
+                    layer.close(index);
+                });
+            }else if(obj.event == 'edit') {
+
+                window.location.href =context +"/game/editor_circleMap?id="+data.circleId;
+
+            }else if(obj.event === 'detail'){
+                // let img = '<img src="'+data.mapUrl+'"/>';
+                layer.open({
+                    type: 2,
+                    title: data.circleMapInfo,
+                    closeBtn: 0,
+                    area: ['600px', '500px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.circleMapUrl
+                });
+
+            }
+        });
+
+    })
+
+
+</script>
+<script>
+    function selectRole() {
+        var  url=window.location.href;
+        var world = url.split('=');
+        var url_e = world[1];
+        window.open(context+"/game/show_addCircle?map_id="+url_e, "_self");
+    }
+</script>
+</body>
+</html>

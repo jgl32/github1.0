@@ -1,0 +1,236 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"><meta CHARSET="UTF-8"></head>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name"  autocomplete="off" placeholder="请输入名称"
+                       class="layui-input"  style="border: 1px solid lightgray;">
+            </div>
+        </div>
+
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">唯一标识</label>
+            <div class="layui-input-block">
+                <input type="text" name="gid"  autocomplete="off" placeholder="点击自动生成"
+                       class="layui-input" id="click_inpu" style="border: 1px solid lightgray;">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <button id="select_test">模拟选择button</button>
+            <a href="showGoods?url=taskGoods/test">url=jsp本页面页面地址</a>
+
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text"  name="name" autocomplete="off" placeholder="请输入名称"
+                       class="layui-input"  style="border: 1px solid lightgray;">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">原点X</label>
+                <div class="layui-input-inline">
+                    <input name="originX" type="number" autocomplete="off" class="layui-input" min="0" max="10000" placeholder="请输入数字">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">原点Y</label>
+                <div class="layui-input-inline">
+                    <input name="originY" type="number" autocomplete="off" class="layui-input" min="0" max="1000000" placeholder="请输入数字">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">圆半径</label>
+                <div class="layui-input-inline">
+                    <input name="circleRadius" type="number" autocomplete="off" class="layui-input" min="0" max="1000000" placeholder="请输入数字">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">每小时积分变量</label>
+                <div class="layui-input-inline">
+                    <input name="circleMapRuler" type="number" autocomplete="off" class="layui-input" min="0" max="10000" placeholder="请输入数字">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">毒圈图片</label>
+            <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                <div class="layui-upload-list" style="margin: 0;">
+                    <img class="layui-upload-img" id="demo1">
+                </div>
+            </div>
+            <input type="hidden" name="tourPic" value="">
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">毒圈地图备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="备注" class="layui-textarea" id="circleMapInfo" ></textarea>
+            </div>
+        </div>
+
+        <script>
+            $("#select_test").on('click',function () {
+
+                //url---------------必须html5的路径
+                window.location.href = context+'/goods/showGoods?url=taskGoods/test';
+
+            });
+
+            console.log(session.getAttribute("taskGoods"));
+        </script>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">毒圈状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="circleMapStatus" value="0" title="毒圈关闭" checked>
+                <input type="radio" name="circleMapStatus" value="1" title="毒圈开启" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始时间</label>
+                <div class="layui-input-inline">
+                    <input name="circleMapTime" placeholder="开始时间" autocomplete="off" class="layui-input"
+                           type="text" id="apply_start_date">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束时间</label>
+                <div class="layui-input-inline">
+                    <input name="circleMapLife" placeholder="结束时间" autocomplete="off" class="layui-input"
+                           type="text" id="apply_end_date">
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo2" id="sub_add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">立即重置</button>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+</body>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:src="@{/statics/js/jquery-3.3.1.js}"></script>
+<script type="text/javascript" data-th-inline="javascript">
+
+
+
+    //-----------------------------------------测试选择
+
+
+
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#apply_start_date'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#apply_end_date'
+            , type: 'datetime'
+        });
+
+
+
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: context + '/game/upload_oneCircleMap/'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (res, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code == 200) {
+                    return layer.msg('上传失败');
+                }
+                $("input[name='tourPic']").val(res.extend.msg);
+            }
+        });
+        //监听提交
+
+        form.on('submit(demo2)', function (data) {
+
+            var index = layer.msg('努力中...', {
+                icon: 1,
+                shade: [0.5, '#f5f5f5'],
+                scrollbar: false,
+                offset: '50%',
+                time: 10000
+            });
+            var  url=window.location.href;
+            var world = url.split('=');
+            var url_e = world[1];
+
+
+            var sub_data = {
+                "mapId":url_e,
+                "originX": $("input[name='originX']").val(),
+                "originY": $("input[name='originY']").val(),
+                "circleRadius": $("input[name='circleRadius']").val(),
+                "circleMapRuler": $("input[name='circleMapRuler']").val(),
+                "circleMapUrl": $("input[name='tourPic']").val(),
+                "circleMapInfo": $("#circleMapInfo").val(),
+                "circleMapStatus": $("input[name='circleMapStatus']:checked").val(),
+                "circleMapTime": $("input[name='circleMapTime']").val(),
+                "circleMapLife": $("input[name='circleMapLife']").val()
+            };
+            $.post(context + "/game/insert_circleMap", sub_data, function (res) {
+
+                let index_1 = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index_1);
+                layer.close(index);
+                var  url=window.location.href;
+                var world = url.split('=');
+                var url_e = world[1];
+                window.location.href = "show_circleMap?map_id="+url_e;
+            });
+        });
+
+
+    })
+</script>
+<script>
+
+</script>
+

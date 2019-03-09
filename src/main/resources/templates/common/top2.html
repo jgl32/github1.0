@@ -1,0 +1,22 @@
+<html  xmlns:th="http://www.w3.org/1999/xhtml">
+<div class="layui-header" th:fragment="copy" style="height: 45px">
+    <div class="layui-logo">游游CMS管理后台</div>
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a href="javascript:;" th:if="${session.admin}">
+                <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                [[${session.admin.username}]]
+            </a>
+            <a href="javascript:;" th:unless="${session.admin}">
+                <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                登录
+            </a>
+            <dl class="layui-nav-child">
+                <dd><a href="">解除绑定</a></dd>
+                <dd><a >安全设置</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a th:href="@{/logout}">退出</a></li>
+    </ul>
+</div>
+</html>

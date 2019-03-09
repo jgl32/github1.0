@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>大盘活动</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <!--<button class="layui-btn" id="add_grailGame" data-type="add_grailGame">大盘活动(基地活动)</button>-->
+                                <button class="layui-btn" id="add_grailGame" data-type="add_grailGame">添加活动</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="test"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.dtStatus ===0){ }}
+    <span style="color: #F581B1;">{{ "未审核" }}</span>
+    {{#  } else if(d.dtStatus ===1){ }}
+    <span style="color: #f5c539;">{{ "审核未通过" }}</span>
+    {{#  } else if(d.dtStatus ===2){ }}
+    <span style="color: #33f529;">{{ "审核已通过" }}</span>
+    {{#  } }}
+</script>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="select_grailGame">查看</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_grailGame">编辑</a>
+    <input type="checkbox" id="switchTpl"  value="{{d.ggId}}" lay-skin="switch" lay-text="已启用|启用" lay-filter="sexDemo" {{ d.ggStatus== 1
+           ? 'checked' : '' }} />
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteGrailGame">删除</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.ggImg}}"/>
+</script>
+
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        // layer.msg('Hello World');
+
+        table.render({
+            id:"ggId"
+            ,elem: '#test'
+            ,toolbar: '#toolbarDemo'
+            ,title: '定向旅游表'
+            ,url:context+'/activity/selectAllGrailGame'
+            ,cols: [[
+
+                {field:'ggName', width:'10%', title: '活动名称',sort: true, align: 'center'}
+                ,{field:'ggAddress', width:'10%', title: '活动地址',sort: true, align: 'center'}
+                ,{field:'ggStime', width:'10%', title: '活动时间', sort: true, align: 'center'}
+                ,{field:'ggImg', width:'10%',  title: '活动图片',templet:"#imgTpl", event: 'browse', align: 'center'}
+                ,{field:'ggBrief', title: '活动简介', width:'10%', minWidth: 100,sort: true, align: 'center'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'ggRule', title: '活动规则', sort: true, width:'10%', align: 'center'}
+                ,{field:'ggApplyPeople', title: '参加人数', sort: true, width:'10%', align: 'center'}
+                ,{field:'ggMaxPeople', title: '限定人数', width:'10%',sort: true, align: 'center'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'25%',sort: true, align: 'center'}
+            ]]
+            ,page: true
+        });
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_grailGame : function(){
+                window.location.href=context+"/activity/add_grailGame/";
+            }
+        };
+
+
+        form.on('switch(sexDemo)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+
+                $.post(context + "/activity/deleteGrailGame", {"ggId": this.value ,"ggStatus": 1 }, function (res) {
+                    console.log(res);
+                    if (res.code==100) {
+                        form.render();
+                        layer.alert("启用成功");
+                    } else {
+                        obj.elem.checked = !x;
+                        layer.alert("启用失败");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/activity/deleteGrailGame", {"ggId": this.value ,"ggStatus": 0 }, function (res) {
+
+                    if (res.code==100) {
+                        layer.alert("取消成功");
+                    }
+                })
+            }
+        });
+
+        // 游戏场次
+        // $("#add_grailGame").click(function () {
+        //     window.location.href=context+"/activity/add_grailGame";
+        // });
+
+        //  编辑大盘游戏
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            console.log(obj)
+            if(obj.event === 'edit_grailGame'){
+                // layer.open({
+                //     type: 2,
+                //     title: '大盘游戏',
+                //     area: ['850px', '600px'],
+                //     content: context+'/activity/edit_grailGame/'+data.ggId,
+                // });
+                window.location.href=context+'/activity/edit_grailGame/'+data.ggId;
+            }
+
+
+            if(obj.event === 'selectGrailGame'){
+                layer.open({
+                    type: 2,
+                    title: '大盘游戏',
+                    area: ['850px', '600px'],
+                    content: context+'/activity/select_grailGame/'+data.ggId,
+                });
+            }
+
+
+
+            //监听行工具事件
+            if(obj.event === 'deleteGrailGame'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/activity/deleteGrailGame?ggId="+data.ggId+"&ggStatus="+"-1", function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            } else if(obj.event === 'regain'){
+                layer.confirm('确定要重新上架这个活动吗？', function(index){
+                    $.get(context+"/first/history_re/"+data.tourId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+        });
+    })
+</script>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<link rel="stylesheet" th:href="@{/statics/custom_css/game_map/gameMap.css}">
+<body class="layui-layout-body">
+<div class="layui-card-header">
+    <input type="text" class="mapName" style="height:33px;"  name="mapName" id="mapName"  placeholder="请输入毒圈游戏名称" />
+    <div class="layui-btn-group demoTable">
+        <button class="layui-btn" data-type="selectAllcircleMap">查询</button>
+    </div>
+</div>
+<div class="layui-card-body">
+    <table class="layui-hide" id="test" lay-filter="demo"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    <input type="checkbox" value="{{d.mapId}}" lay-skin="switch" lay-text="已添加|添加" lay-filter="sexDemo" {{ d.mapStatus== 1
+           ? 'checked' : '' }} />
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.mapUrl}}"/>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        let ggId=[[${ggId}]];
+
+
+        table.render({
+            id:"mapId"
+            ,elem: '#test'
+            ,url: context+'/activity/selectAllcircleMap?ggId='+ggId
+            ,cols: [[
+                {field:'mapName', width: '20%', title: 'ID', sort: true, align:'center'}
+                ,{field:'mapInfo', width: '20%', title:'地图主题', align:'center'}
+                ,{field:'mapTime', width: '20%', title: '上传时间', sort: true, align:'center'}
+                ,{field:'mapUrl', title: '图片', align: 'center',templet: '#imgTpl',event: 'browse'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+        });
+
+        //设定文件大小限制
+
+
+        form.on('switch(sexDemo)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+                $.post(context + "/activity/addCircleMapToGrailGame", {"id": this.value ,"ggId":ggId ,"status":1}, function (res) {
+                    console.log(res);
+                    if (res.code==100) {
+                        form.render();
+                        layer.msg("添加成功");
+                    } else {
+                        obj.elem.checked = !x;
+                        layer.msg("添加失败");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/activity/addCircleMapToGrailGame", {"id": this.value ,"ggId":ggId ,"status":0}, function (res) {
+
+                    if (res.code==100) {
+                        layer.msg("取消成功");
+                    }
+                })
+            }
+        });
+
+
+
+        /*查询毒圈游戏*/
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        var $ = layui.$, active = {
+            selectAllcircleMap : function(){
+
+                var mapName=$("#mapName").val();
+                table.render({
+                    id:"mapId"
+                    ,elem: '#test'
+                    ,url: context+'/activity/selectAllcircleMap?ggId='+ggId+"&mapName="+mapName
+                    ,cols: [[
+                        {field:'mapName', width: '20%', title: 'ID', sort: true, align:'center'}
+                        ,{field:'mapInfo', width: '20%', title:'地图主题', align:'center'}
+                        ,{field:'mapTime', width: '20%', title: '上传时间', sort: true, align:'center'}
+                        ,{field:'mapUrl', title: '图片', align: 'center',templet: '#imgTpl',event: 'browse'}
+                        ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+                    ]]
+                    ,page: true
+                });
+            }
+        };
+
+    })
+</script>
+</body>
+</html>

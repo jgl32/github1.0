@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!--,toolbar: '#images'-->
+        <!-- 内容主体区域 -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item"><a href="http://www.zonguo.club" target="_blank">
+                <button class="new-btn-login" id="subBtn" type="button"></button>
+                <i class="fa fa-shopping-basket fa-lg"></i>&nbsp;&nbsp;商品管理</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script>
+    /*$(function(){
+        location.href="http://www.zonguo.club";
+    })*/
+    $("#subBtn").trigger("click");
+</script>
+
+</html>

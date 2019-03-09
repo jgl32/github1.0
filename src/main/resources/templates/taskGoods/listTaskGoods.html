@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<link rel="stylesheet" th:href="@{/statics/custom_css/new_game/newGame.css}">
+<body class="layui-layout-body" >
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'showGoods')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/weCharGameCms/goods/showGoods/">物品库</a>
+                <a><cite>物品列表</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <a class="layui-btn layui-btn-sm" href="/weCharGameCms/goods/addGoods">增加物品</a>
+                                <a href="testPage" style="display: none">模拟一个页面</a>
+                                <button id="addTaskGoods" class="layui-btn layui-btn-sm">任务品列表</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="test"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_goods" >修改</a>
+    <a class="layui-btn layui-btn-sm" lay-event="select_goods">选择</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteGoods">删除</a>
+</script>
+<script>
+    $('#addTaskGoods').on('click',function () {
+        window.location.href = context+'/taskGoods/showTaskGoodsTask'
+    })
+</script>
+
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+
+
+        $('#store_goods').on('click', function(){
+            $.ajax({
+                url:'listGoods',
+                type:'post',
+                async:true,
+                success:function (data) {
+                    console.log(data);
+
+                }
+
+            })
+        });
+
+        var id=1;
+
+        table.render({
+
+            elem: '#test'
+            ,toolbar: '#toolbarDemo'
+            ,title: '物品库'
+            ,url: context+'/goods/listGoods'
+            ,cols: [[
+                {field:'goodsId', width: '10%', title: 'ID', sort: true, align:'center'}
+                ,{field:'name', width: '20%', title:'任务品名称', align:'center'}
+                ,{field:'goodsType', width: '15%', title:'类型', align:'center'}
+                ,{field:'isbuy', width: '20%', title:'可否交易', align:'center'}
+               // ,{field:'goodsUrl', title: '图片',width: '20%',  align: 'center',templet: '#imgTpl',event: 'browse'}
+                ,{field:'getby', width: '10%', title:'获得形式', align:'center'}
+                // ,{field:'goodsRemark', width: '10%', title:'备注', align:'center'}
+               // ,{field:'goodsInfo', width: '10%', title:'物品描述', align:'center'}
+                // ,{field:'price', width: '10%', title: '价格', sort: true, align:'center'}
+                // ,{field:'goods_status', width: '10%', title:'状态', align:'center'}
+                // ,{field:'goodsX', width: '10%', title:'是否消耗', align:'center'}
+                //  ,{field:'goodsY', width: '20%', title:'是否下架', align:'center'}
+
+
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 8
+        });
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        <!-- 新增物品-->
+        var $ = layui.$, active = {
+            insert_travel_route : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增物品',
+                    area: ['850px', '600px'],
+                    content: context+"/goods/addGoods/"
+                });
+            }
+        };
+
+
+
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+
+            if(obj.event === 'edit_goods'){
+
+               window.location.href = context+'/goods/update_goods?url=taskGoods/setTaskGoods&goodsId='+data.goodsId;
+
+
+            }
+
+
+
+            //传出基本属性页面 ----------------------------------选择
+
+            if(obj.event === 'select_goods'){
+
+                window.location.href = context+'/goods/select_btn?goodsId='+data.goodsId;
+
+            }
+
+
+
+
+            //监听行工具事件
+            if(obj.event === 'deleteGoods'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/goods/del_goods/"+data.goodsId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.msg("删除物品成功！", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                layer.close(index);
+                                return false;
+                            });
+
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            }
+
+        });
+
+    })
+</script>
+</body>
+</html>
+
