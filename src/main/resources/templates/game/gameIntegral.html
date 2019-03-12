@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<style>
+    .layui-input {
+        display: inline-block;
+        width: auto;
+        padding-left: 10px;
+    }
+
+    .layui-form-select .layui-edge {
+        left: 182px;
+    }
+
+    .layui-form-select dl {
+        width: 212px;
+        min-width: auto;
+    }
+</style>
+<body class="layui-layout-body">
+<form class='layui-form'>
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/game/gameMap">游戏管理</a>
+                <a><cite>积分管理</cite></a>
+            </span>
+                <hr class="layui-bg-orange">
+                <div style="padding: 20px; background-color: #F2F2F2;">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    <select lay-filter="business" class="select"  lay-verify="type" name="business">
+                                           
+                                        <!--<option value="0">全部</option>-->
+                                        <!--<option value="2">正在进行的比赛</option>-->
+                                        <!--<option value="3">已完成的比赛</option>-->
+                                    </select>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                                        <ul class="layui-tab-title">
+                                            <li class="layui-this">游戏个人</li>
+                                            <li>游戏团队</li>
+                                        </ul>
+                                        <div class="layui-tab-content">
+                                            <div class="layui-tab-item layui-show">
+                                                <table class="layui-hide" id="notFinshs" lay-filter="demo"></table>
+                                            </div>
+                                            <div class="layui-tab-item">
+                                                <table class="layui-hide" id="Finshs" lay-filter="demo1"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:replace="common/script::copy"></script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="people">个人积分</a>
+    </script>
+
+    <script type="text/html" id="barDemo1">
+        <a class="layui-btn layui-btn-xs" lay-event="team">团队积分</a>
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        layui.use(['table', 'jquery', 'form'], function () {
+            var table = layui.table
+                , form = layui.form
+                , $ = layui.jquery;
+
+            table.render({
+                elem: '#notFinshs'
+                , url: context + '/game/selectPerpsonGameIntegral'
+                , cellMinWidth: 80
+                , cols: [[
+                    {field: 'gameId', title: '游戏编号'}
+                    , {field: 'gafeId', title: '场次编号'}
+                    , {field: 'gafeName', title: '场次名称'}
+                    , {field: 'gafeAddress', title: '场次地址'}
+                    , {field: 'gafeSponsor', title: '场次负责人'}
+                    , {field: 'gafeContactWay', title: '场次电话'}
+                    , {field: 'integral', title: '总积分'}
+                    , {title: '操作', toolbar: '#barDemo', align: 'center',width:'14%'}//
+                ]]
+                , page: true,
+                id: "finshPeopleGame"
+            });
+            table.on('tool(demo)', function (obj) {
+                console.log("我进来了");
+                var data = obj.data;
+                if (obj.event === "people") {
+                    console.log(data.gafeId);
+                    layer.open({
+                        type: 2,
+                        title: '查看本场次的个人报名',
+                        area: ['850px', '600px'],
+                        shadeClose: true,
+                        content: context + "/game/peopleIntegral?gafeId="+data.gafeId+"&integral="+data.integral
+                    });
+                }
+            });
+            table.render({
+                elem: '#Finshs'
+                , url: context + '/game/selectTeamGameIntegral'
+                , cellMinWidth: 80
+                , cols: [[
+                    {field: 'gameId', title: '游戏编号'}
+                    , {field: 'gafeId', title: '场次编号'}
+                    , {field: 'gameName', title: '游戏名称'}
+                    , {field: 'gafeName', title: '场次名称'}
+                    , {field: 'gafeAddress', title: '场次地址'}
+                    , {field: 'gafeSponsor', title: '场次负责人'}
+                    , {field: 'gafeContactWay', title: '场次电话'}
+                    , {field: 'integral', title: '总积分'}
+                    , {title: '操作', toolbar: '#barDemo1', align: 'center'}//
+                ]]
+                , page: true,
+                id: "finshTeamGame"
+            });
+            table.on('tool(demo1)', function (obj) {
+                var data = obj.data;
+                console.log(data.integral);
+                if (obj.event === "team") {
+                    window.location.href=context+"/game/teamIntegral?gafeId="+data.gafeId+"&integral="+data.integral;
+                }
+            });
+            form.on('select(business)', function (data) {
+                 if (data.value === "2") {
+                    table.reload('finshPeopleGame', {
+                        page: {
+                            curr: 1
+                        },
+                        url: context + '/game/conductPeopleGame'
+                    });
+                    table.reload('finshTeamGame', {
+                        page: {
+                            curr: 1
+                        },
+                        url: context + '/game/conductTeamGame'
+                    });
+                } else if (data.value === "3") {
+                    table.reload('finshPeopleGame', {
+                        page: {
+                            curr: 1
+                        },
+                        url: context + '/game/finshPeopleGame'
+                    });
+                    table.reload('finshTeamGame', {
+                        page: {
+                            curr: 1
+                        },
+                        url: context + '/game/finshTeamGame'
+                    });
+                } else {
+                    table.reload('finshPeopleGame', {
+                        page: {
+                            curr: 1
+                        },
+                        url: context + '/game/selectPerpsonGameIntegral'
+                    });
+                    table.reload('finshTeamGame', {
+                        page: {
+                            curr: 1
+                        },
+                        url: context + '/game/selectPerpsonGameIntegral'
+                    });
+                }
+
+            });
+        });
+    </script>
+
+</form>
+</body>
+</html>

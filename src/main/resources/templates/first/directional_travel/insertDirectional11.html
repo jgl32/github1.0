@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+
+</head>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+
+<style type="text/css">
+
+    .divcss5{width:600px;
+        height:200px;
+        border:1px solid rgba(0, 0, 0, 0.01);
+
+        word-wrap:break-word;
+        overflow-y:scroll; }
+</style>
+
+<style>
+
+    .dtDistance {
+        outline: 0;
+        -webkit-appearance: none;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        width:175px;
+        height:40px;
+    }
+    .dtTime {
+        outline: 0;
+        -webkit-appearance: none;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        width:160px;
+        height:40px;
+    }
+</style>
+
+<style>
+    .inputTable{width:100px;
+        height:40px;}
+</style>
+
+
+
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+
+
+        <input type="hidden" name="dtId" id="dtId" value="-1" />
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">等级</label>
+                <div class="layui-input-block">
+                    <input name="dtRank"  lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-block">
+                    <input name="dtType"  lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">当前人数</label>
+                <div class="layui-input-inline">
+                    <input name="dtPeople"  lay-verify="required" autocomplete="off"  class="layui-input" min="0" max="9000" type="number" >
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">限定人数</label>
+                <div class="layui-input-inline">
+                    <input name="dtMaxPeople"  lay-verify="required" type="number" autocomplete="off" class="layui-input" min="1" max="9000">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">旅游路程</label>
+                <div class="layui-input-block">
+                    <input name="dtDistance"  lay-verify="required" autocomplete="off" placeholder="请输入旅游路程"  type="number" class="dtDistance"  min="1" width="250px" height="40px" >米
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">游戏时长</label>
+                <div class="layui-input-inline">
+                    <div>
+                        <input name="dtTime"  lay-verify="required" autocomplete="off" type="number" class="dtTime" width="100px" height="40px" min="1" max="100">小时
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">旅游主题</label>
+                <div class="layui-input-block">
+                    <input name="dtTitle"  lay-verify="required" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">旅游名称</label>
+                <div class="layui-input-block">
+                    <input name="dtName"  lay-verify="required" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">旅游地点</label>
+            <div class="layui-input-block">
+                <input name="dtSite"  lay-verify="required" autocomplete="off" placeholder="请输入旅游地点" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">旅游描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" id="dtBrief" lay-verify="required" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">封面图</label>
+            <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                <div class="layui-upload-list" style="margin: 0;">
+                    <img class="layui-upload-img" name="dtImg" id="demo1" >
+                </div>
+            </div>
+            <input type="hidden" name="tourPic" value="" >
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">打卡描述</label>
+            <div class="layui-input-block">
+                <input name="dtMessage"  lay-verify="required" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">规则</label>
+            <div class="layui-input-block">
+                <input name="dtRule"  lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">打卡地点</label>
+                <div class="layui-input-block">
+                    <input name="dtAddress"  lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">打卡里程</label>
+                <div class="layui-input-inline">
+                    <input name="dtMileage"  lay-verify="number" autocomplete="off"  class="layui-input" type="number">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">打卡积分</label>
+                <div class="layui-input-block">
+                    <input name="dtIntegral"  lay-verify="number" autocomplete="off"  class="layui-input" type="number">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">打卡点数</label>
+                <div class="layui-input-inline">
+                    <input  id="dtPoints" name="dtPoints"  readonly  autocomplete="off"  class="layui-input" type="number">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <a href="http://www.gpsspg.com/maps.htm" class="layui-btn" target="_blank">获取经纬度</a>
+            <button  type="button" class="layui-btn" id="add1" >添加卡点</button>
+        </div>
+
+
+        <div  class="layui-inline">
+            <!--<label class="layui-form-label">卡点</label>-->
+            <input id="points" type="hidden" />
+            <div class="layui-input-block">
+                <table id="table2" border="1" width="600" >
+                    <tr height="40">
+                        <td width="80" align="middle">编号</td>
+                        <td width="100" align="middle">经度</td>
+                        <td width="100" align="middle">纬度</td>
+                        <td width="100" align="middle">二维码</td>
+                        <td width="100" align="middle">半径</td>
+                        <td width="100" align="middle">操作 </td>
+                    </tr>
+                </table>
+                <div class="divcss5">
+                    <table id="table1" border="1" width="600" >
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="insertDirectional" >立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">立即重置</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+<script th:replace="common/script::copy"></script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" data-th-inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_directional : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增定向旅游',
+                    area: ['850px', '500px'],
+                    content: context+"/game/find_dingwei"
+                });
+            }
+        };
+
+
+        $("#sel").val("1");
+        var status=$("#dtStatus2").val();
+        // alert(status);
+        $("#dtStatus option[value='"+status+"']").attr("selected","selected")
+
+        form.render('select','selFilter');
+
+
+
+        //日期
+        laydate.render({
+            elem: '#apply_start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#apply_end_date'
+            ,type: 'datetime'
+        });
+        //日期
+        laydate.render({
+            elem: '#start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_date'
+            ,type: 'datetime'
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: context+'/first/upload_one_directionalTravel/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        // $("input[name='dtImg']").val(res.extend.msg);
+                        $("#demo1").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                // $("input[name='dtImg']").val(res.extend.msg);
+            }
+        });
+
+        // //监听提交
+        form.on('submit(insertDirectional)', function(data){
+            var sub_data = {
+                "dtId":                 $("input[name='dtId']").val(),
+                "uOpenid":                 $("input[name='uOpenid']").val(),
+                "dtSite":                $("input[name='dtSite']").val(),
+                "dtType":                   $("input[name='dtType']").val(),
+                "dtRank":              $("input[name='dtRank']").val(),
+
+                "dtTime":              $("input[name='dtTime']").val(),
+                "dtDistance":          $("input[name='dtDistance']").val(),
+                "dtName":                $("input[name='dtName']").val(),
+                // "dtImg":                $("input[name='dtImg']").val(),
+                "dtImg":                $("#demo1").attr("src"),
+                "dtAddress":            $("input[name='dtAddress']").val(),
+
+                "dtPeople":             $("input[name='dtPeople']").val(),
+                "dtMaxPeople":           $("input[name='dtMaxPeople']").val(),
+                "dtMessage":                $("input[name='dtMessage']").val(),
+                "dtMileage":           $("input[name='dtMileage']").val(),
+                "dtIntegral":                $("input[name='dtIntegral']").val(),
+
+                "dtPoints":             $("input[name='dtPoints']").val(),
+                "dtRule":                $("input[name='dtRule']").val(),
+                "dtPersonCharge":        $("input[name='dtPersonCharge']").val(),
+                "dtStatus":              $("#dtStatus").val(),
+                "dtModifiedTime":        $("input[name='dtModifiedTime']").val(),
+
+                "dtCreateTime":          $("input[name='dtCreateTime']").val(),
+                "dtReco":                 $("input[name='dtReco']").val(),
+                "dtBrief":                $("#dtBrief").val(),
+                "dtTitle":                $("input[name='dtTitle']").val(),
+
+                // "dtType":                 $("#tourType").val(),
+                // "dtName":                $("#tourBrief").val(),
+                // "dtStartTime":               $("input[name='tourIfSafe']").val() == "on" ? 1 : 0,
+                // "tourIfAllow":              $("input[name='tourIfAllow']").val() == "on" ? 1 : 0,
+            };
+            $.post(context+"/first/insertDirectional", sub_data, function(res){
+
+                if(res.code == 100){
+                    layer.msg('新增成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+
+                        function(){
+                            parent.window.location.href=context+"/first/directional";
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }
+
+                console.log(res);
+            });
+            return false;
+        });
+    })
+</script>
+
+
+<script>
+    $(function(){
+
+        var dd1=0;
+        var dd2=0;
+        var dd3=0;
+        var dd4=0;
+
+        var dd6=0;
+
+        $("#add1").click(function(){
+
+
+
+            var tr0=$("<tr height='40'></tr>");
+
+
+            var index=$("table tr").length;
+//					alert(index);
+
+            var td0=$("<td width='90'></td>");
+            td0.html(index);
+            tr0.append(td0);
+
+            var td2=$("<td width='100'><input required class='inputTable' type='text' id='' placeholder='经度'></td>");
+            td2.html();
+            tr0.append(td2);
+
+            var td1=$("<td width='100'><input required class='inputTable' type='text'id='dtpLatitude' placeholder='纬度'></td>");
+            td1.html();
+            tr0.append(td1);
+
+            var td3=$("<td width='100'><input required class='inputTable' type='text' id='dtpName' readonly placeholder='只读内容'></td>");
+            td3.html();
+            tr0.append(td3);
+
+            var td4=$("<td width='100'><input required class='inputTable' type='text' id='radius' placeholder='误差半径'></td>");
+            td4.html();
+            tr0.append(td4);
+
+            var td5=$("<td width='100'></td>");
+            td5.html("<span class='insert1'  >新增</span>  <span class='rollback'  >取消</span>");
+            tr0.append(td5);
+
+            // <td style="display:none;">一</td>
+            var td6=$("<td width='0'  style=\"VISIBILITY:hidden\" ></td>");
+            td6.html();
+            tr0.append(td6);
+
+            // tr0.css("background-color","aquamarine");
+            $("#table1").append(tr0)
+            $("table tr td input ").focus();
+
+        });
+
+
+        $(document).on("click",".delete1",function(){
+
+            var flag=0;
+            var obj=$(this).parent().parent();
+
+            if(confirm("确定要删除吗？")){
+                var dtpId= obj.attr("id");
+                var dtId=$("#dtId").val();
+                var num=$("#dtPoints").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: context+"/first/delete_directionalTravelPoints",
+                    data: "dtId="+dtId+"&dtpId="+dtpId,
+                    success: function(data){
+                        if(data=="1"){
+                            alert("删除成功");
+                            obj.remove();
+                            var num=$("table tr").length;
+                            var trs=$("table tr");
+//					alert(trs.length);
+//                 alert($($(trs[1]).children()[0]).html());
+//					alert($(trs[1]).find("td").length);
+                            var tds=$(trs[1]).find("td");
+//					alert($(tds[0]).html());
+
+                            for (var i = 1; i < trs.length; i++) {
+                                $($(trs[i]).find("td")[0]).html(i);
+//						$($(trs[i]).children[0]).html(i);
+//						alert(i);
+                            }
+
+                            $("#dtPoints").val(--num);
+                        }else{
+                            alert("删除失败");
+                        }
+                    }
+
+                });
+            }
+
+        });
+
+
+        $(document).on("click",".update1",function(){
+
+//					alert($(this).parent().parent().html());
+            var tr0=$(this).parent().parent();
+            var tds=tr0.find("td");
+//					var td1=$(tds[1]).text();
+//					var td2=$(tds[2]).text();
+            dd1=$(tds[1]).text();
+            dd2=$(tds[2]).text();
+            dd3=$(tds[3]).text();
+            dd4=$(tds[4]).text();
+            dd6=$(tds[6]).text();
+            var input1=$("<input class='inputTable' type='text' />").val(dd1);
+            var input2=$("<input class='inputTable' type='text' />").val(dd2);
+            var input3=$("<input class='inputTable' readonly type='text' />").val(dd6);  //  dtpName里的数据
+            var input4=$("<input class='inputTable' type='text' />").val(dd4);
+
+
+//					alert(td1);
+            $(tds[1]).html(input1);
+            $(tds[2]).html(input2);
+            $(tds[3]).html(input3);
+            $(tds[4]).html(input4);
+            $(tds[5]).html("<span class='conf' >确定</span>  <span class='cancel' >取消</span> ");
+
+        })
+
+
+        $(document).on("click",".conf",function(){
+
+            var tr0=$(this).parent().parent();
+            var tds=$(tr0).find("td");
+
+            if(confirm("确定要修改吗？")){
+                var dtpId= $(this).parent().parent().attr("id");
+                var td0=$(tds[0]).text();
+                var td1=$(tds[1]).children().val();
+                var td2=$(tds[2]).children().val();
+                var td3=$(tds[3]).children().val();
+                var td4=$(tds[4]).children().val();
+                var td6=$(tds[6]).html();
+                if(td3==td6){
+                    td3=null;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: context+"/first/update_directionalTravelPoints",
+                    data: "dtpId="+dtpId+"&dtpLongitude="+td1+"&dtpLatitude="+td2+"&dtpName="+td3+"&radius="+td4+"&num="+td0,
+                    success: function(res){
+                        if(res.code==100){
+                            alert("修改成功");
+//						alert(td1);
+                            $(tds[1]).html(td1);
+                            $(tds[2]).html(td2);
+                            $(tds[3]).html("<img height='40' width='100' src='"+res.extend.dtpqrcode+"' />");
+                            $(tds[4]).html(td4);
+                            $(tds[6]).html(td3);
+                        }else{
+                            alert("修改失败");
+                        }
+                    }
+                });
+            }else{
+                $(tds[1]).html(dd1);
+                $(tds[2]).html(dd2);
+                $(tds[3]).html(dd3);
+                $(tds[4]).html(dd4);
+            }
+
+            $(tds[5]).html("<span class='update1'  >修改</span>  <span class='delete1'  >删除</span>");
+
+        });
+
+
+        $(document).on("click",".cancel",function(){
+
+            if(confirm("取消修改吗？")){
+
+                var tr0=$(this).parent().parent();
+
+                var tds=$(tr0).find("td");
+
+                $(tds[1]).html(dd1);
+                $(tds[2]).html(dd2);
+                $(tds[3]).html(dd3);
+                $(tds[4]).html(dd4);
+
+                $(tds[5]).html("<span class='update1'  >修改</span>  <span class='delete1'  >删除</span>");
+
+            }
+
+        });
+
+        /*新增打卡点*/
+        $(document).on("click",".insert1",function(){
+
+            var tr0=$(this).parent().parent();
+            var tds=$(tr0).find("td");
+            var dtId=$("#dtId").val();
+
+            var td0=$(tds[0]).text();
+            var td1=$(tds[1]).children().val();
+            var td2=$(tds[2]).children().val();
+            var td3=$(tds[3]).children().val();
+            var td4=$(tds[4]).children().val();
+
+
+            if(td0=="1"){
+                dtId==-1;
+            }
+
+            var td6=$(tds[6]).html();
+
+            if(td1 == "" || td2 == ""  || td4 == "" ){
+                alert("请检查是否填完!");
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: context+"/first/insert_directionalTravelPoints",
+                    data: "dtId="+dtId+"&dtpLongitude="+td1+"&dtpLatitude="+td2+"&dtpName="+td3+"&radius="+td4+"&index="+td0,
+                    success: function(res){
+                        if(res.code==100){
+                            alert("新增成功");
+                            // alert(res.extend.dtpId);
+                            // alert(res.extend.dtpqrcode);
+                            // alert(res.extend.dtId);
+                            $("#dtId").val(res.extend.dtId);
+                            var num=$("#dtPoints").val();
+                            $("#dtPoints").val(++num);
+                            tr0.attr("id",res.extend.dtpId);
+                            $(tds[1]).html(td1);
+                            $(tds[2]).html(td2);
+                            $(tds[3]).html("<img height='40' width='100' src='"+res.extend.dtpqrcode+"' />");
+                            $(tds[4]).html(td4);
+                            $(tds[5]).html("<span class='update1'  >修改</span>  <span class='delete1'  >删除</span>");
+                            $(tds[6]).html(td3);
+                        }else{
+                            tr0.remove();
+                            alert("新增失败");
+                        }
+                    }
+                });
+            }
+
+            // $(tds[5]).html("<span class='update1'  >修改</span>  <span class='delete1'  >删除</span>");
+
+        });
+
+
+        /*取消新增*/
+        $(document).on("click",".rollback",function(){
+            if(confirm("确定要取消新增吗？")){
+                $(this).parent().parent().remove();
+            }
+        });
+
+    });
+
+
+
+</script>
+

@@ -1,0 +1,151 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!--,toolbar: '#images'-->
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/first/commodity">首页管理</a>
+                <a><cite>首页推荐</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <!--<div class="layui-card-header"></div>-->
+                            <div class="layui-tab layui-tab-card">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this">旅游路线</li>
+                                    <li>定向旅游</li>
+                                </ul>
+                                <div class="layui-tab-content">
+                                    <div class="layui-tab-item layui-show">
+                                        <table class="layui-hide" id="notFinshs" lay-filter="demo"></table>
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <table class="layui-hide" id="Finshs" lay-filter="demo1"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" value="{{d.tourId}}" lay-skin="switch" lay-text="已推荐|推荐" lay-filter="sexDemo" {{ d.tourReco== 1
+           ? 'checked' : '' }} >
+</script>
+<script type="text/html" id="switchTpl1">
+    <input type="checkbox" value="{{d.tourId}}" lay-skin="switch" lay-text="已推荐|推荐" lay-filter="sexDemo1" {{ d.tourReco== 1
+           ? 'checked' : '' }} >
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery', 'form'], function () {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+        table.render({
+            elem: '#notFinshs'
+            , url: context + '/first/list'
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'tourId', title: 'ID'}
+                , {field: 'tourName', title: '旅游名称'}
+                , {field: 'tourTitle', title: '旅游主题'}
+                , {
+                    field: 'tourReco',
+                    title: '推荐',
+                    name: "sysData",
+                    templet: '#switchTpl',
+                    unresize: true
+                }//
+            ]]
+            , page: true
+        });
+
+        form.on('switch(sexDemo)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+
+                $.post(context + "/first/updateRecommend", {"tourId": this.value, "tourType": 0}, function (res) {
+                    console.log(res);
+                    if (res.extend.message != "推荐成功") {
+                        obj.elem.checked = !x;
+                        form.render();
+                        layer.confirm('推荐数已超过三个，请取消推荐后重新推荐', {
+                                btn: '确定'
+                            }
+                        );
+                    } else {
+                        layer.alert("推荐成功");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/first/updateRecommend1", {"tourId": this.value}, function (res) {
+
+                    if (res.extend.message) {
+                        layer.alert("取消推荐成功");
+                    }
+                })
+            }
+        });
+
+        table.render({
+            elem: '#Finshs'
+            , url: context + '/first/list1'
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'tourId', title: 'ID'}
+                , {field: 'tourName', title: '旅游名称'}
+                , {field: 'tourTitle', title: '旅游主题'}
+                , {
+                    field: 'tourReco',
+                    title: '推荐',
+                    name: "sysData",
+                    templet: '#switchTpl1',
+                    unresize: true
+                }//
+            ]]
+            , page: true
+        });
+        form.on('switch(sexDemo1)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+                $.post(context + "/first/updateRecommend", {
+                    "tourId": this.value,
+                    "tourType": 1
+                }, function (res) {
+                    console.log(res.extend.message);
+                    if (res.extend.message != "推荐成功") {
+
+                        obj.elem.checked = !x;
+                        form.render();
+                        layer.confirm('此类型已超过三个，请取消推荐后重新推荐', {
+                                btn: '确定'
+                            }
+                        );
+                    } else {
+                        layer.alert("推荐成功");
+                    }
+                })
+            } else {
+                $.post(context + "/first/updateRecommend1", {"tourId": this.value}, function (res) {
+                    if (res.extend.message) {
+                        layer.alert("取消推荐成功");
+                    }
+                })
+            }
+        });
+    });
+</script>
+</body>
+</html>

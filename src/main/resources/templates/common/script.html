@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" >
+<script type="text/javascript" th:inline="javascript" th:fragment="copy">
+    //JavaScript代码区域
+    var context = [[${#httpServletRequest.getContextPath()}]];
+    layui.use(['element'], function(){
+        var element = layui.element
+            , layer = layui.layer
+            , $ = layui.jquery;
+
+
+    });
+</script>
+</html>

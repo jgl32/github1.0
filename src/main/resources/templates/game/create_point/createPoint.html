@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<style>
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'createPoint')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>创建点位</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header" style="padding-left: 2px;">
+                                <div class="layui-form layui-form-item layui-form-pane" style="padding-top: 2px;">
+                                    <div class="layui-input-inline" style="margin-right: 0px;">
+                                        <select name="interest" lay-filter="aihao" id="gameMapUrl">
+                                            <option value=""></option>
+                                            <option th:each="mapList : ${mapLists}" th:value="${mapList.mapId}" th:text="${mapList.mapInfo}"></option>
+                                        </select>
+                                    </div>
+                                    <button class="layui-form-label" style="background-color: #1E9FFF;color: white;" id="get_map">获取地图</button>
+                                    <button class="layui-form-label layui-btn-danger" id="del_map_point">撤销</button>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <!-- canvas画布加载地图 -->
+                                <canvas id="cvs" width="400" height="400" style="margin:20px auto; display: block;"></canvas><hr/>
+                                <!-- 卡点表单提交 -->
+                                <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                    <input type="hidden" name="cardX" />
+                                    <input type="hidden" name="cardY" />
+                                    <!-- UUID -->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">UUID</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="cardUuid" autocomplete="off" placeholder="点击自动生成" class="layui-input" id="click_input">
+                                        </div>
+                                    </div>
+                                    <!-- 卡点的名字 -->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">卡点名</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="cardName" autocomplete="off" placeholder="请输入卡点名" class="layui-input" >
+                                        </div>
+                                    </div>
+                                    <!-- 游戏ID -->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">选择游戏</label>
+                                        <div class="layui-input-block">
+                                            <select id="cardGameId">
+                                                <option value="">请选择游戏</option>
+                                                <option th:each="game : ${gameList}" th:value="${game.gameId}" th:text="${game.gameName}">游</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">卡点类型</label>
+                                        <div class="layui-input-block" style="border: 1px solid #e6e6e6;">
+                                            <select id="cardType">
+                                                <option value="">请选择点类型（一个点只选择一个种类型）</option>
+                                                <option value="开始码">开始码（开始码，游戏起点设置）</option>
+                                                <option value="白点">白点（只打卡，直接得分）</option>
+                                                <option value="答题">答题（需要设置问题和答案）</option>
+                                                <option value="视频">视频（上传视频，期待上线...）</option>
+                                                <option value="音频">音频（上传音频，期待上线...）</option>
+                                                <option value="提示">提示（只显示提示文字）</option>
+                                                <option value="终点码">终点码（游戏终点设置）</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">卡点积分</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="cardSIntegral" id="date1" autocomplete="off" class="layui-input" placeholder="输入卡点积分">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">失败减积分</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="cardFIntegral" autocomplete="off" class="layui-input" placeholder="打卡失败减的积分">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline" pane="">
+                                            <label class="layui-form-label">显示卡点</label>
+                                            <div class="layui-input-block" style="border: 1px solid #e6e6e6; width: 40%;">
+                                                <input type="checkbox" checked="" name="cardIfShow" lay-skin="switch" lay-filter="switchTest" title="开关">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">提示信息</label>
+                                            <div class="layui-input-block">
+                                                <button type="button" class="layui-btn layui-btn-danger" id="upload_pic"><i class="layui-icon"></i>上传图片</button>
+                                                <input type="hidden" name="cardHintPic" />
+                                                <!--<button type="button" class="layui-btn layui-btn-warm" id="upload_video"><i class="layui-icon"></i>上传视频</button>
+                                                <input type="hidden" name="cardHintVideo" />
+                                                <button type="button" class="layui-btn" id="upload_mp3"><i class="layui-icon"></i>上传音频</button>
+                                                <input type="hidden" name="cardHintMp3" />-->
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">存在时间</label>
+                                            <div class="layui-input-block">
+                                                <input type="number" class="layui-input" name="cardExist" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">卡点提示</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="cardRemark" autocomplete="off" placeholder="填写提示" class="layui-input" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">隐藏任务</label>
+                                            <div class="layui-input-block">
+                                                <select id="cardHideId">
+                                                    <option value="">请选择任务</option>
+                                                    <option value="1">任务一</option>
+                                                    <option value="2">任务二</option>
+                                                    <option value="3">任务三</option>
+                                                    <option value="4">任务四</option>
+                                                    <option value="5">任务五</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">隐藏分数</label>
+                                            <div class="layui-input-block">
+                                                <input type="number" class="layui-input"  placeholder="隐藏任务的积分" name="cardHideGrade" />
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">是否显示</label>
+                                            <div class="layui-input-block" style="border: 1px solid #e6e6e6; width: 40%;">
+                                                <input type="checkbox" checked="" name="cardHideTask" lay-skin="switch" lay-filter="switchTest" title="开关">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">卡点问题</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="question" autocomplete="off" placeholder="请输入卡点问题" class="layui-input" />
+                                        </div>
+                                        <label class="layui-form-label">答案 A</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="answerA" autocomplete="off" placeholder="请输入卡点答案 A" class="layui-input" />
+                                        </div>
+                                        <label class="layui-form-label">答案 B</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="answerB" autocomplete="off" placeholder="请输入卡点答案 B" class="layui-input" />
+                                        </div>
+                                        <label class="layui-form-label">答案 C</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="answerC" autocomplete="off" placeholder="请输入卡点答案 C" class="layui-input" />
+                                        </div>
+                                        <label class="layui-form-label">答案 D</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="answerD" autocomplete="off" placeholder="请输入卡点答案 D" class="layui-input" />
+                                        </div>
+                                        <label class="layui-form-label">正确答案</label>
+                                        <div class="layui-input-block" style="border: 1px solid #e6e6e6;">
+                                            <input type="radio" name="answerTrue" value="a" title="A">
+                                            <input type="radio" name="answerTrue" value="b" title="B">
+                                            <input type="radio" name="answerTrue" value="c" title="C">
+                                            <input type="radio" name="answerTrue" value="d" title="D">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <!--<label class="layui-form-label">生成二维码</label>-->
+                                        <!--<div class="layui-inline">-->
+                                            <!--<button class="layui-btn layui-btn-danger" id="btn_qr">点击生成</button>-->
+                                            <input type="hidden" name="cardUrl">
+                                        <!--</div>-->
+                                        <div class="layui-inline" style="margin-left: 50%;">
+                                            <button class="layui-btn" id="cardSubmit">提交</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">下一个</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    // 画点
+    function draw_point(ctx, point) {
+        console.log(point);
+        //设置绘制颜色
+        ctx.fillStyle="#fb0606";
+        // ctx.arc(point.x, point.y,5, 0, Math.PI * 5);
+        //绘制成矩形
+        ctx.fillRect(point.x-4,point.y-4,8,8);
+        //设置字体样式
+        ctx.font = "12px bold 宋体";
+        //绘制文字
+        ctx.fillText("("+point.x+","+point.y+")",point.x,point.y);
+        // ctx.fill();
+    }
+
+    // 划线
+    // function getLine(ctx, prevXY, nextXY) {
+    //     ctx.beginPath();
+    //     ctx.strokeStyle="#0000FF";
+    //     ctx.moveTo(prevXY.x, prevXY.y);
+    //     ctx.lineTo(nextXY.x, nextXY.y);
+    //     ctx.stroke();
+    // }
+
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        var date_list = [];
+        var canvas = document.getElementById("cvs");
+        var ctx = canvas.getContext("2d");
+        ctx.globalCompositeOperation="source-over";
+        var img = new Image();
+
+        // 点击加载地图
+        $("#get_map").click(function () {
+            var id = $("#gameMapUrl").val();
+            date_list = [];
+            $.get(context+"/game/point_map/"+id, function (res) {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                img.src = res.extend.msg.mapUrl;
+                setTimeout(function(){
+                    var naturalWidth = img.width;
+                    var naturalHeight = img.height;
+                    canvas.width = naturalWidth;
+                    canvas.height = naturalHeight;
+                    ctx.drawImage(img, 0, 0, naturalWidth, naturalHeight);
+                },3000);
+            });
+
+        });
+
+        // 地图画线
+        canvas.addEventListener("click", function(event) {
+            var ev = event || window.event;
+            var x, y;
+            x = ev.clientX - canvas.getBoundingClientRect().left;
+            y = ev.clientY - canvas.getBoundingClientRect().top;
+            var point = {x : x, y : y};
+            $("input[name='cardX']").val(point.x);
+            $("input[name='cardY']").val(point.y);
+            console.log(point);
+            draw_point(ctx, point);
+            // if(date_list.length > 0){
+            //     getLine(ctx, date_list[date_list.length-1], point);
+            // }
+            date_list.push(point);
+            // console.log(date_list);
+            // console.log(date_list.length);
+        });
+
+        // 删除线和点
+        $("#del_map_point").click(function () {
+            if(date_list.length > 0){
+                let point_date = date_list.pop();
+                console.log(point_date);
+                ctx.clearRect(point_date.x-4, point_date.y-4, 8, 8);
+                // if(point_date.x < point_date_1.x){
+                //     x1 = point_date.x;
+                //     x2 = point_date_1.x;
+                // }else{
+                //     x1 = point_date_1.x;
+                //     x2 = point_date.x;
+                // }
+                // if(point_date.y < point_date_1.y){
+                //
+                // }else{
+                //
+                // }
+            }
+        })
+
+        // 自动生成UUID
+        $("#click_input").click(function () {
+            var a = Math.random().toString(36).substr(2, 15);
+            var t = new Date().getTime();
+            $("#click_input").val(a+t); // 24位
+        })
+
+
+        // 提示图片上传
+        upload.render({
+            elem: '#upload_pic'
+            ,url: context+'/game/prompt_pic'
+            ,accept: 'file'
+            ,exts: 'jpeg|png|jpg'
+            ,done: function(res){
+                if(res.code == 100){
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        $("input[name='cardHintPic']").val(res.extend.msg);
+                    });
+                }else{
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+
+                    });
+                }
+            }
+        });
+
+        // 提示视频上传
+        upload.render({
+            elem: '#upload_video'
+            ,url: context+'/game/prompt_video'
+            ,accept: 'video' //视频
+            ,exts: 'mp4|avi|amv'
+            ,done: function(res){
+                if(res.code == 100){
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        $("input[name='cardHintVideo']").val(res.extend.msg);
+                    });
+
+                }else{
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+
+                    });
+                }
+            }
+        });
+
+        // 提示音频上传
+        upload.render({
+            elem: '#test6'
+            ,url: context+'/game/prompt_mp3/'
+            ,accept: 'audio' //音频
+            ,exts: 'mp3'
+            ,done: function(res){
+                if(res.code == 100){
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        $("input[name='cardHintMp3']").val(res.extend.msg);
+                    });
+
+                }else{
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+
+                    });
+                }
+            }
+        });
+
+        // 生成二维码
+        // $("#btn_qr").click(function () {
+        //     layer.confirm('请确保数据已经填正确?', {icon: 3, title:'提示'}, function(index){
+        //         let cardUuid = $("input[name='cardUuid']").val();
+        //         let cardName = $("input[name='cardName']").val();
+        //         let list_index = date_list.length-1;
+        //         $.get(context+'/game/get_qr/'+cardUuid+'/'+cardName+'/'+list_index, function (res) {
+        //             if(res.code == 100){
+        //                 $("input[name='cardUrl']").val(res.extend.msg);
+        //             }else{
+        //                 layer.msg("生成失败！", {
+        //                     icon: 1,
+        //                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        //                 }, function(){
+        //
+        //                 });
+        //             }
+        //         });
+        //         layer.close(index);
+        //     });
+        // });
+
+        $("#cardSubmit").click(function () {
+            var list_index = date_list.length-1;
+            var cardUuid = $("input[name='cardUuid']").val();
+            var cardName = $("input[name='cardName']").val();
+            var index_load = layer.load(1, {
+                offset: '220px',
+            });
+            $.get(context+'/game/get_qr/'+cardUuid+'/'+cardName+'/'+list_index, function (res) {
+                if(res.code == 100){
+                    var cardUrl = res.extend.msg
+                    $("input[name='cardUrl']").val(cardUrl);
+                    layer.msg("生成二维码成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        // let cardUuid = $("input[name='cardUuid']").val();
+                        // let cardName = $("input[name='cardName']").val();
+                        var cardGameId = $("#cardGameId").val();
+                        var cardType = $("#cardType").val();
+                        var cardSIntegral = $("input[name='cardSIntegral']").val();
+                        var cardFIntegral = $("input[name='cardFIntegral']").val();
+                        var cardIfShow = $("input[name='cardIfShow']").val() == 'on' ? 1 : 0;
+                        var cardHintPic = $("input[name='cardHintPic']").val();
+                        var cardHintVideo = $("input[name='cardHintVideo']").val();
+                        var cardHintMp3 = $("input[name='cardHintMp3']").val();
+                        var cardExist = $("input[name='cardExist']").val();
+                        var cardRemark = $("input[name='cardRemark']").val();
+                        var cardHideId = $("#cardHideId").val();
+                        var cardHideGrade = $("input[name='cardHideGrade']").val();
+                        var cardHideTask = $("input[name='cardHideTask']").val() == 'on' ? 1 : 0;
+                        var question = $("input[name='question']").val();
+                        var answerA = $("input[name='answerA']").val();
+                        var answerB = $("input[name='answerB']").val();
+                        var answerC = $("input[name='answerC']").val();
+                        var answerD = $("input[name='answerD']").val();
+                        var answerTrue = $("input[name='answerTrue']:checked").val();
+                        var cardX = $("input[name='cardX']").val();
+                        var cardY = $("input[name='cardY']").val();
+                        // let cardUrl = $("input[name='cardUrl']").val();
+                        var date_card = {
+                            cardUuid : cardUuid,
+                            cardName : cardName,
+                            cardGameId : cardGameId,
+                            cardType : cardType,
+                            cardSIntegral : cardSIntegral,
+                            cardFIntegral : cardFIntegral,
+                            cardIfShow : cardIfShow,
+                            cardHintPic : cardHintPic,
+                            cardHintMp3 : cardHintMp3,
+                            cardHintVideo : cardHintVideo,
+                            cardExist : cardExist,
+                            cardRemark : cardRemark,
+                            cardHideId : cardHideId,
+                            cardHideGrade : cardHideGrade,
+                            cardHideTask : cardHideTask,
+                            question : question,
+                            answerA : answerA,
+                            answerB : answerB,
+                            answerC : answerC,
+                            answerD : answerD,
+                            answerTrue : answerTrue,
+                            cardUrl : cardUrl,
+                            cardX : cardX,
+                            cardY : cardY
+                        };
+                        $.post(context+'/game/card_post', date_card, function(res) {
+                            console.log(res);
+                            if(res.code == 100){
+                                layer.msg("生成打点信息成功！", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    layer.close(index_load);
+                                    return false;
+                                });
+                            }
+                        });
+
+                    });
+
+                }else{
+                    layer.msg("生成二维码失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+            });
+
+
+
+        })
+    })
+</script>
+</body>
+</html>

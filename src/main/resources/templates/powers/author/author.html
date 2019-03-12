@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="top:0px;left: 0px;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">权限管理</a>
+                <a><cite>授权管理</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <button class="layui-btn" data-type="add_author">增加菜单</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="authorTable" lay-filter="authorTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:replace="common/script::copy"></script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_author">编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="delete_author">删除</a>
+    <input type="checkbox" id="sexDemo" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="sexDemo" {{ d.authorStatus== 1
+           ? 'checked' : '' }} >
+</script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        table.render({
+            id:"id"
+            ,elem: '#authorTable'
+            ,toolbar: '#toolbarDemo'
+            ,title: '定向旅游表'
+            ,url:context+'/powers/author/selectAll'
+            ,cols: [[
+                {field:'authorParent', title: 'rid',sort: true, align: 'center'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'authorPage', title: 'url', sort: true,  align: 'center'}
+                ,{field:'authorName', width:'10%', title: '菜单名称',sort: true, align: 'center'}
+                ,{field:'authorStatus', width:'10%', title: '状态', sort: true, align: 'center'}
+                ,{field:'serialNumber', width:'10%', title: '序号',sort: true, align: 'center'}
+                // ,{field:'dtCreateTime', title: '创建时间', sort: true, width:'15%', align: 'center'}
+                // ,{field:'dtStatus', title: '状态', width:'10%',sort: true, align: 'center',templet: '#statusTpl', unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo' ,sort: true, align: 'center'}
+            ]]
+            ,page: true
+        });
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_author : function(){
+                window.location.href=context+"/powers/author/add_author";
+            },
+
+            edit_role : function(){
+                layer.msg(9999);
+                // window.location.href=context+"/powers/role/edit_role";
+            }
+        };
+
+
+        form.on('switch(sexDemo)', function (obj) {
+            layer.msg("启用成功");
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+
+                $.post(context + "/powers/author/delete_author", {"id": this.value, "authorStatus": 1}, function (res) {
+                    console.log(res);
+                    if (res.code==100) {
+                        layer.msg("启用成功");
+                    }else{
+                        layer.msg("启用失败");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/powers/author/delete_author", {"id": this.value , "authorStatus": 0}, function (res) {
+                    if (res.code==100) {
+                        layer.msg("禁用成功");
+                    }else{
+                        layer.msg("禁用失败");
+                    }
+                })
+            }
+        });
+
+
+        table.on('tool(authorTable)', function(obj){
+            var data = obj.data;
+            console.log(obj)
+            if(obj.event === 'edit_author'){
+                layer.open({
+                    type: 2,
+                    title: '菜单编辑',
+                    area: ['850px', '600px'],
+                    content: context+'/powers/author/edit_author/'+data.id
+                });
+            }
+
+            if(obj.event === 'info'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+
+            //监听行工具事件
+            if(obj.event === 'delete_author'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/powers/author/delete_author?id="+data.id+"&authorStatus="+"-1", function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            } else if(obj.event === 'regain'){
+                layer.confirm('确定要重新上架这个活动吗？', function(index){
+                    $.get(context+"/powers/history_re/"+data.id, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+        });
+    })
+</script>
+</html>

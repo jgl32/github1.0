@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+         <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/invitation/homepage">热榜发现</a>
+                <a><cite>发现推荐</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <button class="layui-btn" id="getCheckData" style="margin-top:4px">添加</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="notFinshs" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">取消推荐</a>
+</script>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#notFinshs'
+            , url: context + '/invitation/selectPunckAndTravel'
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', title: 'ID',sort: true}
+                , {field: 'name', title: '名称'}
+                , {field: 'gameType', title: '类别'}
+                , {title: '操作', toolbar: '#barDemo'}//
+            ]]
+            , page: true
+        });
+        table.on('tool(demo)', function (obj) {
+            var data=obj.data;
+            var rId=data.rId;
+            var id=data.id;
+            var gameType=data.gameType;
+            if(obj.event==='detail'){
+                layer.confirm('真的取消推荐吗', function (index) {
+                    $.post(context+"/invitation/deletePunckAndTravel", {'id': id,"rId":rId,"gameType":gameType}, function (res) {
+                        layer.msg("取消推荐成功");
+                        obj.del();
+                        layer.close(index);
+                    });
+                });
+            }
+            console.log(data.rId)
+        });
+
+        $("#getCheckData").click(function () {
+            layer.open({
+                type: 2,
+                title: '推荐',
+                area: ['800px','600px'],
+                shadeClose: true,
+                // offset: ['100px', '50px'],
+                content: context + "/invitation/recommends",
+                end: function () {
+                    location.reload();
+                }
+            });
+        });
+    })
+
+</script>
+</body>
+</html>

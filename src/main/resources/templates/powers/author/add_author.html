@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body>
+
+<form class="layui-form layui-form-pane" action="">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">序号</label>
+        <div class="layui-input-block">
+            <input type="text" name="serialNumber"  autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单名</label>
+        <div class="layui-input-block">
+            <input type="text" name="authorName"  autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级菜单</label>
+        <div class="layui-input-block">
+            <select id="parentMenu" name="parentMenu">
+                <option value="0">无</option>
+                <div th:each="menu:${listParentMenu}">
+                    <option th:value="${menu.id}"><span th:text="${menu.authorName}"></span></option>
+                </div>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">url路径</label>
+        <div class="layui-input-block">
+            <input type="text" name="authorPage"  autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <input type="hidden" id="authorStatus">
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="radio" id="authorStatus1" name="authorStatus" value="1" checked>启用
+            <input type="radio" id="authorStatus0" name="authorStatus" value="0"  >禁用
+            <!--<input type="checkbox" id="sexDemo"  name="authorStatus" lay-skin="switch" lay-text="启用|禁用" lay-filter="sexDemo"  >-->
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">单行选择框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<select name="interest" lay-filter="aihao">-->
+                <!--<option value=""></option>-->
+                <!--<option value="0">写作</option>-->
+                <!--<option value="1" selected="">阅读</option>-->
+                <!--<option value="2">游戏</option>-->
+                <!--<option value="3">音乐</option>-->
+                <!--<option value="4">旅行</option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">行内选择框</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<select name="quiz1">-->
+                <!--<option value="">请选择省</option>-->
+                <!--<option value="浙江" selected="">浙江省</option>-->
+                <!--<option value="你的工号">江西省</option>-->
+                <!--<option value="你最喜欢的老师">福建省</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<select name="quiz2">-->
+                <!--<option value="">请选择市</option>-->
+                <!--<option value="杭州">杭州</option>-->
+                <!--<option value="宁波" disabled="">宁波</option>-->
+                <!--<option value="温州">温州</option>-->
+                <!--<option value="温州">台州</option>-->
+                <!--<option value="温州">绍兴</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<select name="quiz3">-->
+                <!--<option value="">请选择县/区</option>-->
+                <!--<option value="西湖区">西湖区</option>-->
+                <!--<option value="余杭区">余杭区</option>-->
+                <!--<option value="拱墅区">临安市</option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item" pane="">-->
+        <!--<label class="layui-form-label">开关-开</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" title="开关">-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">复选框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="checkbox" name="like[write]" title="写作">-->
+            <!--<input type="checkbox" name="like[read]" title="阅读">-->
+            <!--<input type="checkbox" name="like[daze]" title="发呆">-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="layui-form-item" pane="">-->
+        <!--<label class="layui-form-label">单选框</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<input type="radio" name="sex" value="男" title="男" checked="">-->
+            <!--<input type="radio" name="sex" value="女" title="女">-->
+            <!--<input type="radio" name="sex" value="禁" title="禁用" disabled="">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item layui-form-text">-->
+        <!--<label class="layui-form-label">文本域</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<textarea placeholder="请输入内容" class="layui-textarea"></textarea>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="formAuthor">提交</button>
+        </div>
+    </div>
+</form>
+
+<script th:replace="common/script::copy"></script>
+<script>
+    $(function(){
+        var authorStatus=$("#authorStatus").val();
+        if(authorStatus==1){
+            $("#authorStatus1").attr("checked",true);
+            $("#authorStatus0").attr("checked",false);
+            $("#sexDemo").attr("checked",true);
+        }
+    });
+</script>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+
+
+
+        //监听提交
+        form.on('submit(formAuthor)', function(data){
+            /*layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })*/
+
+            var sub_data = {
+                "serialNumber":        $("input[name='serialNumber']").val(),
+                "authorName":          $("input[name='authorName']").val(),
+                "authorStatus":        $("input[name='authorStatus']").val(),
+                "authorParent":        $("#parentMenu").val(),
+            };
+            console.log(sub_data);
+            $.post(context+"/powers/author/insertAuthor",sub_data , function(res){
+                if(res.code == 100){
+                    layer.msg('新增成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+
+                        function(){
+                            window.location.href=context+"/powers/author/author";
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }else{
+                    layer.msg('新增失败！');
+                }
+
+                console.log(res);
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

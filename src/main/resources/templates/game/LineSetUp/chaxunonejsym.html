@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"><meta charset="UTF-8"></head>
+<style>
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="top: 0px;left: 0px">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>查看角色</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">名称</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="kg_name" th:value="${s.kgName}">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">序号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="kg_number" th:value="${s.kgNumber}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">人数</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="kg_max_people" id="date1" th:value="${s.kgMaxPeople}">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">职业</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="kg_vocation" class="layui-input" th:value="${s.kgVocation}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">阵营序号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="campserialnumber" class="layui-input" th:value="${s.campserialnumber}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">公开介绍</label>
+                                            <textarea name="kg_context" cols="100" rows="20" th:value="${s.kgContext}">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-left: 110px;margin-top: 10px;">
+                                        <button type="button" class="layui-btn layui-btn-danger"
+                                                id="upload_pic"><i class="layui-icon" name="pic" th:value="${s.kgContext}"></i>上传图片
+                                        </button>
+                                        <input type="hidden" name="pic"/>
+
+                                        <button type="button" class="layui-btn layui-btn-warm"
+                                                id="upload_video"><i class="layui-icon" name="video"  th:value="${s.video}"></i>上传视频
+                                        </button>
+                                        <input type="hidden" name="video"/>
+                                    </div>
+
+
+                                    <div class="layui-form-item" style="margin-top: 20px;">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">事件相关</label>
+                                            <textarea name="eventcorrelation" cols="100" rows="20" th:value="${s.eventcorrelation}">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">自带物品</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="carryonluggage" autocomplete="off" style="width: 717px;height: 30px;" th:value="${s.carryonluggage}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">私人查看</label>
+                                            <textarea name="privateview" cols="100" rows="20" th:value="${s.privateview}">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-left: 110px;">
+                                        <button type="button" class="layui-btn layui-btn-danger"
+                                                id="private_pic"><i class="layui-icon" name="privatepic" th:value="${s.privatepic}"></i>上传图片
+                                        </button>
+                                        <input type="hidden" name="privatepic"/>
+
+                                        <button type="button" class="layui-btn layui-btn-warm"
+                                                id="private_video"><i class="layui-icon" name="privatevideo" th:value="${s.privatepic}"></i>上传视频
+                                        </button>
+                                        <input type="hidden" name="privatevideo"/>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="common/script::copy"></script>
+<!--<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate','table'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload
+            , table = layui.table
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        // 提示图片上传
+        upload.render({
+            elem: '#upload_pic'
+            , url: context + '/select/prompt_pic'
+            , accept: 'file'
+            , exts: 'jpeg|png|jpg'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        $("input[name='pic']").val(res.extend.msg);
+                    });
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+        // 提示视频上传
+        upload.render({
+            elem: '#upload_video'
+            , url: context + '/select/prompt_video'
+            , accept: 'video' //视频
+            , exts: 'mp4|avi|amv'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        $("input[name='video']").val(res.extend.msg);
+                    });
+
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+        // 提示图片上传
+        upload.render({
+            elem: '#private_pic'
+            , url: context + '/select/prompt_pic'
+            , accept: 'file'
+            , exts: 'jpeg|png|jpg'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        $("input[name='privatepic']").val(res.extend.msg);
+                    });
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+        // 提示视频上传
+        upload.render({
+            elem: '#private_video'
+            , url: context + '/select/prompt_video'
+            , accept: 'video' //视频
+            , exts: 'mp4|avi|amv'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        $("input[name='privatevideo']").val(res.extend.msg);
+                    });
+
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+
+    })
+</script>-->
+</body>
+</html>

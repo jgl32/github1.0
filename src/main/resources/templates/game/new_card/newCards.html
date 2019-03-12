@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'newCards')"></div>
+    <div class="layui-body">
+        <!--内容主体-->
+        <div style="padding: 15px;">
+        <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>打卡管理</cite></a>
+        </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card-body">
+
+                            <!-- 卡点表单提交 -->
+                            <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                <!-- UUID -->
+
+                                <div class="layui-form-item">
+                                    <a href="http://www.gpsspg.com/maps.htm" class="layui-btn" target="_blank">获取经纬度</a>
+                                </div>
+                                <!--<button type="button" onclick="selectRole()" class="layui-btn layui-btn-danger layui-btn-sm">获取经纬度</button>-->
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">UUID</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cUuid" autocomplete="off" placeholder="点击自动生成"
+                                               class="layui-input" id="newResult" style="border: 1px solid lightgray;width: 300px;">
+                                        <button type="" id="click_inpu" class="layui-btn" style="margin-left: 345px;margin-top: -67px;">生成新的</button>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="wei" style="margin-top: -21px;">
+                                    <label class="layui-form-label">纬度</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cWeiY" autocomplete="off" placeholder="请输入纬度"
+                                               class="layui-input" lay-verify="validateMoney" style="border: 1px solid lightgray">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="address">
+                                    <label class="layui-form-label">打卡地址</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cAddress" autocomplete="off" placeholder="请输入打卡地址"
+                                               class="layui-input" style="border: 1px solid lightgray"><!--name="cAddress"-->
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="jing">
+                                    <label class="layui-form-label">经度</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cJingX" autocomplete="off" placeholder="请输入经度"
+                                               class="layui-input" lay-verify="validateMoney" style="border: 1px solid lightgray">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="order">
+                                    <label class="layui-form-label">打卡序号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cOrder" autocomplete="off" placeholder="打卡序号"
+                                               class="layui-input" lay-verify="validateMoney" style="border: 1px solid lightgray">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="names">
+                                    <label class="layui-form-label">名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cNames" autocomplete="off" placeholder="名称"
+                                               class="layui-input" lay-verify="validateMoney" style="border: 1px solid lightgray">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="remark">
+                                    <label class="layui-form-label">备注</label>
+                                    <div>
+                                        <textarea name="cRemark" id="" cols="210" rows="10" lay-verify="validateMoney" placeholder=""></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <input type="hidden" name="cardUrl">
+                                    <div class="layui-inline" style="margin-left: 45%;margin-top: 25px;">
+                                        <button type="" class="layui-btn" id="cardSubmit" >保存</button>
+                                        <a class="layui-btn" href="#" onclick="javascript:history.back(-1);">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script th:replace="common/script::copy"></script>
+
+
+
+<script type="text/javascript" th:inline="javascript" >
+
+
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        let form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        var date_list = [];
+
+        // 自动生成UUID
+        $("#click_inpu").click(function () {
+            var a = Math.random().toString(36).substr(2, 15);
+            var t = new Date().getTime();
+            $("#newResult").val(a + t); // 24位
+        });
+
+        $("#cardSubmit").click(function () {
+            var cUuid = $("input[name='cUuid']").val();
+            var cNames = $("input[name='cNames']").val();
+            var cOrder = $("input[name='cOrder']").val();
+            var index_load = layer.load(1, {
+                offset: '220px',
+            })
+            $.get(context + '/cards/getId/'+cUuid+'/'+cNames+'/'+cOrder, function (res) {
+                if(res.code == 100){
+                    var cUrl = res.extend.msg;
+                    layer.msg("生成二维码成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        let cTask = $("input[name='cTask']").val();//空值
+                        let cParent = $("input[name='cParent']").val();//
+                        let cGoods = $("input[name='cGoods']").val();
+                        let cJingX = $("input[name='cJingX']").val();
+                        let cWeiY = $("input[name='cWeiY']").val();
+                        let cAddress = $("input[name='cAddress']").val();
+                        let cRemark = $("textarea[name='cRemark']").val();
+                        console.log(cRemark);
+                        let cIntegral = $("input[name='cIntegral']").val();
+                        let cErrors = $("input[name='cErrors']").val();
+
+                        var date_card = {
+                            cUrl:cUrl,
+                            cUuid:cUuid,
+                            cWeiY: cWeiY,
+                            cAddress: cAddress,
+                            cJingX: cJingX,
+                            cOrder: cOrder,
+                            cNames: cNames,
+                            cRemark: cRemark
+                            // cErrors:cErrors,
+                            // cIntegral: cIntegral
+                        };
+
+                        $.post(context + '/cards/insertCards',date_card, function(res) {
+                            console.log(res);
+                            if(res.code == 100){
+                                layer.msg("生成打点信息成功！", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    layer.close(index_load);
+                                    return false;
+                                });
+                            }
+                        });
+
+                    });
+
+                }else{
+                    layer.msg("生成二维码失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+            });
+        });
+
+        $("#cardSave").click(function () {
+            // 自动生成UUID
+            var a = Math.random().toString(36).substr(2, 15);
+            var t = new Date().getTime();
+            $("#newResult").val(a + t); // 24位
+
+            var cUuid = $("input[name='cUuid']").val();
+            var cNames = $("input[name='cNames']").val();
+            var cOrder = $("input[name='cOrder']").val();
+            var index_load = layer.load(1, {
+                offset: '220px',
+            })
+            $.get(context + '/cards/getId/'+cUuid+'/'+cNames+'/'+cOrder, function (res) {
+                if(res.code == 100){
+                    var cUrl = res.extend.msg;
+                    layer.msg("生成二维码成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        let cTask = $("input[name='cTask']").val();//空值
+                        let cParent = $("input[name='cParent']").val();//
+                        let cGoods = $("input[name='cGoods']").val();
+                        let cJingX = $("input[name='cJingX']").val();
+                        let cWeiY = $("input[name='cWeiY']").val();
+                        let cAddress = $("input[name='cAddress']").val();
+                        let cRemark = $("textarea[name='cRemark']").val();
+                        let cIntegral = $("input[name='cIntegral']").val();
+                        let cErrors = $("input[name='cErrors']").val();
+
+                        var date_card = {
+                            cUrl:cUrl,
+                            cUuid:cUuid,
+                            cWeiY: cWeiY,
+                            cAddress: cAddress,
+                            cJingX: cJingX,
+                            cOrder: cOrder,
+                            cNames: cNames,
+                            cRemark: cRemark
+                            // cErrors:cErrors,
+                            // cIntegral: cIntegral
+                        };
+
+                        $.post(context + '/cards/insertCards',date_card, function(res) {
+                            console.log(res);
+                            if(res.code == 100){
+                                layer.msg("生成打点信息成功！", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    layer.close(index_load);
+                                    return false;
+                                });
+                            }
+                        });
+
+
+                    });
+
+                }else{
+                    layer.msg("生成二维码失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+            });
+        });
+
+    })
+</script>
+<script>
+    function selectRole() {
+        var  url=window.location.href;
+        var world = url.split('=');
+        var url_e = world[1];
+        window.open(context+"/cards/newbaidumap", "_self");
+    }
+</script>
+
+</body>
+</html>

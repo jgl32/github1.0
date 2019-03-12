@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body" style="overflow: auto;">
+    <div style="padding: 20px; background-color: #F2F2F2;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">主题 : [[${travel.lName}]]</div>
+                </div>
+            </div>
+            <!-- 封面 -->
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="height: 180px;">
+                        <div class="layui-col-md6" style="width: 45%; height: 180px; float: left; padding-right: 1%;">
+                            <img th:src="${travel.lImage}" style="width: 100%; height: 180px;">
+                        </div>
+                        <div class="layui-col-md5" style="width: 55%; height: 180px; float: left; padding-left: 1%;" th:text="${travel.lMessage}"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 内容图片 -->
+            <div class="layui-col-md12">
+                <div class="layui-card" id="img_back">
+                    <div class="layui-card-body">
+                        <div class="layui-col-md3 img_div" th:each="travelImage : ${travelImages}" style="width: 31%; float: left; margin: 1%;">
+                            <img th:src="${travelImage.userImage}" alt="" style="width: 100%; height: 100px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 评论回复内容 -->
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-collapse" lay-accordion="">
+                        <div class="layui-colla-item" th:each="commentList : ${commentLists}">
+                            <h2 class="layui-colla-title">
+                                <button class="layui-btn layui-btn-danger layui-btn-sm del_comment" style="margin: 6px -2% auto 7%; float: right;" th:attr="data-value=${commentList.comment.id}">删除</button>
+                                [[${commentList.comment.inputMessage}]]
+                                <i class="fa fa-thumbs-up" style="float: right; margin: 8px auto;">
+                                    <p th:text="${commentList.comment.thumbsUp}"></p>
+                                </i>
+                            </h2>
+                            <div class="layui-colla-content">
+                                <blockquote class="layui-elem-quote" th:each="list: ${commentList.reply}">
+                                    <span>
+                                        <p th:text="${list.replyMessage}" style="width: 87%"></p>
+                                        <button th:attr="data-value=${list.id}" class="layui-btn layui-btn-danger layui-btn-sm del_reply" style="margin: -25px 0% auto 0%; float: right;width: 9%;">删除</button>
+                                    </span>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" data-th-inline="javascript">
+    layui.use(['form', 'jquery', 'element'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , element = layui.element
+            , $ = layui.jquery;
+
+        var cord = $("#img_back");
+        var img_size = $('.img_div').length;
+        if(img_size <= 3){
+            console.log(3);
+            cord.css('height','130px');
+        }else if(img_size >3 && img_size <= 6){
+            console.log(6);
+            cord.css('height','240px');
+        }else{
+            console.log(9);
+            cord.css('height','360px');
+        }
+
+        //监听折叠
+        element.on('collapse(test)', function(data){
+            layer.msg('展开状态：'+ data.show);
+        });
+
+
+        $(".del_reply").click(function(){
+            var reply_this = $(this);
+            var reply_id = reply_this.data('value');
+            $.get(context+"/invitation/del_reply/"+reply_id, function(res){
+                // console.log(res);
+                var temp = reply_this.parent().parent();
+                var num = temp.parent().children().length;
+                if(num <= 1){
+                    temp.parent().removeClass("layui-show");
+                    temp.remove();
+                }else{
+                    temp.remove();
+                }
+            })
+        });
+
+        $(".del_comment").click(function(event){
+            event.stopPropagation();
+            var comment_this = $(this);
+            var comment_id = comment_this.data('value');
+            $.get(context+"/invitation/del_comment/"+comment_id, function(res){
+                comment_this.parent().parent().empty();
+            })
+        });
+
+    })
+</script>
+</html>

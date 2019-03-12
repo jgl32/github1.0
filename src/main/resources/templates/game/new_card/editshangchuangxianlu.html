@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+
+</head>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+    pre{
+        white-space:pre-wrap;
+        white-space:-moz-pre-wrap;
+        white-space:-o-pre-wrap;
+        word-wrap:break-word;
+    }
+</style>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+
+<style type="text/css">
+
+    .divcss5 {
+        width: 600px;
+        height: 200px;
+        border: 1px solid rgba(0, 0, 0, 0.01);
+
+        word-wrap: break-word;
+        overflow-y: scroll;
+    }
+</style>
+
+<style>
+
+    .dtDistance {
+        outline: 0;
+        -webkit-appearance: none;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        width: 175px;
+        height: 40px;
+    }
+
+    .dtTime {
+        outline: 0;
+        -webkit-appearance: none;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        width: 160px;
+        height: 40px;
+    }
+</style>
+
+<style>
+    .inputTable {
+        width: 138px;
+        height: 40px;
+    }
+</style>
+
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;" >
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+        <input type="hidden" name="cid" id="cid" th:value="${circuitList.cid}"/>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block">
+                    <input name="cname" th:value="${circuitList.cname}"  autocomplete="off"
+                           class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">时间</label>
+                <div class="layui-input-inline">
+                    <input name="ctime" th:value="${circuitList.ctime}"  autocomplete="off"
+                           class="layui-input" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input name="comment" th:value="${circuitList.comment}"  autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <input name="ctype" th:value="${circuitList.ctype}"  autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">初始积分</label>
+                <div class="layui-input-inline">
+                    <input name="cinitials" th:value="${circuitList.cinitials}"  autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">提示信息</label>
+                <div class="layui-input-block">
+                    <input type="text" th:value="${circuitList.aaa}" name="a" id="a" style="display: none">
+                     <!--textare没有value属性   -->
+                    上传文字<textarea name="aaa" id="aaa" cols="100" rows="20"></textarea>
+
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">上传图片</label>
+                        <div class="layui-input-block" id="demo" style="min-height:100px;border: 1px solid black;">
+                            <div class="layui-upload-list" style="min-width:200px;">
+                                <img class="layui-upload-img" name="cpicaddress" id="upload_pic" th:src="${circuitList.cpicaddress}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">上传视频</label>
+                        <div class="layui-input-block" id="demo_video" style="min-height:100px;border: 1px solid black;">
+                            <div class="layui-upload-list" style="min-width:200px;">
+                                <video name="video" id="upload_video" controls="controls" th:src="${circuitList.video}"></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">上传音频</label>
+                        <div class="layui-input-block" id="demo_audio" style="min-height:100px;border: 1px solid black;">
+                            <div class="layui-upload-list" style="min-width:200px;">
+                                <audio name="voice" id="upload_mp3" value="audio" controls="controls" th:src="${circuitList.voice}"></audio>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<button type="button" class="layui-btn layui-btn-danger" id="upload_pic"><i class="layui-icon" name="tp"></i>上传图片
+                    </button>
+                    <input type="hidden" name="cardHintPic"/>
+                    <button type="button" class="layui-btn layui-btn-warm" id="upload_video"><i class="layui-icon" name="sp"></i>上传视频
+                    </button>
+                    <input type="hidden" name="cardHintVideo"/>
+                    <button type="button" class="layui-btn" id="upload_mp3"><i class="layui-icon" name="yp"></i>上传音频
+                    </button>
+                    <input type="hidden" name="cardHintMp3"/>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" style="padding: 10px 145px;border: 1px solid #009688">
+            <div class="layui-card-header demoTable" style="position: relative">
+                <button class="layui-btn" data-type="add_spot" name="ppp" id="add_spot">历史卡点</button>
+            </div>
+            <div class="layui-form-item" style="margin-left: -90px;">
+                <div class="layui-input-block">
+                    <table id="test3" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card">
+            <div class="layui-card-body" style="padding: 10px 145px;border: 1px solid #009688">
+                <div class="layui-card-header demoTable" style="position: relative">
+                    <button class="layui-btn" data-type="add_js" name="ddd" id="add_js">历史角色</button>
+                </div>
+                <div class="layui-form-item" style="margin-left: -90px;">
+                    <div class="layui-input-block">
+                        <table id="test" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-card-body" style="padding: 40px 145px;border: 1px solid #009688">
+                <div class="layui-card-header demoTable"  style="position: relative">
+                    <button class="layui-btn" data-type="add_zy" name="eee" id="add_zy">历史阵营</button>
+                </div>
+                <div class="layui-form-item" style="margin-left: -90px;">
+                    <div class="layui-input-block">
+                        <table id="test1" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="layui-card-body" style="padding: 70px 145px;border: 1px solid #009688">
+                <div class="layui-card-header demoTable" style="position: relative">
+                    <button class="layui-btn" data-type="add_jq" name="fff" id="add_jq">历史剧情</button>
+                </div>
+                <div class="layui-form-item" style="margin-left: -90px;">
+                    <div class="layui-input-block">
+                        <table id="test2" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="layui-card-body" style="padding: 70px 145px;border: 1px solid #009688;border-bottom: 1px solid transparent;">
+                <div style="margin-left: -102px;margin-top: -51px;">
+                    <h3 style="font-weight: bold">胜利设置</h3>
+                </div>
+                <div class="layui-input-inline" style="margin-top: 28px;">
+                    <select style="width: 200px;height: 40px;">
+                        <option value="">胜利阵营选择</option>
+                        <option value="阵营1">阵营1</option>
+                        <option value="阵营2">阵营2</option>
+                        <option value="阵营3">阵营3</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="margin-top: 28px;">
+                    <select style="width: 200px;height: 40px;">
+                        <option value="">全灭阵营选择</option>
+                        <option value="阵营1">阵营1</option>
+                        <option value="阵营2">阵营2</option>
+                        <option value="阵营3">阵营3</option>
+                    </select>
+                </div>
+                <hr>
+                <div class="layui-input-inline" style="margin-top: 22px;">
+                    <select style="width: 200px;height: 40px;">
+                        <option value="">阵营选择</option>
+                        <option value="阵营1">阵营1</option>
+                        <option value="阵营2">阵营2</option>
+                        <option value="阵营3">阵营3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-card-header demoTable" style="position: relative">
+                <button class="layui-btn" data-type="add_rw" name="ddd" id="add_rw">历史任务品</button>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="insertDirectional">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_update" >编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteLine">删除</a>
+</script>
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_update" >编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteLine2">删除</a>
+</script>
+<script type="text/html" id="barDemo3">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_update" >编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteLine3">删除</a>
+</script>
+<script type="text/html" id="barDemo4">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_look" >查看</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_update" >编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteLine4">删除</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_out">导出二维码</a>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" data-th-inline="javascript">
+    document.getElementById("aaa").innerHTML=$("#a").val();
+    layui.use(['form', 'layedit', 'upload', 'laydate','table'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , table=layui.table
+            , upload = layui.upload;
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //角色
+        table.render({
+            elem: '#test'
+            ,url: context+'/gamerole/list'   /*查询刚刚插入的角色表数据*/
+            ,cols: [[
+                {field:'kgId', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'kgName', width: '15%', title:'名字', align:'center'}
+                ,{field:'campserialnumber', width: '15%', title:'阵营序号', align:'center'}
+                ,{field:'kgContext', width: '15%', title: '介绍', sort: true, align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        //阵营
+        table.render({
+            elem: '#test1'
+            ,url: context+'/camp/list'   /*查询刚刚插入的阵营数据*/
+            ,cols: [[
+                {field:'id', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'campName', width: '15%', title:'名称', align:'center'}
+                ,{field:'bb', width: '15%', title:'阵营序号', align:'center'}
+                ,{field:'campBrief', width: '15%', title:'介绍', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '40%', align:'center', toolbar: '#barDemo2'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        //剧情
+        table.render({
+            elem: '#test2'
+            ,url: context+'/vict/list'   /*查询刚刚插入的剧情数据*/
+            ,cols: [[
+                {field:'id', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'name', width: '15%', title:'名称', align:'center'}
+                ,{field:'serialnumber', width: '15%', title:'顺序号', align:'center'}
+                ,{field:'introduce', width: '15%', title:'角色', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '40%', align:'center', toolbar: '#barDemo3'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+
+        //历史卡点
+        table.render({
+            elem: '#test3'
+            ,url: context+'/vict/list'   /*查询刚刚插入的卡点数据*/
+            ,cols: [[
+                {field:'id', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'type', width: '15%', title:'类型', align:'center'}
+                ,{field:'name', width: '15%', title:'名称', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '40%', align:'center', toolbar: '#barDemo4'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+
+
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'deleteLine'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/gamerole/deleteById?gameRole="+data.kgId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.msg("删除数据成功！", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                layer.close(index);
+                                return false;
+                            });
+
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            }
+
+        });
+
+
+        $("#add_spot").click(function(){
+            layer.open({
+                type: 2,
+                title: '历史卡点',
+                area: ['1200px', '800px'],
+                content: context+'/select/getcards'
+            });
+        })
+
+        $("#add_js").click(function () {
+            layer.open({
+                type: 2,
+                title: '历史角色',
+                area: ['1200px', '800px'],
+                content: context+'/gamerole/getlsjs',
+                end:function(){
+                    location.reload();
+                }
+            });
+        })
+
+        $("#add_zy").click(function () {
+            layer.open({
+                type: 2,
+                title: '历史阵营',
+                area: ['1200px', '800px'],
+                content: context+'/camp/getlszy',
+                end:function(){
+                    location.reload();
+                }
+            });
+        })
+
+        $("#add_jq").click(function () {
+            layer.open({
+                type: 2,
+                title: '历史剧情',
+                area: ['1200px', '800px'],
+                content: context+'/vict/getlsjq',
+                end:function(){
+                    location.reload();
+                }
+            });
+        })
+
+        var $ = layui.$, active = {
+            add_rw : function(){
+                layer.open({
+                    type: 2,
+                    title: '历史任务',
+                    area: ['1200px', '800px'],
+                    content: context+'/select/getrwpym',
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            }
+        };
+
+        //日期
+        laydate.render({
+            elem: '#apply_start_date'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#apply_end_date'
+            , type: 'datetime'
+        });
+        //日期
+        laydate.render({
+            elem: '#start_date'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_date'
+            , type: 'datetime'
+        });
+
+        $("#game_add").click(function(){
+            window.location.href=context+"/task/taskym";
+        });
+
+        $("#select_task").click(function(){
+            parent.window.location.href=context+"/task/newlsrwpym";
+        });
+
+        $("#game_pointAll").click(function(){
+            parent.window.location.href=context+"/select/lsxianlu";
+        });
+
+        $("#game_insert").click(function(){
+            parent.window.location.href=context+"/cards/cardsYm";
+        });
+
+        $("#game_newdakym").click(function(){
+            parent.window.location.href=context+"/task/newdakym";
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#demo'
+            ,url: context + '/select/prompt_pic'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='cpicaddress']").val(res.extend.msg);
+                        $("#upload_pic").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+
+                $("img[name='cpicaddress']").val(res.extend.msg);
+            }
+        });
+        //视频上传
+        var uploadInst = upload.render({
+            elem: '#demo_video'
+            ,url: context + '/select/prompt_video'
+            ,accept:'video'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1_video').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='video']").val(res.extend.msg);
+                        $("#upload_video").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+
+                $("video[name='video']").val(res.extend.msg);
+            }
+        });
+        //音频上传
+        var uploadInst = upload.render({
+            elem: '#demo_audio'
+            ,url: context + '/select/prompt_mp3'
+            ,accept:'audio'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1_audio').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='voice']").val(res.extend.msg);
+                        $("#upload_mp3").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                $("audio[name='voice']").val(res.extend.msg);
+            }
+        });
+
+        // 监听提交
+        form.on('submit(insertDirectional)', function (data) {
+            var sub_data = {
+                "cid":$("input[name='cid']").val(),
+                "cname": $("input[name='cname']").val(),
+                "ctime": $("input[name='ctime']").val(),
+                "comment": $("input[name='comment']").val(),
+                "ctype": $("input[name='ctype']").val(),
+                "cinitials": $("input[name='cinitials']").val(),
+                "aaa": $("textarea[name='aaa']").val(),
+                "cpicaddress": $("img[name='cpicaddress']").val(),
+                "video": $("video[name='video']").val(),
+                "voice": $("audio[name='voice']").val(),
+            };
+
+            $.post(context + "/select/update", sub_data, function (res) {
+                if (res.code == 100) {
+                    layer.msg('修改成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+                        function () {
+                            parent.window.location.href = context + "/cards/newshangchuangxianlu";
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }
+                console.log(res);
+            });
+            return false;
+        });
+    })
+</script>

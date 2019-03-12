@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+
+</head>
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">获取方式</label>
+                <div class="layui-input-block">
+                    <input name="taccess"  autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">任务名称</label>
+                <div class="layui-input-block"  >
+                    <input type="text" class="layui-input" name="xname">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">能否交易</label>
+                <div class="layui-input-block" >
+                    <input type="text" class="layui-input" name="xdeal">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit=""  lay-filter="insertDirectional">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" data-th-inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        // 监听提交
+        form.on('submit(insertDirectional)', function (data) {
+            var sub_data = {
+                "taccess": $("input[name='taccess']").val(),
+                "xname": $("input[name='xname']").val(),
+                "xdeal": $("input[id='xdeal']").val(),
+            };
+            $.post(context + "/task/insertTaskAll", sub_data, function (res) {/*插入数据接口*/
+                if (res.code == 100) {
+                    layer.msg('新增成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+
+                        function () {
+                            parent.window.location.href = context + "/task/newlsrwpym";/*回显接口*/
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }
+                console.log(res);
+            });
+            return false;
+        });
+    })
+</script>
+</html>

@@ -1,0 +1,253 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<style type="text/css">
+    #demo2 > img {
+        width: 33%;
+        height: 115px;
+    }
+
+    #demo1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">旅游名称</label>
+            <div class="layui-input-block">
+                <input name="tourName" lay-verify="title" autocomplete="off" placeholder="请输入旅游名称" class="layui-input"
+                       type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">旅游主题</label>
+            <div class="layui-input-block">
+                <input name="tourTitle" lay-verify="title" autocomplete="off" placeholder="请输入旅游主题" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">旅游方式</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="tourType" id="tourType" type="text" autocomplete="off" disabled="disabled"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">限定人数</label>
+                <div class="layui-input-inline">
+                    <input name="tourLimitPeople" type="number" autocomplete="off" class="layui-input" min="1" max="100">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">旅游地点</label>
+            <div class="layui-input-block">
+                <input name="tourAddress" lay-verify="title" autocomplete="off" placeholder="请输入旅游地点"
+                       class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">主办方</label>
+            <div class="layui-input-block">
+                <input name="tourSponsor" lay-verify="title" autocomplete="off" placeholder="请输入主办方" class="layui-input"
+                       type="text">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">封面图</label>
+            <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                <div class="layui-upload-list" style="margin: 0;">
+                    <img class="layui-upload-img" id="demo1">
+                </div>
+            </div>
+            <input type="hidden" name="tourPic" value="">
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">旅游描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入描述内容" class="layui-textarea" id="tourBrief"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">所需费用</label>
+                <div class="layui-input-block">
+                    <input name="tourMoney" lay-verify="title" autocomplete="off" placeholder="￥" class="layui-input"
+                           type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式</label>
+                <div class="layui-input-block">
+                    <input type="tel" name="tourPhone" lay-verify="required|phone" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">添加保险</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="tourIfSafe" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">保险费用</label>
+                <div class="layui-input-block">
+                    <input name="tourSafePrice" lay-verify="title" autocomplete="off" placeholder="￥"
+                           class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">保险名称</label>
+                <div class="layui-input-block">
+                    <input name="tourSafeType" lay-verify="title" autocomplete="off" placeholder="请输入保险名称"
+                           class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开启报名</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="tourIfAllow" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始报名</label>
+                <div class="layui-input-inline">
+                    <input name="tourApplyStime" placeholder="开始报名的时间" autocomplete="off" class="layui-input"
+                           type="text" id="apply_start_date">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束报名</label>
+                <div class="layui-input-inline">
+                    <input name="tourApplyEtime" placeholder="结束报名的时间" autocomplete="off" class="layui-input"
+                           type="text" id="apply_end_date">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始</label>
+                <div class="layui-input-inline">
+                    <input name="tourStime" placeholder="旅游开始的时间" autocomplete="off" class="layui-input" type="text"
+                           id="start_date">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束</label>
+                <div class="layui-input-inline">
+                    <input name="tourEtime" placeholder="旅游结束的时间" autocomplete="off" class="layui-input" type="text"
+                           id="end_date">
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1" id="sub_add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">立即重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:src="@{/statics/js/jquery-3.3.1.js}"></script>
+<script type="text/javascript" data-th-inline="javascript">
+    $("#tourType").val([[${address}]]);
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#apply_start_date'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#apply_end_date'
+            , type: 'datetime'
+        });
+        //日期
+        laydate.render({
+            elem: '#start_date'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_date'
+            , type: 'datetime'
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: context + '/invitation/upload_one/'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (res, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code == 200) {
+                    return layer.msg('上传失败');
+                }
+                $("input[name='tourPic']").val(res.extend.msg);
+            }
+        });
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var index = layer.msg('努力中...', {
+                icon: 1,
+                shade: [0.5, '#f5f5f5'],
+                scrollbar: false,
+                offset: '50%',
+                time: 10000
+            });
+            var tourType=0;
+            if ([[${address}]] ==="路线旅游") {
+                tourType = 0;
+            } else if ([[${address}]] === "定点旅游") {
+                tourType = 1;
+            }
+            console.log(tourType);
+            var sub_data = {
+                "tourName": $("input[name='tourName']").val(),
+                "tourTitle": $("input[name='tourTitle']").val(),
+                "tourType": tourType,
+                "tourLimitPeople": $("input[name='tourLimitPeople']").val(),
+                "tourAddress": $("input[name='tourAddress']").val(),
+                "tourSponsor": $("input[name='tourSponsor']").val(),
+                "tourPic": $("input[name='tourPic']").val(),
+                "tourBrief": $("#tourBrief").val(),
+                "tourMoney": $("input[name='tourMoney']").val(),
+                "tourPhone": $("input[name='tourPhone']").val(),
+                "tourIfSafe": $("input[name='tourIfSafe']").val() == "on" ? 1 : 0,
+                "tourSafePrice": $("input[name='tourSafePrice']").val(),
+                "tourSafeType": $("input[name='tourSafeType']").val(),
+                "tourIfAllow": $("input[name='tourIfAllow']").val() == "on" ? 1 : 0,
+                "tourApplyStime": $("input[name='tourApplyStime']").val(),
+                "tourApplyEtime": $("input[name='tourApplyEtime']").val(),
+                "tourStime": $("input[name='tourStime']").val(),
+                "tourEtime": $("input[name='tourEtime']").val()
+            };
+            $.post(context + "/first/insert_active", sub_data, function (res) {
+                console.log(res);
+                let index_1 = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index_1);
+                layer.close(index);
+                window.location.href = window.location.href;
+            });
+        });
+
+
+    })
+</script>

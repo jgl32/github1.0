@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+
+
+<style type="text/css">
+    #demo2 {
+        width: 100%;
+        height: 250px;
+    }
+    .layui-upload-img {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>新增大盘游戏</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+
+                            <div class="layui-container">
+                                <form class="layui-form" onsubmit="return false;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggName" lay-verify="title" autocomplete="off" placeholder="请输入游戏名称" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">封面图</label>
+                                        <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                                            <div class="layui-upload-list" style="margin: 0;">
+                                                <img class="layui-upload-img" name="ggImg" id="ggImg" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">游戏地图</label>
+                                        <div class="layui-input-block" id="test2" style="border: 1px solid #9F9F9F;">
+                                            <div class="layui-upload-list" style="margin: 0;">
+                                                <img class="layui-upload-img" name="ggMapUrl" id="ggMapUrl" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏简介</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggBrief" lay-verify="title" autocomplete="off" placeholder="游戏简介" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏规则</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggRule" lay-verify="title" autocomplete="off" placeholder="游戏规则" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏人数</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggApplyPeople" lay-verify="title" autocomplete="off" placeholder="游戏人数" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">限定人数</label>
+                                        <div class="layui-input-block">
+                                            <div id="slideTest-people" class="demo-slider" style="top: 17px;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="display: none;">
+                                        <label class="layui-form-label">团队数量</label>
+                                        <div class="layui-input-block">
+                                            <div id="slideTest-team" class="demo-slider" style="top: 17px;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">开始日期</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="date" id="start_date" lay-verify="datetime" placeholder="yyyy-MM-dd " autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">结束日期</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="date" id="end_date" lay-verify="datetime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-card-header demoTable">
+                                    </div>
+
+                                    <div class="layui-card-body">
+                                        <table class="layui-hide" id="test" lay-filter="test"></table>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit="" lay-filter="map_submit_btn">立即提交</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:replace="common/script::copy"></script>
+<script th:inline="javascript" type="text/javascript" th:src="@{/statics/custom_js/grail_game/grailAdd.js}"></script>
+
+
+
+<script type="text/javascript" data-th-inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table',], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload
+            ,table = layui.table;
+
+
+
+        //日期
+        laydate.render({
+            elem: '#apply_start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#apply_end_date'
+            ,type: 'datetime'
+        });
+        //日期
+        laydate.render({
+            elem: '#start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_date'
+            ,type: 'datetime'
+        });
+
+
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: context+'/activity/upload_one_grailGame/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#ggImg').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        // $("input[name='dtImg']").val(res.extend.msg);
+                        $("#ggImg").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                // $("input[name='dtImg']").val(res.extend.msg);
+            }
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test2'
+            ,url: context+'/activity/upload_one_grailGame/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#ggMapUrl').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        // $("input[name='dtImg']").val(res.extend.msg);
+                        $("#ggMapUrl").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                // $("input[name='dtImg']").val(res.extend.msg);
+            }
+        });
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            circle : function(){
+                layer.open({
+                    type: 2,
+                    title: '毒圈游戏',
+                    area: ['850px', '600px'],
+                    content: context+"/activity/famousBrand"
+                });
+            }
+        };
+
+        var $ = layui.$, active = {
+            famous : function(){
+                layer.open({
+                    type: 2,
+                    title: '电子名牌',
+                    area: ['850px', '600px'],
+                    content: context+"/activity/famousBrand"
+                });
+            }
+        };
+
+    })
+</script>

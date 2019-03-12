@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+    <meta charset="UTF-8">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'activity2')"></div>
+    <div class="layui-body">
+        <!--内容主体-->
+        <div style="padding: 15px;">
+        <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>新增组</cite></a>
+        </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card-body">
+                            <a class="layui-btn" href="#" onclick="javascript:history.back(-1);" > 返回上一页</a>
+                            <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">序号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="activityname" autocomplete="off" placeholder="请输入活动名称"
+                                               class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">活动名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="activityname" autocomplete="off" placeholder="请输入活动名称"
+                                               class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">活动介绍</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="activitytell" autocomplete="off" placeholder="请输入活动介绍"
+                                               class="layui-input">
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">阵营关系设置</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="activitytell" autocomplete="off" placeholder="请输入活动介绍"
+                                               class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <input type="hidden" name="cardUrl">
+                                    <div class="layui-inline" style="margin-left: 50%;">
+                                        <button type="reset" class="layui-btn" id="cardSubmit">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:replace="common/footer::copy"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function () {
+        let form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        // 提示图片上传
+        upload.render({
+            elem: '#upload_pic'
+            , url: context + '/activity/upload_oneCircleMap'
+            , accept: 'file'
+            , exts: 'jpeg|png|jpg'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        $("#upload_pic").val(res.extend.msg);
+                    });
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                    });
+                }
+            }
+        });
+        //点击按钮触发的点击事件
+
+        /*if (/!*activityHintPic == "" ||*!/ activityHintPic == "" ||activityname == "" || activitytell == "" || activitytime == "" || joinnum == "" || phone == "" || activitysite == "" || principal == "" || host == "") {
+                layer.msg('请检查是否填完！', {
+                    icon: 1,
+                    time: 2000
+                });
+                   return false;
+            } */
+
+        $("#cardSubmit").click(function () {
+            let activityHintPic = $("#upload_pic").val();
+            let activityname = $("input[name='activityname']").val();
+            let activitytell = $("input[name='activitytell']").val();
+            let hActivityStime = $("input[name='hActivityStime']").val();
+            let joinnum = $("input[name='joinnum']").val();
+            let phone = $("input[name='phone']").val();
+            let activitysite = $("input[name='activitysite']").val();
+            let principal = $("input[name='principal']").val();
+            let host = $("input[name='host']").val();
+
+            let date_card = {
+                hPicture: activityHintPic, /*线路图片*/
+                hActivityName: activityname, /*活动名称*/
+                hContent: activitytell, /*活动介绍*/
+                hActivityStime: hActivityStime, /*活动时间*/
+                hAttendPeopleCount: joinnum, /*参加人数*/
+                hContactway: phone, /*联系方式*/
+                hActivityPlace: activitysite, /*地点*/
+                hConscientious: principal, /*负责人*/
+                hOrganizer: host/*举办方*/
+            }
+            var index_load = layer.load(1, {//加载   防止用户二次点击
+                offset: '220px',
+            });
+            //这是先生成二维码
+
+            $.get(context + '/activity/addActivity', date_card, function (res) {
+
+                if (res.code == 100) {//res是一个封装状态码和实体类的一个类
+                    layer.msg("添加成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+
+                    },
+
+                        function(){
+                            window.location.href=context+"/activity/group/";
+                        });
+
+                       /* function () {
+                        layer.close(index_load);
+                        return false;
+                    });*/
+                } else {
+                    layer.msg("添加失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+            })
+        })
+        laydate.render({
+            elem: '#test1'
+        });
+    })
+
+</script>
+</html>

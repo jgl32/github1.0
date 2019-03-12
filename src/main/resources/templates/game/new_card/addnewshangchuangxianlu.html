@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+    <meta charset="UTF-8">
+    <!--<link href="//raw.githack.com/hnzzmsf/layui-formSelects/master/dist/formSelects-v4.css" rel="stylesheet" />-->
+</head>
+<style>
+
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'addnewshangchuangxianlu')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>设计线路</cite></a>
+            </span>
+            <!--<hr class="layui-bg-orange">-->
+            <div style="padding: 20px; border: 1px solid #5FB878">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <form class="layui-form" onsubmit="return false;">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">名称</label>
+                                            <div class="layui-input-block">
+                                                <input name="cname" autocomplete="off" class="layui-input" type="text" style="border: 1px solid lightgray">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">备注：</label>
+                                            <textarea rows="10" cols="110" name="comment" id="bz">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">类型</label>
+                                        <div class="layui-input-inline">
+                                            <input name="ctype" autocomplete="off" class="layui-input" style="border: 1px solid lightgray">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="margin-top: 30px;">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">初始积分</label>
+                                            <div class="layui-input-block">
+                                                <input name="cinitials" autocomplete="off" class="layui-input" type="text" style="border: 1px solid lightgray">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">人数限制</label>
+                                            <div class="layui-input-block">
+                                                <input name="hhh" autocomplete="off" class="layui-input" type="text" style="border: 1px solid lightgray">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline" style="position: relative">
+                                            <label class="layui-form-label">提示信息</label>
+                                            <span style="position: absolute;top:8px;">上传文字:</span>
+                                            <textarea name="aaa" id="" cols="100" rows="20" style="margin-left: 71px;margin-top: 30px;">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                   <div>
+                                        <div class="layui-form-item layui-form-text">
+                                            <label class="layui-form-label">上传图片</label>
+                                            <div class="layui-input-block" id="demo" style="min-height:100px;border: 1px solid black;">
+                                                <div class="layui-upload-list" style="min-width:200px;">
+                                                    <img class="layui-upload-img" name="dtImg" id="demo1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item layui-form-text">
+                                           <label class="layui-form-label">上传视频</label>
+                                           <div class="layui-input-block" id="demo_video" style="min-height:100px;border: 1px solid black;">
+                                               <div class="layui-upload-list" style="min-width:200px;">
+                                                   <video name="dtVideo" id="demo1_video" controls="controls"></video>
+                                               </div>
+                                           </div>
+                                        </div>
+                                       <div class="layui-form-item layui-form-text">
+                                           <label class="layui-form-label">上传音频</label>
+                                           <div class="layui-input-block" id="demo_audio" style="min-height:100px;border: 1px solid black;">
+                                               <div class="layui-upload-list" style="min-width:200px;">
+                                                   <audio name="dtAudio" id="demo1_audio" value="audio" controls="controls"></audio>
+                                               </div>
+                                           </div>
+                                       </div>
+                                        <!--<button type="button" class="layui-btn layui-btn-danger"
+                                                id="upload_pic"><i class="layui-icon" name="cpicaddress"></i>上传图片
+                                        </button>
+                                        <input type="hidden" name="cardHintPic"/>
+                                        <button type="button" class="layui-btn layui-btn-warm"
+                                                id="upload_video"><i class="layui-icon" name="video"></i>上传视频
+                                        </button>
+                                        <input type="hidden" name="cardHintVideo"/>
+
+                                        <button type="button" class="layui-btn" id="upload_mp3"><i
+                                                class="layui-icon" name="voice"></i>上传音频
+                                        </button>
+                                        <input type="hidden" name="cardHintMp3"/>-->
+
+                                    </div>
+
+
+
+
+                                    <!--<div class="layui-form-item">
+                                        <div class="layui-card-header demoTable" style="margin-left: 182px;margin-top: 50px;">
+                                            <button class="layui-btn" data-type="add_spot" name="ppp" id="add_spot">新增卡点</button>
+                                           &lt;!&ndash; <a class="layui-btn layui-btn-sm" lay-event="getda">新增卡点</a>&ndash;&gt;
+                                        </div>
+                                    </div>-->
+
+
+
+                                     <!--<div class="layui-form-item">
+                                        <div class="layui-input-block" style="margin-left: 180px;">
+                                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="game_sz">
+                                                线路设置
+                                            </button>
+                                         </div>
+                                     </div>-->
+
+                                    <!--<div id="container" style="margin-left: 200px">
+                                        <div id="info">
+                                            <button id="mapM" class="btn">setMap</button>
+                                            <button id="cursor" class="btn">setCursor</button>
+                                            <button id="path" class="btn">setPath</button>
+                                            <button id="strokeC" class="btn">setStrokeColor</button>
+                                            <button id="dash" class="btn">setStrokeDashStyle</button>
+                                            <button id="strokeWeight" class="btn">setStrokeWeight</button>
+                                            <button id="visibleT" class="btn">setVisible</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="margin-left: -90px;">
+                                        <div class="layui-input-block">
+                                            <table id="test5" lay-filter="test"></table>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-card">
+                                        <div class="layui-card-body" style="padding: 10px 145px;border: 1px solid #009688">
+                                            <div class="layui-card-header demoTable" style="position: relative">
+                                                <button class="layui-btn" data-type="add_js" name="ddd" id="add_js">添加角色</button>
+                                            </div>
+                                            <table class="layui-hide" id="test" lay-filter="demo1" style="border: 1px solid lightgray;"></table>
+                                        </div>
+                                        <div class="layui-card-body" style="padding: 40px 145px;border: 1px solid #009688">
+                                            <div class="layui-card-header demoTable"  style="position: relative">
+                                                <button class="layui-btn" data-type="add_zy" name="eee" id="add_zy">添加阵营</button>
+                                            </div>
+                                            <table class="layui-hide" id="test2" lay-filter="demo2" style="border: 1px solid lightgray;"></table>
+                                        </div>
+                                        <div class="layui-card-body" style="padding: 70px 145px;border: 1px solid #009688">
+                                            &lt;!&ndash;<div style="margin-left: -102px;margin-top: -51px;">
+                                                <h3 style="font-weight: bold">剧情环节</h3>
+                                            </div>&ndash;&gt;
+                                            <div class="layui-card-header demoTable" style="position: relative">
+                                                <button class="layui-btn" data-type="add_jq" name="fff" id="add_jq">添加剧情</button>
+                                            </div>
+                                            <table class="layui-hide" id="test3" lay-filter="demo3" style="border: 1px solid lightgray;"></table>
+                                        </div>
+                                        <div class="layui-card-body" style="padding: 70px 145px;border: 1px solid #009688;border-bottom: 1px solid transparent;">
+                                            <div style="margin-left: -102px;margin-top: -51px;">
+                                                <h3 style="font-weight: bold">胜利设置</h3>
+                                            </div>
+                                            <div class="layui-input-inline" style="margin-top: 28px;">
+                                                <select style="width: 200px;height: 40px;">
+                                                    <option value="">胜利阵营选择</option>
+                                                    <option value="阵营1">阵营1</option>
+                                                    <option value="阵营2">阵营2</option>
+                                                    <option value="阵营3">阵营3</option>
+                                                </select>
+                                            </div>
+                                            <div class="layui-input-inline" style="margin-top: 28px;">
+                                                <select style="width: 200px;height: 40px;">
+                                                    <option value="">全灭阵营选择</option>
+                                                    <option value="阵营1">阵营1</option>
+                                                    <option value="阵营2">阵营2</option>
+                                                    <option value="阵营3">阵营3</option>
+                                                </select>
+                                            </div>
+                                            <hr>
+                                            <div class="layui-input-inline" style="margin-top: 22px;">
+                                                <select style="width: 200px;height: 40px;">
+                                                    <option value="">阵营选择</option>
+                                                    <option value="阵营1">阵营1</option>
+                                                    <option value="阵营2">阵营2</option>
+                                                    <option value="阵营3">阵营3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-card-header demoTable" style="position: relative">
+                                            <button class="layui-btn" data-type="add_rw" name="ddd" id="add_rw">添加任务品</button>
+                                        </div>
+                                    </div>-->
+
+                                    <!--<div class="layui-form-item">
+                                        <div class="layui-input-block" style="margin-left: 271px;margin-top: -51px;">
+                                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="map_Tencent">
+                                                腾讯地图
+                                            </button>
+                                        </div>
+                                    </div>-->
+
+                                    <div class="layui-form-item" style="margin-left: -5%;" >
+                                        <div class="layui-input-block" align="center">
+                                            <button class="layui-btn" lay-submit="" lay-filter="insertDirectional">提交</button>
+                                            <button type="" class="layui-btn">另存为</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<body >
+
+</body>
+
+<style type="text/css">
+    *{
+        margin:0px;
+        padding:0px;
+    }
+    body, button, input, select, textarea {
+        font: 12px/16px Verdana, Helvetica, Arial, sans-serif;
+    }
+    #info{
+        width:603px;
+        padding-top:3px;
+        overflow:hidden;
+    }
+    .btn{
+        width:142px;
+    }
+    #container{
+        width:800px;
+        height:600px;
+
+    }
+</style>
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=XRVBZ-2X3KU-IGVVC-BV632-QNT3J-WJFNN"></script>
+<script>
+    // var init = function() {
+    //     var center = new qq.maps.LatLng(39.916527,116.397128);
+    //     var map = new qq.maps.Map(document.getElementById('container'),{
+    //         center: center,
+    //         zoom: 13
+    //     });
+    //
+    //     var path1=[
+    //         new qq.maps.LatLng(39.910, 116.399),
+    //         new qq.maps.LatLng(39.920, 116.405),
+    //         new qq.maps.LatLng(39.930, 116.420)
+    //     ];
+    //     var path2=[
+    //         new qq.maps.LatLng(39.930456,116.387554),
+    //         new qq.maps.LatLng(39.929008,116.414162),
+    //         new qq.maps.LatLng(39.909786,116.379314),
+    //         new qq.maps.LatLng(39.908206,116.416908)
+    //     ];
+    //     var polyline = new qq.maps.Polyline({
+    //         path: path1,
+    //         strokeColor: '#000000',
+    //         strokeWeight: 5,
+    //         editable:false,
+    //         map: map
+    //     });
+    //     //setMap
+    //     var mapM=document.getElementById("mapM");
+    //     qq.maps.event.addDomListener(mapM,"click",function(){
+    //         polyline.setVisible(true);
+    //         if(polyline.getMap()){
+    //             polyline.setMap(null);
+    //         }else{
+    //             polyline.setMap(map);
+    //         }
+    //     });
+    //     //setCursor
+    //     var curF=true;
+    //     var cursor=document.getElementById("cursor");
+    //     qq.maps.event.addDomListener(cursor,"click",function(){
+    //         polyline.setMap(map);
+    //         polyline.setVisible(true);
+    //         if(curF){
+    //             curF=false;
+    //             polyline.setCursor("default");
+    //         }else{
+    //             curF=true;
+    //             polyline.setCursor("pointer");
+    //         }
+    //     });
+    //     //setPath
+    //     var pathF=true;
+    //     var path=document.getElementById("path");
+    //     qq.maps.event.addDomListener(path,"click",function(){
+    //         polyline.setMap(map);
+    //         polyline.setVisible(true);
+    //         if(pathF){
+    //             pathF=false;
+    //             polyline.setPath(path2);
+    //         }else{
+    //             pathF=true;
+    //             polyline.setPath(path1);
+    //         }
+    //     });
+    //     //setStrokeColor
+    //     var strokeF=true;
+    //     var strokeC=document.getElementById("strokeC");
+    //     qq.maps.event.addDomListener(strokeC,"click",function(){
+    //         polyline.setMap(map);
+    //         polyline.setVisible(true);
+    //         if(strokeF){
+    //             strokeF=false;
+    //             polyline.setStrokeColor("#000");
+    //         }else{
+    //             strokeF=true;
+    //             polyline.setStrokeColor("#1c29d8");
+    //         }
+    //     });
+    //     //setStrokeDashStyle
+    //     var dashF=true;
+    //     var dash=document.getElementById("dash");
+    //     qq.maps.event.addDomListener(dash,"click",function(){
+    //         polyline.setMap(map);
+    //         polyline.setVisible(true);
+    //         if(dashF){
+    //             dashF=false;
+    //             polyline.setStrokeDashStyle("dash");
+    //         }else{
+    //             dashF=true;
+    //             polyline.setStrokeDashStyle("solid");
+    //         }
+    //     });
+    //     //setStrokeWeight
+    //     var strokeWeightF=true;
+    //     var strokeWeight=document.getElementById("strokeWeight");
+    //     qq.maps.event.addDomListener(strokeWeight,"click",function(){
+    //         polyline.setMap(map);
+    //         polyline.setVisible(true);
+    //         if(strokeWeightF){
+    //             strokeWeightF=false;
+    //             polyline.setStrokeWeight(10);
+    //         }else{
+    //             strokeWeightF=true;
+    //             polyline.setStrokeWeight(5);
+    //         }
+    //     });
+    //     //setVisible
+    //     var visibleF=true;
+    //     var visibleT=document.getElementById("visibleT");
+    //     qq.maps.event.addDomListener(visibleT,"click",function(){
+    //         polyline.setMap(map);
+    //         if(visibleF){
+    //             visibleF=false;
+    //             polyline.setVisible(false);
+    //         }else{
+    //             visibleF=true;
+    //             polyline.setVisible(true);
+    //         }
+    //     });
+    // };
+</script>
+
+
+
+<!--线路设置-->
+<!--线路设置-->
+<!--线路设置-->
+<!--线路设置-->
+<!--线路设置-->
+<!--线路设置-->
+<!--线路设置-->
+
+<script type="text/html" id="barDemo">
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color:#ffffff;background-color: #009688;height: 23px;line-height: 23px;">打卡查看</a>-->
+    <button type="button" onclick="selectRole()" class="layui-btn layui-btn-xs" style="width: 50px;">编辑</button>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" style="width: 50px;" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-xs" style="width: 50px;">向上</a>
+    <a class="layui-btn layui-btn-xs" style="width: 50px;">向下</a>
+    <button type="button" onclick="selectRole()" class="layui-btn layui-btn-xs" style="width: 50px;">编辑</button>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" style="width: 50px;" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.cUrl}}"/>
+</script>
+<script th:replace="common/script::copy"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form','layedit', 'upload', 'laydate', 'table'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var table = layui.table;
+        /*跳转到添加角色页面*/
+        $("#game_js").click(function () {
+            window.location.href = context + "/select/getjsym";
+            //var ddd=1;
+        });
+        /*跳转到添加阵营页面*/
+        $("#game_zy").click(function () {
+            window.location.href = context + "/select/getzyym";
+            //var eee=1;
+        });
+        /*跳转到添加剧情页面*/
+        $("#game_jq").click(function () {
+             window.location.href = context + "/select/getjqym";
+            //var fff=1;
+        });
+        /*跳转到添加任务品页面*/
+        $("#game_rwpsc").click(function () {
+            window.location.href = context + "/select/getrwpym";
+           // var bbb=1;
+        });
+        /*查询刚刚插入的角色表数据*/
+        table.render({
+            elem: '#test'
+            ,url: context+'/cards/getAll'   /*查询刚刚插入的角色表数据*/
+            ,cols: [[
+                {field:'kgId', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'kgName', width: '15%', title:'名字', align:'center'}
+                ,{field:'campserialnumber', width: '15%', title:'阵营序号', align:'center'}
+                ,{field:'kgContext', width: '15%', title: '介绍', sort: true, align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        /*查询刚刚插入的阵营表的数据*/
+        table.render({
+            elem: '#test2'
+            ,url: context+'/cards/getAll'   /*查询刚刚插入的阵营表的数据*/
+            ,cols: [[
+                {field:'id', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'campName', width: '15%', title:'名称', align:'center'}
+                ,{field:'bb', width: '15%', title:'阵营序号', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+        /*查询刚刚插入的剧情表的数据*/
+        table.render({
+            elem: '#test3'
+            ,url: context+'/cards/getAll'   /*查询刚刚插入的剧情表的数据*/
+            ,cols: [[
+                {field:'id', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'name', width: '15%', title:'名称', align:'center'}
+                ,{field:'serialnumber', width: '25%', title:'序号', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '30%', align:'center', toolbar: '#barDemo2'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+
+            if(obj.event == 'detail') {
+                layer.open({
+                    /*content: "/cards/getId",*///请求的URL
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.cUrl
+                });
+            }else if(obj.event == '1detail'){
+                layer.open({
+                    /*content: "/cards/getId",*///请求的URL
+                    type: 2,
+                    title: data.gameName,
+                    closeBtn: 0,
+                    area: ['460px', '530px'],
+                    skin: 0.6, //没有背景色
+                    shadeClose: true,
+                    content: data.cPic
+                });
+            }
+        });
+
+
+
+        //图片上传
+        var uploadInst = upload.render({
+            elem: '#demo'
+            ,url: context + '/select/prompt_pic'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='dtImg']").val(res.extend.msg);
+                        $("#demo1").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+
+                $("img[name='dtImg']").val(res.extend.msg);
+            }
+        });
+        //视频上传
+        var uploadInst = upload.render({
+            elem: '#demo_video'
+            ,url: context + '/select/prompt_video'
+            ,accept:'video'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1_video').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='dtVideo']").val(res.extend.msg);
+                        $("#demo1_video").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+
+                $("video[name='dtVideo']").val(res.extend.msg);
+            }
+        });
+
+        //音频上传
+        var uploadInst = upload.render({
+            elem: '#demo_audio'
+            ,url: context + '/select/prompt_mp3'
+            ,accept:'audio'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1_audio').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='dtAudio']").val(res.extend.msg);
+                        $("#demo1_audio").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+                $("audio[name='dtAudio']").val(res.extend.msg);
+            }
+        });
+
+
+    })
+</script>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_select">查看</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_famousBrand">编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteFamousBrand">删除</a>
+</script>
+<script th:replace="common/script::copy"></script>
+
+<script type="text/javascript" th:inline="none">
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test' //指定元素
+            ,type: 'datetime'
+        });
+    });
+</script>
+
+<script type="text/javascript" data-th-inline="javascript" th:inline="none">
+    layui.use(['form', 'layedit', 'upload', 'laydate','table'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload
+            ,table = layui.table
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        $("#add_spot").click(function(){
+            layer.open({
+                type: 2,
+                title: '新增卡点',
+                area: ['1200px', '800px'],
+                content: context+'/select/getcards'
+            });
+        })
+
+
+        $("#add_js").click(function () {
+            layer.open({
+                type: 2,
+                title: '新增角色',
+                area: ['1200px', '800px'],
+                content: context+'/select/getjsym'
+            });
+        })
+
+
+        $("#add_zy").click(function () {
+            layer.open({
+                type: 2,
+                title: '新增阵营',
+                area: ['1200px', '800px'],
+                content: context+'/select/getzyym'
+            });
+        })
+
+        $("#add_jq").click(function () {
+            layer.open({
+                type: 2,
+                title: '新增剧情',
+                area: ['1200px', '800px'],
+                content: context+'/select/getjqym'
+            });
+        })
+
+        var $ = layui.$, active = {
+            add_rw : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增任务',
+                    area: ['1200px', '800px'],
+                    content: context+'/select/getrwpym'
+                });
+            }
+        };
+
+        table.render({
+            elem: '#test5'
+            , toolbar: '#toolbarDemo'/*工具栏*/
+            , title: '新增卡点页面'
+            , url: context + '/select/getAll'
+            , cols: [[
+                {type: 'checkbox', width: '5%', title: 'id', sort: true, align: 'center'}
+                //, {field: 'cid', width: '5%', title: 'id', sort: true, align: 'center'}
+                , {field: 'cname', width: '10%', title: '名称', sort: true, align: 'center'}
+                , {field: 'clockpoints', width: '10%', title: '类型', sort: true, align: 'center'}
+                , {field: 'cshuXing', width: '20%', title: '属性', sort: true, align: 'center'}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: '30%', sort: true, align: 'center'}
+            ]]
+            , page: true
+        });
+
+        /*跳转到新增卡点页面*/
+        $("#game_insert").click(function () {
+            window.location.href = context + "/select/getcards";
+            //var cId=1;
+        });
+
+        /*跳转到腾讯地图页面*/
+        $("#map_Tencent").click(function () {
+            window.location.href = context + "/select/gettxdtym";
+        });
+
+        // 监听提交
+        form.on('submit(insertDirectional)', function (data) {
+            var sub_data = {
+                "cname": $("input[name='cname']").val(),
+                "ctime": $("input[name='ctime']").val(),
+                "comment": $("textarea[name='comment']").val(),
+                "ctype": $("input[name='ctype']").val(),
+                "cinitials": $("input[name='cinitials']").val(),
+                "hhh": $("input[name='hhh']").val(),
+                "aaa": $("textarea[name='aaa']").val(),
+                "cpicaddress": $("img[name='dtImg']").val(),
+                "video": $("video[name='dtVideo']").val(),
+                "voice": $("audio[name='dtAudio']").val(),
+                /*"ppp": $("button[name='kaid']").val(),
+                "ddd": $("button[name='ddd']").val(),
+                "eee": $("button[name='eee']").val(),
+                "fff": $("button[name='fff']").val(),
+                "ggg": $("button[name='ggg']").val(),*/
+            };
+            $.post(context + "/select/insertCircuitList", sub_data, function (res) {
+                if (res.code == 100) {
+                    layer.msg('新增成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+
+                        function () {
+                            parent.window.location.href = context + "/cards/newshangchuangxianlu";
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }
+                console.log(res);
+            });
+            return false;
+
+        });
+    })
+</script>

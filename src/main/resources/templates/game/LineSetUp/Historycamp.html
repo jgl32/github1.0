@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="top: 0px;left: 0px">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>历史阵营页面</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <button class="layui-btn" data-type="add_famousBrand" id="add_js">新增阵营</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="test"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_famousBrand" >查看</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_famousBrand" id="edit_famousBrand">编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteFamousBrand">删除</a>
+    <input type="checkbox" id="switchTpl"  value="{{d.id}}" lay-skin="switch" lay-text="已启用|启用" lay-filter="sexDemo" {{ d.dd== 1
+           ? 'checked' : '' }} />
+</script>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table', 'jquery', 'form'], function () {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        table.render({
+            elem: '#test'
+            , toolbar: '#toolbarDemo'
+            , title: '历史阵营页面'
+            , url: context + '/camp/selectAll'
+            ,cols: [[
+                {field:'id', width: '15%', title: 'id', sort: true, align:'center'}
+                ,{field:'campName', width: '25%', title:'名称', align:'center'}
+                ,{field:'bb', width: '20%', title:'阵营序号', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '40%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+        });
+
+        form.on('switch(sexDemo)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+
+                $.post(context + "/camp/deleteGrailGame", {"id": this.value ,"dd": 1 }, function (res) {
+                    console.log(res);
+                    if (res.code==100) {
+                        form.render();
+                        layer.alert("启用成功");
+                    } else {
+                        obj.elem.checked = !x;
+                        layer.alert("启用失败");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/camp/deleteGrailGame", {"id": this.value ,"dd": 0 }, function (res) {
+
+                    if (res.code==100) {
+                        layer.alert("取消成功");
+                    }
+                })
+            }
+        });
+
+        $("#edit_famousBrand").click(function () {
+            window.location.href = context + "/camp/selectById/ " + data.cid;
+        });
+
+        $("#add_js").click(function () {
+            layer.open({
+                type: 2,
+                title: '新增阵营',
+                area: ['900px', '700px'],
+                content: context + '/select/getzyym'
+            });
+            /*parent.window.location.href=context+"/select/getjszy";*/
+        })
+
+    })
+
+
+
+</script>
+</body>
+</html>

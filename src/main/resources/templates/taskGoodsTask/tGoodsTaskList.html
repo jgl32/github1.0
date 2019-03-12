@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'pointAll')"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/goods/showGoods/">物品库</a>
+                <a href="/weCharGameCms/taskGoods/showTaskGoodsTask"><cite>任务品库</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="position: relative;margin-left: 4px;" class="layui-card-header demoTable">
+                <span style="font-size:17px;">名称:</span> <input type="text" style="border:2px solid #5fda12;position: absolute;left:67px;top:0px;width:170px;" name="names" autocomplete="off" placeholder="物品名称" class="layui-input" lay-verify="validateMoney">
+                <span style="position: absolute;top:0;left:289px;font-size: 17px;">前置任务品：</span><input type="text" style="border:2px solid #00FF00;width:170px;position: absolute;left:391px;top:0px;" name="preGoodsName" id="test1" autocomplete="off" placeholder="前置任务品" class="layui-input" lay-verify="validateMoney">
+
+                <button class="layui-btn layui-btn-sm" data-type="batch_search" id="batch_search" style="height:36px;font-size: 14px;margin-left: 520px; margin-top: -6px;">搜索相关</button>
+                <button class="layui-btn layui-btn-sm" data-type="add_inv" id="add_inv" style="height:36px;font-size: 14px;margin-left: 727px;margin-top: -90px;">新任务品</button>
+                <button class="layui-btn layui-btn-sm" data-type="batch_del" id="delete" style="height:36px;font-size: 14px;margin-left: 868px;margin-top: -173px;">批量删除</button>
+                <!--<button class="layui-btn layui-btn-sm" data-type="batch_del" id="select" name="select" style="height:36px;font-size: 14px;margin-left: 1003px;margin-top: -256px;">批量选择</button>-->
+
+            </div>
+
+
+            <div style=" background-color: #F2F2F2;margin-top: 15px;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script type="text/html" id="barDemo">
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color:#ffffff;background-color: #009688;height: 23px;line-height: 23px;">打卡查看</a>-->
+    <a class="layui-btn layui-btn-sm" lay-event="edit_taskGoods" >修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" style="width: 50px;" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.cUrl}}"/>
+</script>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'table'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var table = layui.table;
+
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#sta_time' //指定元素
+            ,type: 'date'
+        });
+        $("#batch_search").on('click', function(){
+            var names = $("input[name='names']").val();
+            var preGoodsName = $("input[name='preGoodsName']").val();
+
+                table.render({
+                    elem: '#test'
+                    ,url: context+"/taskGoods/getAll?names="+names+"&preGoodsName="+preGoodsName
+                    ,cols: [[
+                        {type: 'checkbox', width: '5%', title: 'id', sort: true, align: 'center' ,LAY_CHECKED:false,filer:'test'}
+                        ,{field:'taskId', width: '0%',minWidth:'0%',type:'space',   style:'display:none;'}//隐藏的title: '任务品ID',sort: true, align:'center',
+                        ,{field:'goodsId', width: '10%', title: 'ID', sort: true, align:'center'}
+                        ,{field:'names', width: '15%', title:'名称', align:'center'}
+                        ,{field:'staTime', width: '15%', title:'出现时间', align:'center'}
+                        ,{field:'storeNumber', width: '15%', title: '商店数量', sort: true, align:'center'}
+                        ,{field:'limitTaskGoods', width: '15%', title:'限购', align:'center'}
+                        ,{field:'preGoodsName', width: '15%', title:'前置任务品', align:'center'}
+                        ,{field:'goodsIntegral', width: '15%', title:'兑换积分', align:'center'}
+                        ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+                    ]]
+                    ,page: true
+                    ,limit: 10
+                    ,id:'testReload'
+                });
+
+
+
+        });
+
+        table.render({
+            elem: '#test'
+            ,url: context+'/taskGoods/getAll'
+            ,cols: [[
+                {type: 'checkbox', width: '5%', title: 'id', sort: true, align: 'center' ,LAY_CHECKED:false,filer:'test'}
+                ,{field:'taskId', width: '0%',minWidth:'0%',type:'space',   style:'display:none;'}//隐藏的title: '任务品ID',sort: true, align:'center',
+                ,{field:'goodsId', width: '10%', title: 'ID', sort: true, align:'center'}
+                ,{field:'names', width: '15%', title:'名称', align:'center'}
+                ,{field:'staTime', width: '15%', title:'出现时间', align:'center'}
+                ,{field:'storeNumber', width: '15%', title: '商店数量', sort: true, align:'center'}
+                ,{field:'limitTaskGoods', width: '15%', title:'限购', align:'center'}
+                ,{field:'preGoodsName', width: '15%', title:'前置任务品', align:'center'}
+                ,{field:'goodsIntegral', width: '15%', title:'兑换积分', align:'center'}
+                ,{fixed: 'right', title: '操作', width: '20%', align:'center', toolbar: '#barDemo'}//
+            ]]
+            ,page: true
+            ,limit: 10
+            ,id:'testReload'
+        });
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_inv: function(){
+                <!-- 选取物品生成任务品  物品列表模板-->
+                window.location.href = context +'/goods/showGoods?url=taskGoodsTask/addGoodsTask'
+            },
+
+            batch_del: function(){
+                var checkStatus = table.checkStatus('testReload') //table id .用自己的字段赋值
+                    ,data = checkStatus.data; //获得复选框选择的数组
+                if(data==""){
+                    layer.msg('至少选择一个吧',{icon:2})
+                    return;
+                }
+                //捉到所有被选中的发送异步请求
+                var ids= "";
+                if(data.length>0){
+                    for(var i=0;i<data.length;i++){
+                        ids +=  data[i].taskId +','; //获取所选对象的id并拼接
+                        console.log(data[i]);
+                    }
+                }
+                //TODO
+                if(true){
+                    var a = $("#select").attr("select")
+
+                    layer.confirm("确定全部选择吗？"+a,{icon:3,title:'提示'},function () {
+                        layer.close(index);
+                    })
+
+                }
+
+
+                layer.confirm('确定删除选中?'+ids, {icon: 3, title:'提示'}, function(index){
+                    layer.close(index);
+
+                    $.get(context+'/taskGoods/deleteTaskGoods?ids='+ids,function (obj) {
+                        if(obj.code == 100){
+                            layer.msg('删除成功！', {
+                                icon: 1,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                obj.del();
+                            });
+                        }else{
+                            layer.msg("删除失败！", {
+                                icon: 1,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+
+                            });
+                        }
+                        window.location.href =context+'/taskGoods/showTaskGoodsTask'
+                    })
+
+                });
+            }
+        };
+
+
+
+
+
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确认要删除吗?', function(index){
+                    // console.log(data.mapId); return false;
+
+                    $.get(context+'/taskGoods/del_taskGoods?taskId='+data.taskId, function (res) {
+
+                        if(res.code == 100){
+                            layer.msg('删除成功！', {
+                                icon: 1,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                obj.del();
+                            });
+                        }else{
+                            layer.msg("删除失败！", {
+                                icon: 1,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+
+                            });
+                        }
+                    });
+                    layer.close(index);
+                });
+            }else if(obj.event =='edit_taskGoods'){
+                window.location.href = context+'/taskGoods/editTaskGoods?taskId='+data.taskId;
+            }
+        });
+    })
+</script>
+
+</body>
+</html>

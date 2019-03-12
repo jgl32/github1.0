@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"><meta charset="UTF-8"></head>
+<style>
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body" style="top: 0px;left: 0px">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>剧情页面</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">剧情名</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" style="border: 1px solid lightgray" name="name"  autocomplete="off" class="layui-input" placeholder="输入剧情名">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">顺序号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" style="border: 1px solid lightgray" name="serialnumber" autocomplete="off" class="layui-input" placeholder="输入顺序号">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">备注</label>
+                                            <textarea name="remark" cols="100" rows="20">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">可看阵营</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" style="border: 1px solid lightgray;width: 720px;height: 34px;" name="b" autocomplete="off"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">剧情介绍</label>
+                                            <textarea name="introduce" cols="100" rows="20">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-left:110px;">
+                                        <button type="button" class="layui-btn layui-btn-danger"
+                                                ><i class="layui-icon" name="pic"></i>上传图片
+                                        </button>
+                                        <input type="hidden" name="pic"/>
+
+                                        <button type="button" class="layui-btn layui-btn-warm"
+                                            ><i class="layui-icon" name="video"></i>上传视频
+                                        </button>
+                                        <input type="hidden" name="video"/>
+                                        <button type="button" class="layui-btn" id="upload_mp3"><i
+                                                class="layui-icon" name="voice"></i>上传音频
+                                        </button>
+                                        <input type="hidden" name="voice"/>
+
+                                    </div>
+
+                                    <div class="layui-form-item" style="margin-top: 30px;">
+                                        <label class="layui-form-label">剧情时间</label>
+                                        <div class="layui-input-block">
+                                            <input type="radio" name="answerTrue" value="活动开始后" title="活动开始后"><input style="border: 1px solid lightgray;height: 30px;" type="text" name="time" autocomplete="off" placeholder="输入时间"/><br>
+                                            <input type="radio" name="answerTrue" value="1" title="管理员确认" id="admin">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">投票环节</label>
+                                        <div class="layui-input-block" style="margin-top: 30px;">
+                                            单人票数<input type="text" name="asinglevote" autocomplete="off" style="margin-top: 8px;"/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效人次<input type="text" name="effectivem" autocomplete="off"/><br><br>
+                                            并列排名<input type="radio" name="answerTrue" value="重新投票" title="重新投票">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重新投票次数<input type="text" name="numberofrevotes" autocomplete="off"/><br>
+                                            <input type="radio" name="answerTrue" value="1" title="全部有效" id="alleffective">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">投票成功</label>
+                                            <textarea name="successfulshow" cols="100" rows="20">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-left: 110px;">
+                                        <button type="button" class="layui-btn layui-btn-danger"
+                                                id=""><i class="layui-icon" name="sucesspic"></i>上传图片
+                                        </button>
+                                        <input type="hidden" name="sucesspic"/>
+
+                                        <button type="button" class="layui-btn layui-btn-warm"
+                                                id=""><i class="layui-icon" name="sucessvideo"></i>上传视频
+                                        </button>
+                                        <input type="hidden" name="sucessvideo"/>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <input type="hidden" name="cardUrl">
+                                        <!--</div>-->
+                                        <div class="layui-inline" style="margin-left: 47%;">
+                                            <button class="layui-btn" lay-submit="" lay-filter="insertDirectional">保存</button>
+                                            <a class="layui-btn" href="#" onclick="javascript:history.back(-1);">返回</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate','table'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload
+            ,table = layui.table
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+        // 监听提交
+        form.on('submit(insertDirectional)', function (data) {
+            var sub_data = {
+                "name": $("input[name='name']").val(),
+                "serialnumber": $("input[name='serialnumber']").val(),
+                "remark": $("textarea[name='remark']").val(),
+                "b": $("input[name='b']").val(),
+                "introduce": $("textarea[name='introduce']").val(),
+                "pic": $("input[name='pic']").val(),
+                "video": $("input[name='video']").val(),
+                "voice": $("input[name='voice']").val(),
+                "time": $("input[name='time']").val(),
+                "admin": $("input[id='admin']").val(),
+                "asinglevote": $("input[name='asinglevote']").val(),
+                "effectivem": $("input[name='effectivem']").val(),
+                "numberofrevotes": $("input[name='numberofrevotes']").val(),
+                "alleffective": $("input[id='alleffective']").val(),
+                "successfulshow": $("textarea[name='successfulshow']").val(),
+                "sucesspic": $("input[name='sucesspic']").val(),
+                "sucessvideo": $("input[name='sucessvideo']").val(),
+            };
+            $.post(context + "/vict/insert", sub_data, function (res) {
+                if (res.code == 100) {
+                    layer.msg('新增成功！', {
+                            icon: 1,
+                            time: 2000
+                        },
+
+                        function () {
+                            parent.window.location.href = context + "/vict/getlsjq";
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                }
+                console.log(res);
+            });
+            return false;
+
+        });
+    })
+</script>
+</body>
+</html>

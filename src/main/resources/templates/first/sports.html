@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/weCharGameCms/work/index">CMS后台</a>
+                <a href="/weCharGameCms/first/commodity">首页管理</a>
+                <a><cite>户外活动</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header demoTable">
+                                <button class="layui-btn" data-type="add_sport">增加活动</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="test" lay-filter="test"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="switchTpl">
+    <!-- 这里的 checked 的状态只是演示 -->
+    <input type="checkbox" name="tourStatus" value="{{d.tourStatus}}" title="下架" lay-filter="lockDemo" {{ d.tourStatus == 1 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="info">报名情况</a>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        table.render({
+            elem: '#test'
+            ,toolbar: '#toolbarDemo'
+            ,url:context+'/first/sports_all'
+            ,cols: [[
+                {field:'tourId', width:'10%', title: 'ID', sort: true, align: 'center'}
+                ,{field:'tourName', width:'10%', title: '主题', align: 'center'}
+                ,{field:'tourMoney', width:'10%', title: '费用', sort: true, align: 'center'}
+                ,{field:'tourSponsor', width:'10%', title: '主办方', align: 'center'}
+                ,{field:'tourLimitPeople', title: '额定人数', width:'10%', minWidth: 100, align: 'center'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'tourApplyPeople', title: '当前人数', sort: true, width:'10%', align: 'center'}
+                ,{field:'tourStime', title: '开始时间', sort: true, width:'15%', align: 'center'}
+                ,{field:'tourStatus', title: '是否下架', width:'10%', align: 'center',templet: '#switchTpl', unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'15%', align: 'center'}
+            ]]
+            ,size: 'lg'
+            ,page: true
+        });
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            add_sport : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增活动',
+                    area: ['850px', '600px'],
+                    content: context+'/first/add_active?address='+"定点旅游"
+                });
+            }
+        };
+
+        //监听锁定操作
+        form.on('checkbox(lockDemo)', function(obj){
+            // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+            var _this = $(this).parent().parent();
+            var status = _this.siblings(":first").children().text();
+            var sta_value = obj.elem.checked ? 1 : 0;
+            $.get(context+"/first/changeStatus/"+status+"/"+sta_value, function(res){
+                console.log(res);
+                if(res.code == 100){
+                    layer.msg("下架成功！可在在旅游历史栏中回复！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        _this.parent().remove();
+                    });
+                }
+            })
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'edit'){
+                layer.open({
+                    type: 2,
+                    title: '编辑活动',
+                    area: ['850px', '600px'],
+                    content: context+'/first/edit_active/'+data.tourId
+                });
+            } else if(obj.event === 'info'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    })
+</script>
+</body>
+</html>

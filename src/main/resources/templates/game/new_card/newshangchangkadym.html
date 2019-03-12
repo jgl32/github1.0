@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+    <meta charset="UTF-8">
+</head>
+<style>
+    .layui-form-pane .layui-form-label{
+        background-color: #ffffff;
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+
+    <div class="layui-body" style="top: 0px;left: 0px" >
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>上传卡点页面</cite></a>
+            </span>
+            <!--<hr class="layui-bg-orange">-->
+            <div style="padding: 20px; border: 1px solid #5FB878">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <!-- 卡点表单提交 -->
+                                <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                    <div class="layui-input-block">
+                                        <input type="radio" name="answerTrue" value="起点" title="起点">
+                                        <input type="radio" name="answerTrue" value="终点" title="终点">
+                                        <input type="radio" name="answerTrue" value="打卡点" title="打卡点">
+                                    </div>
+                                    <!-- 卡点的名字 -->
+                                    <div class="layui-form-item" style="margin-top: 20px;">
+                                        <label class="layui-form-label">打卡点名：</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="cardName" autocomplete="off" placeholder="请输入打卡点名" class="layui-input" style="border: 1px solid lightgray;">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="position: relative">
+                                        <div class="layui-input-block" style="position: absolute;top:-20px;">
+                                            <input type="radio" name="answerTrue2" value="必打点" title="必打点">
+                                            <input type="radio" name="answerTrue2" value="选打点" title="选打点">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="margin-left: 110px;margin-top: 45px;">
+                                        <input type="radio" name="answerTrue3" value="可重复" title="可重复">
+                                        <input type="text" class="layui-input"  name="ctime" placeholder="请输入时间" style="border: 1px solid lightgray;">
+                                        <input type="radio" name="answerTrue3" value="不可重复" title="不可重复">
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">选择打卡点：</label>
+                                        <div class="layui-input-block">
+                                            <select id="cardType" style="border: 1px solid lightgray">
+                                                <option value="">请选择点类型（一个点只选择一个种类型）</option>
+                                                <option value="开始码">开始码（开始码，游戏起点设置）</option>
+                                                <option value="白点">白点（只打卡，直接得分）</option>
+                                                <option value="答题">答题（需要设置问题和答案）</option>
+                                                <option value="视频">视频（上传视频，期待上线...）</option>
+                                                <option value="音频">音频（上传音频，期待上线...）</option>
+                                                <option value="提示">提示（只显示提示文字）</option>
+                                                <option value="终点码">终点码（游戏终点设置）</option>
+                                            </select>
+                                            <div style="margin-top: 20px;">
+                                                <a style="background-color: #5FB878;color: #ffffff;" class="layui-btn layui-btn-primary">确认</a>
+                                                <a href="http://www.baidu.com" style="background-color: #5FB878;color: #ffffff;" class="layui-btn layui-btn-primary">生成</a>
+                                                <a href="http://www.baidu.com" style="background-color: #5FB878;color: #ffffff;" class="layui-btn layui-btn-primary">查找</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">打卡点类型：</label>
+                                        <div class="layui-input-block" style="border: 1px solid lightgray">
+                                            <select id="" style="border: 1px solid lightgray">
+                                                <option value="起点">起点</option>
+                                                <option value="打卡点">打卡点</option>
+                                                <option value="终点">终点</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">卡点积分</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="cardSIntegral" id="date1" autocomplete="off" class="layui-input" placeholder="输入卡点积分" style="border: 1px solid lightgray">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">失败减积分</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="cardFIntegral" autocomplete="off" class="layui-input" placeholder="打卡失败减的积分" style="border: 1px solid lightgray">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--卡点显示-->
+                                    <div class="layui-form-item" style="position: relative">
+                                        <label class="layui-form-label" style="margin-top: -6px;">卡点显示</label>
+                                        <div class="layui-input-inline">
+                                            <span>设定活动开始后&nbsp;&nbsp;&nbsp;&nbsp;起</span>
+                                            <input type="text" name="cardFIntegral" autocomplete="off"
+                                                   class="layui-input" placeholder="0-9999"
+                                                   style="margin-left: 142px;margin-top: -28px;border: 1px solid lightgray;width: 215px;">
+                                            <span style="position: absolute;left:363px;top:2px;">分</span>
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <span style="margin-left: 223px;">止</span>
+                                            <input type="text" name="cardFIntegral" autocomplete="off"
+                                                   class="layui-input" placeholder="0-9999"
+                                                   style="margin-left: 245px;margin-top: -28px;border: 1px solid lightgray;width: 215px;">
+                                            <span style="position: absolute;left:465px;top:2px;">分</span>
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <span style="position: absolute;left:-398px;top: 46px;">设定时间&nbsp;&nbsp;&nbsp;&nbsp;起</span>
+                                            <input type="text" class="layui-input" name="ctime" id="test1"
+                                                   style="position: absolute;left:-254px;top: 44px;width: 215px;height: 27px;border: 1px solid lightgray">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <span style="position: absolute;left:25px;top: 46px;">止</span>
+                                            <input type="text" class="layui-input" name="ctime" id="test2"
+                                                   style="position: absolute;left:47px;top: 44px;width: 215px;height: 27px;border: 1px solid lightgray">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <span style="position: absolute;left:-396px;top:90px;">打卡次数</span>
+                                            <input type="text" name="cardFIntegral" autocomplete="off" class="layui-input" placeholder="1-9999" style="width: 215px;border: 1px solid lightgray;position: absolute;left:-253px;top:86px;">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <span style="position: absolute;left:-396px;top:148px;">打点阵营</span>
+                                            <div class="layui-input-block" style="border: 1px solid black;position: absolute;left:-360px;top:140px;">
+                                                <select>
+                                                    <option value="">请选择阵营</option>
+                                                    <option value="阵营1">阵营1</option>
+                                                    <option value="阵营2">阵营2</option>
+                                                    <option value="阵营3">阵营3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top: 174px;">
+                                        <label class="layui-form-label">打卡方式</label>
+                                        <div class="layui-input-block" style="border: 1px solid #e6e6e6;">
+                                            <input type="checkbox" name="answerTrue" value="扫二维码" title="扫二维码">
+                                            <input type="checkbox" name="answerTrue" value="GPS定位" title="GPS定位">
+                                            <input type="checkbox" name="answerTrue" value="手机端点击" title="手机端点击">
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label" style="margin-top: 20px;">提示上传</label>
+                                                <div class="layui-input-block" style="margin-top: 20px;">
+                                                    <button type="button" class="layui-btn layui-btn-danger upload_pic"><i class="layui-icon"></i>上传图片
+                                                    </button>
+                                                    <input type="hidden" name="cardHintPic"/>
+                                                    <button type="button" class="layui-btn layui-btn-warm upload_video"><i class="layui-icon"></i>上传视频</button>
+                                                    <input type="hidden" name="cardHintVideo"/>
+                                                    <button type="button" class="layui-btn upload_mp3"><i class="layui-icon"></i>上传音频
+                                                    </button>
+                                                    <input type="hidden" name="cardHintMp3"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">打卡点问题</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="question" autocomplete="off" placeholder="请输入打卡点问题" class="layui-input" style="border: 1px solid lightgray;"/>
+                                                <div style="margin-top: 20px;">
+                                                    <button type="button" class="layui-btn layui-btn-danger upload_pic"><i class="layui-icon"></i>上传图片</button>
+                                                    <button type="button" class="layui-btn layui-btn-warm upload_video"><i class="layui-icon"></i>上传视频</button>
+                                                    <button type="button" class="layui-btn upload_mp3"><i class="layui-icon"></i>上传音频</button>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 20px;">
+                                                <label class="layui-form-label">打卡答案选择</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="answerA" autocomplete="off" placeholder="请输入卡点答案 A"
+                                                           class="layui-input"/>
+                                                </div>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="answerB" autocomplete="off" placeholder="请输入卡点答案 B"
+                                                           class="layui-input"/>
+                                                </div>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="answerC" autocomplete="off" placeholder="请输入卡点答案 C"
+                                                           class="layui-input"/>
+                                                </div>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="answerD" autocomplete="off" placeholder="请输入卡点答案 D"
+                                                           class="layui-input"/>
+                                                </div>
+                                            </div>
+                                            <label class="layui-form-label">正确答案</label>
+                                            <div class="layui-input-block" style="border: 1px solid #e6e6e6;">
+                                                <input type="radio" name="answerTrue4" value="a" title="A">
+                                                <input type="radio" name="answerTrue4" value="b" title="B">
+                                                <input type="radio" name="answerTrue4" value="c" title="C">
+                                                <input type="radio" name="answerTrue4" value="d" title="D">
+                                            </div>
+                                            <div style="position: relative">
+                                                <span style="position: absolute;left:124px;top:5px;">对</span>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="" autocomplete="off" placeholder="文字输入" class="layui-input" style="border: 1px solid lightgray;width: 95.7%;margin-left: 42px;">
+                                                </div>
+                                            </div>
+                                            <div style="position: relative">
+                                                <span style="position: absolute;left:124px;top:5px;">错</span>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="" autocomplete="off" placeholder="文字输入" class="layui-input" style="border: 1px solid lightgray;width: 95.7%;margin-left: 42px;">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">打卡答案输入</label>
+                                                <div class="layui-input-block" style="margin-left: 112px;margin-top: 5px;">
+                                                    <input type="text" name="" autocomplete="off" placeholder="请输入文字" class="layui-input" style="border:1px solid lightgray;width: 100%;margin-top: -5px;"/>
+                                                </div>
+                                                <div class="layui-input-block" style="margin-top: 20px;">
+                                                    <button type="button" class="layui-btn layui-btn-danger upload_pic"><i class="layui-icon"></i>上传图片</button>
+                                                    <button type="button" class="layui-btn layui-btn-warm upload_video"><i class="layui-icon"></i>上传视频</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">问题选择后提示</label>
+                                            <div class="layui-input-block">
+                                                <input type="radio" name="answerTrue5" value="图片" title="图片"  style="">
+                                                <input type="radio" name="answerTrue5" value="视频" title="视频"  style="">
+                                                <input type="radio" name="answerTrue5" value="音频" title="音频"  style="">
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">打卡前置</label>
+                                                <input type="checkbox" name="answerTrue" value="积分要" title="积分要">
+                                                <div class="layui-input-block" style="position: relative">
+                                                    <input type="text" name="cardSIntegral" id="" autocomplete="off" style="margin-top: 5px;border: 1px solid lightgray;"
+                                                           class="layui-input" placeholder="积分要多少可通过">
+                                                </div>
+
+                                                <label class="layui-form-label" style="background-color: #ffffff;border: none;"></label>
+                                                <div style="margin-top: 20px;">
+                                                    <input type="checkbox" name="answerTrue" value="完成打卡点" title="完成打卡点">
+                                                    <div class="layui-form-item" style="margin-left: 109px;">
+                                                        <div class="layui-inline" style="border: 1px solid lightgray;">
+                                                            <select style="border: 1px solid lightgray;">
+                                                                <option value="完成打卡点">完成打卡点</option>
+                                                                <option value="仅完成打卡">仅完成打卡</option>
+                                                                <option value="要完成卡点任务">要完成卡点任务</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <label class="layui-form-label" style="background-color: #ffffff;border:none;"></label>
+                                                <input type="checkbox" name="answerTrue" value="任务品" title="任务品">
+                                                <div style="margin-top: 20px;">
+                                                    <div class="layui-form-item">
+                                                        <div class="layui-inline">
+                                                            <span style="margin-left: 111px;font-size: 18px;">任务品</span>
+                                                            <div class="layui-input-inline" style="position: relative;">
+                                                                <button class="layui-btn" id="cardChoice" style="position: absolute;left:205px;top:-10px;">选择</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="layui-form-item">
+                                                        <div class="layui-inline" style="margin-left: 112px;">
+                                                            <input type="text" name="cardSIntegral" id="" autocomplete="off" style="border: 1px solid lightgray;"
+                                                                   class="layui-input" placeholder="输入数量">
+                                                        </div>
+                                                    </div>
+                                                    <div class="layui-form-item">
+                                                        <div class="layui-inline" style="margin-left: 323px;margin-top: -101px;">
+                                                            <input type="radio" name="answerTrue6" value="消耗" title="消耗">
+                                                            <input type="radio" name="answerTrue6" value="不消耗" title="不消耗">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="layui-form-item" style="margin-left: 109px;">-->
+                                            <!--<div class="layui-inline">-->
+                                                <!--<select style="border: 1px solid lightgray;">-->
+                                                    <!--<option value="完成打卡点">完成打卡点</option>-->
+                                                    <!--<option value="仅完成打卡">仅完成打卡</option>-->
+                                                    <!--<option value="要完成卡点任务">要完成卡点任务</option>-->
+                                                <!--</select>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+
+                                        <!--<div class="layui-form-item">-->
+                                            <!--<div class="layui-inline">-->
+                                                <!--<span style="margin-left: 111px;font-size: 18px;">任务品</span>-->
+                                                <!--<div class="layui-input-inline" style="position: relative;">-->
+                                                    <!--<button class="layui-btn" id="cardChoice" style="position: absolute;left:205px;top:-10px;">选择</button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="layui-form-item">-->
+                                            <!--<div class="layui-inline" style="margin-left: 112px;">-->
+                                                <!--<input type="text" name="cardSIntegral" id="" autocomplete="off" style="border: 1px solid lightgray;"-->
+                                                       <!--class="layui-input" placeholder="输入数量">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="layui-form-item">-->
+                                            <!--<div class="layui-inline" style="margin-left: 323px;margin-top: -101px;">-->
+                                                <!--<input type="radio" name="answerTrue6" value="消耗" title="消耗">-->
+                                                <!--<input type="radio" name="answerTrue6" value="不消耗" title="不消耗">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <div class="layui-form-item">
+                                            <!--<label class="layui-form-label">生成二维码</label>-->
+                                            <!--<div class="layui-inline">-->
+                                            <!--<button class="layui-btn layui-btn-danger" id="btn_qr">点击生成</button>-->
+                                            <input type="hidden" name="cardUrl">
+                                            <!--</div>-->
+                                            <div class="layui-inline" style="margin-left: 40%;">
+                                                <button class="layui-btn" id="cardSubmit">提交</button>
+                                                <a class="layui-btn" href="#" onclick="javascript:history.back(-1);">返回</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="common/script::copy"></script>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1'
+            ,type: 'datetime'//年月日时分秒
+        });
+        laydate.render({
+            elem:'#test2'
+            ,type: 'datetime'//年月日时分秒
+        });
+    });
+</script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        var date_list = [];
+
+        // 自动生成UUID
+        $("#click_input").click(function () {
+            var a = Math.random().toString(36).substr(2, 15);
+            var t = new Date().getTime();
+            $("#click_input").val(a + t); // 24位
+        });
+
+        // 提示图片上传
+        upload.render({
+            elem: '.upload_pic'
+            , url: context + '/game/prompt_pic'
+            , accept: 'file'
+            , exts: 'jpeg|png|jpg'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        // $("input[name='cardHintPic']").val(res.extend.msg);
+                        $.elem.val(res.extend.msg);
+                    });
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+        // 提示视频上传
+        upload.render({
+            elem: '.upload_video'
+            , url: context + '/game/prompt_video'
+            , accept: 'video' //视频
+            , exts: 'mp4|avi|amv'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        // $("input[name='cardHintVideo']").val(res.extend.msg);
+                        $.elem.val(res.extend.msg);
+                    });
+
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+        // 提示音频上传
+        upload.render({
+            elem: '.upload_mp3'
+            , url: context + '/game/prompt_mp3/'
+            , accept: 'audio' //音频
+            , exts: 'mp3'
+            , done: function (res) {
+                if (res.code == 100) {
+                    layer.msg("上传成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        // $("input[name='cardHintMp3']").val(res.extend.msg);
+                        $.elem.val(res.extend.msg);
+                    });
+
+                } else {
+                    layer.msg("上传失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+
+                    });
+                }
+            }
+        });
+
+        $("#cardSubmit").click(function () {
+            var list_index = date_list.length - 1;
+            var cardUuid = $("input[name='cardUuid']").val();
+            var cardName = $("input[name='cardName']").val();
+            var index_load = layer.load(1, {
+                offset: '220px',
+            });
+            $.get(context + '/game/get_qr/' + cardUuid + '/' + cardName + '/' + list_index, function (res) {
+                if (res.code == 100) {
+                    var cardUrl = res.extend.msg
+                    $("input[name='cardUrl']").val(cardUrl);
+                    layer.msg("生成二维码成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        // let cardUuid = $("input[name='cardUuid']").val();
+                        // let cardName = $("input[name='cardName']").val();
+                        var cardGameId = $("#cardGameId").val();
+                        var cardType = $("#cardType").val();
+                        var cardSIntegral = $("input[name='cardSIntegral']").val();
+                        var cardFIntegral = $("input[name='cardFIntegral']").val();
+                        var cardIfShow = $("input[name='cardIfShow']").val() == 'on' ? 1 : 0;
+                        var cardHintPic = $("input[name='cardHintPic']").val();
+                        var cardHintVideo = $("input[name='cardHintVideo']").val();
+                        var cardHintMp3 = $("input[name='cardHintMp3']").val();
+                        var cardExist = $("input[name='cardExist']").val();
+                        var cardRemark = $("input[name='cardRemark']").val();
+                        var cardHideId = $("#cardHideId").val();
+                        var cardHideGrade = $("input[name='cardHideGrade']").val();
+                        var cardHideTask = $("input[name='cardHideTask']").val() == 'on' ? 1 : 0;
+                        var question = $("input[name='question']").val();
+                        var answerA = $("input[name='answerA']").val();
+                        var answerB = $("input[name='answerB']").val();
+                        var answerC = $("input[name='answerC']").val();
+                        var answerD = $("input[name='answerD']").val();
+                        var answerTrue = $("input[name='answerTrue']:checked").val();
+                        var cardX = $("input[name='cardX']").val();
+                        var cardY = $("input[name='cardY']").val();
+                        // let cardUrl = $("input[name='cardUrl']").val();
+                        var date_card = {
+                            cardUuid: cardUuid,
+                            cardName: cardName,
+                            cardGameId: cardGameId,
+                            cardType: cardType,
+                            cardSIntegral: cardSIntegral,
+                            cardFIntegral: cardFIntegral,
+                            cardIfShow: cardIfShow,
+                            cardHintPic: cardHintPic,
+                            cardHintMp3: cardHintMp3,
+                            cardHintVideo: cardHintVideo,
+                            cardExist: cardExist,
+                            cardRemark: cardRemark,
+                            cardHideId: cardHideId,
+                            cardHideGrade: cardHideGrade,
+                            cardHideTask: cardHideTask,
+                            question: question,
+                            answerA: answerA,
+                            answerB: answerB,
+                            answerC: answerC,
+                            answerD: answerD,
+                            answerTrue: answerTrue,
+                            cardUrl: cardUrl,
+                            cardX: cardX,
+                            cardY: cardY
+                        };
+                        $.post(context + '/game/card_post', date_card, function (res) {
+                            console.log(res);
+                            if (res.code == 100) {
+                                layer.msg("生成打点信息成功！", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function () {
+                                    layer.close(index_load);
+                                    return false;
+                                });
+                            }
+                        });
+
+                    });
+
+                } else {
+                    layer.msg("生成二维码失败！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+            });
+
+
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body" style="overflow: auto; margin-top: 2%;">
+<div class="layui-container">
+    <form class="layui-form" onsubmit="return false;">
+        <input  name="gameId" th:value="${game.gameId}" type="hidden"  />
+        <div class="layui-form-item">
+            <label class="layui-form-label">游戏名称</label>
+            <div class="layui-input-block">
+                <input type="text" th:value="${game.gameName}" name="gameName" lay-verify="title" autocomplete="off" placeholder="请输入游戏名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择地图</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="aihao" id="gameMapUrl">
+                    <option value=""></option>
+                    <option th:each="mapList : ${mapLists}" th:value="${mapList.mapUrl}" th:text="${mapList.mapInfo}" th:selected="${mapList.mapUrl eq game.gameMapUrl}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">游戏类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="gameType" value="0" title="个人游戏" th:field="*{game.gameType}">
+                <!--<input type="radio" name="gameType" value="1" title="团队游戏" th:field="*{game.gameType}">-->
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">游戏描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" id="gameBrief" th:text="${game.gameBrief}"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">封面图片</label>
+            <div class="layui-input-block">
+                <div class="layui-upload-drag" id="upload_pic">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                    <input type="hidden" name="gamePic" th:value="${game.gamePic}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">限定人数</label>
+            <div class="layui-input-block">
+                <div id="slideTest-people" class="demo-slider" style="top: 17px;"></div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">团队数量</label>
+            <div class="layui-input-block">
+                <div id="slideTest-team" class="demo-slider" style="top: 17px;"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="date" id="start_date" lay-verify="datetime" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" th:value="${game.gameStime}">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="date" id="end_date" lay-verify="datetime" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" th:value="${game.gameEtime}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="map_submit_btn">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate', 'slider'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload
+            , slider = layui.slider;
+
+        let people_sum = [[${game.gameSumPeople}]] ? [[${game.gameSumPeople}]] : 0;
+        let team_sum = [[${game.gameSumTeam}]] ? [[${game.gameSumTeam}]] : 0;
+
+        slider.render({
+            elem: '#slideTest-people'
+            ,value: people_sum
+            ,min: 1
+            ,max: 1000
+            ,input: true
+        });
+        slider.render({
+            elem: '#slideTest-team'
+            ,value: team_sum
+            ,min: 1
+            ,max: 20
+            ,input: true
+        });
+        laydate.render({
+            elem: '#start_date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_date'
+            ,type: 'datetime'
+        });
+
+        //拖拽上传
+        upload.render({
+            elem: '#upload_pic'
+            ,url: context+'/game/cover_upload'
+            ,done: function(res){
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        $("input[name='gamePic']").val(res.extend.msg);
+                    });
+                }else{
+                    layer.msg('上传失败！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+
+                    });
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(map_submit_btn)', function(){
+            let gameId = $("input[name='gameId']").val();
+            let gameName = $("input[name='gameName']").val();
+            let gameMapUrl = $("#gameMapUrl").val();
+            let gameType = $("input[name='gameType']").val();
+            let gameBrief = $("#gameBrief").val();
+            let gamePic = $("input[name='gamePic']").val();
+            let gameSumPeople = $("#slideTest-people input").val();
+            let gameSumTeam = $("#slideTest-team input").val();
+            let gameStime = $("#start_date").val();
+            let gameEtime = $("#end_date").val();
+            if(gameName == "" || gameMapUrl == "" || gameType == "" || gameBrief == "" || gamePic == "" || gameSumTeam == "" || gameSumPeople == "" || gameStime == "" || gameEtime == ""){
+                layer.msg('请检查是否填完！', {
+                    icon: 1,
+                    time: 2000
+                });
+                return false;
+            }
+            let datas = {
+                gameId: gameId,
+                gameName: gameName,
+                gameBrief:gameBrief,
+                gameMapUrl: gameMapUrl,
+                gameType: gameType,
+                gamePic: gamePic,
+                gameSumPeople:gameSumPeople,
+                gameSumTeam:gameSumTeam,
+                gameStime:gameStime,
+                gameEtime:gameEtime
+            };
+            // console.log(datas); return false;
+            $.post(context+"/game/edit_game_submit", datas, function(res){
+                if(res.code == 100){
+                    layer.msg('修改游戏成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.window.location.href=context+"/game/newGame";
+                        let index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                }
+            });
+            return false;
+        });
+
+    })
+
+</script>

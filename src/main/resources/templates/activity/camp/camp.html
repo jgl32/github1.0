@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-card-header demoTable">
+        <!--<button class="layui-btn" data-type="insert_travel_route">添加阵营</button>-->
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+</div>
+
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" lay-event="edit_travel_route">查看</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteTravelRoute">编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteTravelRoute">另存为</a>
+</script>
+
+
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        table.render({
+            id:"id"
+            ,elem: '#test'
+            ,title: '旅游线路'
+            ,url:context+'/activity/selectAllCamp'
+            ,cols: [[
+                {field:'campName', width:'10%', title: '序号', sort: true, align: 'center'}
+                ,{field:'campName', width:'15%', title: '名称',sort: true, align: 'center'}
+                ,{field:'campName', width:'20%', title: '阵营介绍',sort: true, align: 'center'}
+                ,{field:'campName', title: '阵营选择', sort: true, width:'10%', align: 'center'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'15%',sort: true, align: 'center'}
+
+            ]]
+            ,page: true
+        });
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            insert_travel_route : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增旅游线路',
+                    area: ['850px', '600px'],
+                    content: context+"/travel/insert_travel_route"
+                });
+            }
+        };
+
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            console.log(obj)
+            if(obj.event === 'edit_travel_route'){
+                layer.open({
+                    type: 2,
+                    title: '修改旅游路线',
+                    area: ['850px', '600px'],
+                    content: context+'/travel/edit_travel_route/'+data.id
+                });
+            }
+
+            if(obj.event === 'info'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+
+            //监听行工具事件
+            if(obj.event === 'deleteTravelRoute'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/travel/deleteTravelRoute/"+data.id, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            } else if(obj.event === 'regain'){
+                layer.confirm('确定要重新上架这个活动吗？', function(index){
+                    $.get(context+"/travel/history_re/"+data.tourId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+
+        });
+
+    })
+</script>
+</body>
+</html>
+

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<style>
+    .point_btn{
+        border:  0;
+        font-size: 12px;
+        padding: 6px;
+        border-radius: 2px;
+        color:  white;
+    }
+    .point_color{
+        background-color: #1e46ff;
+    }
+    .end_color{
+        background-color: #009688;
+    }
+    .start_btn{
+        background-color: rgba(254, 21, 34, 0.93);
+    }
+    .end_btn{
+        background-color: #ff1a15;
+
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">游戏管理</a>
+                <a><cite>创建点位</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <div class="layui-row">
+                                    <button class="point_btn start_btn"><i class="fa fa-arrow-circle-o-right fa-lg"></i></button>
+                                    <button class="point_btn point_color">01</button>
+                                    <button class="point_btn point_color">02</button>
+                                    <button class="point_btn point_color">03</button>
+                                    <button class="point_btn point_color">04</button>
+                                    <button class="point_btn point_color">05</button>
+                                    <button class="point_btn point_color">06</button>
+                                    <button class="point_btn point_color">07</button>
+                                    <button class="point_btn point_color">08</button>
+                                    <button class="point_btn point_color">09</button>
+                                    <button class="point_btn point_color">10</button>
+                                    <button class="point_btn point_color">11</button>
+                                    <button class="point_btn point_color">12</button>
+                                    <button class="point_btn point_color">13</button>
+                                    <button class="point_btn point_color">14</button>
+                                    <button class="point_btn point_color">15</button>
+                                    <button class="point_btn point_color">16</button>
+                                    <button class="point_btn point_color">17</button>
+                                    <button class="point_btn point_color">18</button>
+                                    <button class="point_btn point_color">19</button>
+                                    <button class="point_btn point_color">20</button>
+                                    <button class="point_btn point_color">21</button>
+                                    <button class="point_btn point_color">22</button>
+                                    <button class="point_btn point_color">23</button>
+                                    <button class="point_btn point_color">24</button>
+                                    <button class="point_btn point_color">25</button>
+                                    <button class="point_btn point_color">26</button>
+                                    <button class="point_btn point_color">27</button>
+                                    <button class="point_btn point_color">28</button>
+                                    <button class="point_btn point_color">29</button>
+                                    <button class="point_btn point_color">30</button>
+                                    <button class="point_btn end_color"><i class="fa fa-pause fa-fw"></i></button>
+                                    <button class="point_btn end_btn"><i class="fa fa-plus fa-fw"></i></button>
+
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <div class="layui-row layui-col-space5">
+                                    <!-- 游戏地图 -->
+                                    <div class="layui-col-xs4">
+                                        <div class="grid-demo grid-demo-bg1" style="background-color: #2D93CA; height: 755px;">
+                                            <div style="position:absolute; right: 5px;">
+                                                X轴 <input type="text" name="index_x">
+                                                Y轴 <input type="text" name="index_y">
+                                            </div>
+                                            <img id="pic" th:src="@{/statics/images/abc.jpg}" alt="" style="width: 100%;">
+                                        </div>
+                                    </div>
+                                    <!-- 内容表单 -->
+                                    <div class="layui-col-xs8">
+                                        <div class="grid-demo grid-demo-bg1" style="height: 755px; overflow-y:auto; border: 1px solid blue;">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        $("#pic").click(function(ev){
+            var natural_img = document.getElementById("pic");
+            // 图片的现在宽高
+            var now_width = natural_img.width;
+            var now_height = natural_img.height;
+            console.log("now==>width:"+now_width+"-height:"+now_height);
+            // 图片的原始的宽高
+            var natural_width = natural_img.naturalWidth;
+            var natural_height = natural_img.naturalHeight;
+            console.log("natural==>width:"+natural_width+"-height:"+natural_height);
+            // 鼠标相对位置
+            var obj_x = $("#pic").offset().left;
+            var obj_y = $("#pic").offset().top;
+            console.log("对象的位置:"+obj_x,+obj_y);
+            var m_X = ev.clientX-obj_x;
+            var m_Y = ev.clientY-obj_y;
+            console.log("鼠标点击的绝对位置坐标:"+m_X+","+m_Y);
+            console.log(m_X, m_Y);
+            console.log("真实的坐标:"+m_X*natural_width/now_width, m_Y*natural_height/now_height);
+            // 设置坐标地址
+            $("input[name='index_x']").val(parseInt(m_X*natural_width/now_width));
+            $("input[name='index_y']").val(parseInt(m_Y*natural_height/now_height));
+
+        })
+
+
+        // $(".add_point").click(function(event){
+        //     event.stopPropagation();
+        //     let contact = $(this).parent().parent().parent();
+        //     let tmp = contact.clone(true);
+        //     contact.after(tmp);
+        // });
+        //
+        //
+        // $(".edit_point").click(function(event){
+        //     event.stopPropagation();
+        //     layer.open({
+        //         type: 2,
+        //         title: '编辑卡点',
+        //         area: ['850px', '600px'],
+        //         content: context+"/game/point_edit"
+        //     });
+        // });
+        //
+        // $(".delete_point").click(function(event){
+        //     event.stopPropagation();
+        //     let tmp = $(this).parent().parent().parent();
+        //     let contact = tmp.parent().children(".process_point").length;
+        //     console.log(contact);
+        //     if(contact > 1){
+        //         layer.confirm('确定删除?', {icon: 3, title:'提示'}, function(index){
+        //             tmp.remove();
+        //             layer.close(index);
+        //         });
+        //     }else{
+        //         layer.msg('不能删除！', {
+        //                 icon: 1,
+        //                 time: 2000
+        //             }, function(){
+        //         });
+        //     }
+        // });
+        //
+        //
+        // $(".automatic").click(function(){
+        //     let _this = $(this);
+        //     if(_this.parent().hasClass("layui-show")){
+        //         let len = 19;
+        //         let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+        //         let UUID = "";
+        //         for(let i = 0; i < len; i++){
+        //             UUID += chars.charAt(Math.floor(Math.random() * chars.length));
+        //         }
+        //         UUID = UUID + Date.now();
+        //         console.log(UUID.length);
+        //         _this.parent().children("input").val(UUID);
+        //     }
+        // })
+
+
+
+    })
+</script>
+</body>
+</html>

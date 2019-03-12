@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="common/top::copy"></div>
+    <div th:replace="common/left::copy (title = 'game', portion = 'addGoods')"></div>
+    <div class="layui-body">
+        <!--内容主体-->
+        <div style="padding: 15px;">
+            <div style="padding: 20px; border: 1px solid #009688">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card-body">
+                            <!-- 卡点表单提交 -->
+                            <form class="layui-form layui-form-pane" onsubmit="return false;" id="form_submit">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">唯一标识</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="gid" autocomplete="off" placeholder="点击自动生成"
+                                               class="layui-input" id="click_inpu" style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="name" autocomplete="off" placeholder="请输入名称"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">类型</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="goodsType" autocomplete="off" placeholder="请输入类型"
+                                               class="layui-input"  style="border: 1px solid lightgray;">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="methods" style="display: none">
+                                    <label class="layui-form-label">获取方式</label>
+                                    <div class="layui-input-block" style="border: 1px solid #e6e6e6;">
+                                        <input type="radio" name="getby" value="任务" title="任务" checked>
+                                        <input type="radio" name="getby" value="商城" title="商城">
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">输入价值</label>
+                                        <div class="layui-input-inline">
+                                            <input name="price" type="number" autocomplete="off" class="layui-input" min="0" max="1000000" placeholder="请输入数字">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="trade">
+                                    <label class="layui-form-label">可交易</label>
+                                    <div class="layui-input-block" style="border: 1px solid #e6e6e6;">
+                                        <input type="radio" name="isbuy" value="不可交易" title="不可交易">
+                                        <input type="radio" name="isbuy" value="用户间交易" title="用户间交易" checked>
+                                        <input type="radio" name="isbuy" value="用户与管理员交易" title="用户与管理员交易">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">上传图片</label>
+                                    <div class="layui-input-block" id="demo" style="min-height:260px;margin-left: 109px;border: 1px solid #9F9F9F;margin-top: -35px;">
+                                        <div class="layui-upload-list">
+                                            <img class="layui-upload-img" name="dtImg" id="demo1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item" id="types">
+                                    <label class="layui-form-label">文字描述</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="goodsInfo" id="goodsInfo" cols="210" rows="10"></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="">
+                                    <label class="layui-form-label">备注</label>
+                                    <div>
+                                        <textarea name="goodsRemark" id="goodsRemark" cols="210" rows="10" lay-verify="validateMoney" placeholder=""></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <input type="hidden" name="cardUrl">
+                                    <div class="layui-inline" style="margin-left: 50%;">
+                                        <button type="reset" class="layui-btn" id="goodsSubmit" >保存新建物品</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                       <a class="layui-btn" href="showGoods">返回物品列表</a>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/footer::copy"></div>
+</div>
+<script th:replace="common/script::copy"></script>
+
+
+
+<script type="text/javascript" th:inline="javascript" >
+
+
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+        let form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+        var i;
+        var date_list = i++;
+
+
+
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#demo'
+            ,url: context+'/first/upload_one_directionalTravel/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie
+                obj.preview(function(res, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+
+                if(res.code == 100){
+                    layer.msg('上传成功！', {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                         $("input[name='dtImg']").val(res.extend.msg);
+                        $("#demo1").attr("src",res.extend.msg);
+                    });
+                }
+
+                //如果上传失败
+                if(res.code == 200){
+                    return layer.msg('上传失败');
+                }
+
+                 $("input[name='dtImg']").val(res.extend.msg);
+            }
+        });
+
+
+
+        // 自动生成UUID
+        $("#click_inpu").click(function () {
+            var a = Math.random().toString(36).substr(2, 15);
+            var t = new Date().getTime();
+            $("#click_inpu").val(a + t); // 24位
+        });
+
+
+
+
+        $("#goodsSubmit").click(function () {
+            var goodsUrl = $('#demo1').attr('src'); //图片链接（base64）
+            var index = date_list;
+            var goodsX = $("input[name='gid']").val();
+            var name = $("input[name='name']").val();
+            var goodsType = $("input[name='goodsType']").val();
+            var isbuy = $("input[name='isbuy']:checked").val();
+            var price = $("input[name='price']").val();
+            var getby = $("input[name='getby']:checked").val();
+            var goodsInfo = $("#goodsInfo").val();
+            var goodsRemark = $("#goodsRemark").val();
+            // let cIntegral = $("input[name='cIntegral']").val();
+            // let cErrors = $("input[name='cErrors']").val();
+
+            $.get(context + '/goods/getId/'+goodsX+'/'+name+'/'+index, function (res) {
+                console.log(res);
+                if(res.code == 100){
+                    var goodsY = res.extend.msg;
+                    layer.msg("生成二维码成功！", {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        var date_goods = {
+                            goodsY:goodsY,
+                            goodsX:goodsX,
+                            name: name,
+                            goodsType: goodsType,
+                            isbuy: isbuy,
+                            price: price,
+                            getby: getby,
+                            goodsRemark: goodsRemark,
+                            goodsInfo:goodsInfo,
+                            goodsUrl: goodsUrl
+                            // cIntegral: cIntegral
+                        };
+
+                        $.post(context + '/goods/insertGoods',date_goods, function(res) {
+                            console.log(res);
+                            if(res.code == 100){
+                                layer.msg("创建物品成功！", {
+                                    icon: 1,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    layer.close(index_load);
+                                    return false;
+                                });
+                            }
+                        });
+
+                        window.history.go(-1);
+
+                    });
+
+                }else{
+                    layer.msg("生成二维码失败！", {
+                        icon: 1,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        layer.close(index_load);
+                        return false;
+                    });
+                }
+            });
+
+
+            var index_load = layer.load(1, {
+                offset: '220px',
+            });
+
+        })
+    })
+</script>
+
+</body>
+</html>

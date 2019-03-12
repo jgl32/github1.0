@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy">
+</head>
+<link rel="stylesheet" th:href="@{/statics/custom_css/new_game/newGame.css}">
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>大盘活动</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+
+                            <div class="layui-card-body" style="position: relative">
+                                <ul>
+                                    <li><a class="layui-btn" href="#" onclick="javascript:history.back(-1);"> 返回上一页</a>
+                                    </li>
+                                    <li style="position: absolute;left:137px;top:10px;">
+                                        <button class="layui-btn" id="circuitList" th:value="${ggId}"> 线路添加</button>
+                                    </li>
+                                    <!--<li style="position: absolute;left:244px;top:10px;"><a class="layui-btn" href="#" > 游戏添加</a></li>-->
+                                    <li style="position: absolute;left:352px;top:10px;">
+                                        <button class="layui-btn" id="circle" data-type="circle"
+                                                th:value="${grailGame.ggId}">毒圈游戏
+                                        </button>
+                                    </li>
+                                    <li style="position: absolute;left:460px;top:10px;">
+                                        <button class="layui-btn" id="famous" data-type="famous"
+                                                th:value="${grailGame.ggId}">电子名牌
+                                        </button>
+                                    </li>
+                                    <li style="position: absolute;left:569px;top:10px;"><a class="layui-btn" href="#">
+                                        自由化的加入方式</a></li>
+                                    <li style="position: absolute;left:733px;top:10px;"><a class="layui-btn" href="#">
+                                        成绩统计</a></li>
+                                </ul>
+
+
+                                <!--<div class="layui-card-header demoTable"></div>-->
+
+
+                                <form class="layui-form" onsubmit="return false;"
+                                      style="margin-top: 50px;margin-left: -34px;">
+
+
+                                    <textarea class="layui-textarea" name="prorichtxt" id="LAY_demo1" style="display: none"
+                                              lay-verify="article_desc"></textarea>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggName" th:value="${grailGame.ggName}"
+                                                   lay-verify="title" autocomplete="off" placeholder="请输入游戏名称"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">封面图</label>
+                                        <div class="layui-input-block" id="test1" style="border: 1px solid #9F9F9F;">
+                                            <div class="layui-upload-list" style="margin: 0;">
+
+                                                <img class="layui-upload-img" name="ggImg" id="ggImg"
+                                                     th:src="${grailGame.ggImg}" style="width: 192px;height: 94px;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">游戏地图</label>
+                                        <div class="layui-input-block" id="test2" style="border: 1px solid #9F9F9F;">
+                                            <div class="layui-upload-list" style="margin: 0;">
+                                                <img class="layui-upload-img" name="ggMapUrl" id="ggMapUrl"
+                                                     th:src="${grailGame.ggMapUrl}" style="width: 192px;height: 94px;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏简介</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggBrief" th:value="${grailGame.ggBrief}"
+                                                   lay-verify="title" autocomplete="off" placeholder="游戏简介"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏规则</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggRule" th:value="${grailGame.ggRule}"
+                                                   lay-verify="title" autocomplete="off" placeholder="游戏规则"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏人数</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="ggApplyPeople"
+                                                   th:value="${grailGame.ggApplyPeople}" lay-verify="title"
+                                                   autocomplete="off" placeholder="游戏人数" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">限定人数</label>
+                                        <div class="layui-input-block">
+                                            <div id="slideTest-people" class="demo-slider" style="top: 17px;">
+                                                <input type="text" name="ggMaxPeople"
+                                                       th:value="${grailGame.ggMaxPeople}" lay-verify="title"
+                                                       autocomplete="off" placeholder="限定人数" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">团队数量</label>
+                                        <div class="layui-input-block">
+                                            <div id="slideTest-team" class="demo-slider" style="top: 17px;">
+                                                <input type="text" name="ggApplyPeople"
+                                                       th:value="${grailGame.ggApplyPeople}" lay-verify="title"
+                                                       autocomplete="off" placeholder="限定人数" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">开始日期</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="ggStime" th:value="${grailGame.ggStime}"
+                                                       id="start_date" lay-verify="datetime" placeholder="yyyy-MM-dd "
+                                                       autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">结束日期</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="ggEtime" th:value="${grailGame.ggEtime}"
+                                                       id="end_date" lay-verify="datetime" placeholder="yyyy-MM-dd"
+                                                       autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--线路添加-->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">
+                                            <div class="layui-btn-group demoTable">
+                                                <button class="layui-btn" id="circuitList" data-type="getCheckData">
+                                                    添加线路
+                                                </button>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <!--<div class="layui-card-body">
+                                        <table  class="layui-hide" id="circuitListTable"
+                                               lay-filter="circuitListTable"></table>
+                                    </div>-->
+
+
+
+
+                                    <input id="circuitListTotal" type="hidden" th:value="${circuitListTotal}" >
+                                    <table class="layui-table">
+                                        <tr>
+                                            <td width="10%">名称</td>
+                                            <td width="20%">类型</td>
+                                            <td width="20%">用户副本上限</td>
+                                            <td width="20%">管理员副本上限</td>
+                                            <td width="30%">操作</td>
+                                        </tr>
+                                    </table>
+                                    <table id="circuitListTable"  class="layui-table">
+                                        <div th:each="circuitList:${circuitLists}">
+                                            <tr>
+                                                <td width="10%" hidden ><span th:text="${circuitList.grailFieldId}"></span></td>
+                                                <td width="10%" hidden ><span th:text="${circuitList.cid}"></span></td>
+                                                <td width="10%"><span th:text="${circuitList.cid}"></span></td>
+                                                <td width="20%"><span th:text="${circuitList.cname}"></span></td>
+                                                <td width="20%"><span th:text="${circuitList.clockpoints}"></span></td>
+                                                <td width="20%"><span th:text="${circuitList.ctype}"></span></td>
+                                                <td width="30%">
+                                                    <!--<a href='javascript:void(0)' class='layui-btn  layui-btn-xs top'>置顶</a>-->
+                                                    <a href='javascript:void(0)' class='layui-btn  layui-btn-xs up'>上移</a>
+                                                    <a href='javascript:void(0)' class='layui-btn  layui-btn-xs down'>下移</a>
+                                                    <!--<a href='javascript:void(0)' class='layui-btn  layui-btn-xs bottom'>置底</a>-->
+                                                    <a href='javascript:void(0)' class='layui-btn  layui-btn-xs edit'>编辑</a>
+                                                    <a href='javascript:void(0)' class='layui-btn  layui-btn-xs remove'>移除</a>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </table>
+
+                                    <!--线路完成任务品积累-->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">
+                                            <div class="layui-btn-group demoTable">
+                                                <button class="layui-btn"  data-type="getCheckData">
+                                                    线路完成任务品积累
+                                                </button>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <table id="circuitListTable2"  class="layui-table">
+                                        <tr>
+                                            <td width="10%">名称</td>
+                                            <td width="20%">类型</td>
+                                            <td width="20%">获得任务品</td>
+                                            <td width="20%">获得积分</td>
+                                            <td width="30%">操作</td>
+                                        </tr>
+                                        <div th:each="circuitList:${circuitLists}">
+                                            <tr>
+                                                <td width="10%" hidden ><span th:text="${circuitList.grailFieldId}"></span></td>
+                                                <td width="10%" hidden ><span th:text="${circuitList.cid}"></span></td>
+                                                <td width="10%"><span th:text="${circuitList.cid}"></span></td>
+                                                <td width="20%"><span th:text="${circuitList.cname}"></span></td>
+                                                <td width="20%"><a href="javascript:;">添加</a></td>
+                                                <td width="20%"><input th:value="${circuitList.ctype}"></input></td>
+                                                <td width="30%">
+                                                    <a href='javascript:void(0)' class='layui-btn  layui-btn-xs edit'>启用</a>
+                                                    <a href='javascript:void(0)' class='layui-btn  layui-btn-xs remove'>删除</a>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </table>
+
+                                    <!--毒圈游戏-->
+                                    <div class="layui-row my_game_card" style="margin: 2% auto;">
+                                        <div class="layui-col-xs2" th:each="mapsList : ${mapsList}">
+                                            <div class="grid-demo game_block">
+                                                <a href=""><img th:src="${mapsList.mapUrl}" alt="" class="game_pic"
+                                                                th:onerror="'this.src=\''+@{/statics/images/backgroup.jpg}+'\''"></a>
+                                            </div>
+                                            <div class="game_card">
+                                                <div class="game_title">
+                                                    <span style="font-size: 20px;"
+                                                          th:text="${mapsList.mapName}">毒圈游戏</span><br>
+                                                    <!--<span style="color: #867777;" th:text="${mapsList.gameStime}">2018-10-25</span> / <span style="color: #3b43a9;" th:if="${mapsList.status eq 0}" th:text="已经结束"></span>-->
+                                                    <!--<span style="color: #3b43a9;" th:if="${mapsList.status eq 1}" th:text="正在进行"></span>-->
+                                                    <!--<span style="color: #3b43a9;" th:if="${mapsList.status eq 2}" th:text="正在报名"></span>-->
+                                                </div>
+                                                <div class="operator_btn">
+                                                    <button class="layui-btn layui-btn-warm layui-btn-xs game_field_btn"
+                                                            th:attr="data-id=${mapsList.mapId}">查看
+                                                    </button>
+                                                    <button class="layui-btn layui-btn-warm layui-btn-xs game_edit_btn"
+                                                            th:attr="data-id=${mapsList.mapId}">编辑
+                                                    </button>
+                                                    <button class="layui-btn layui-btn-danger layui-btn-xs game_upload_btn"
+                                                            th:attr="data-id=${mapsList.mapId}">下载
+                                                    </button>
+                                                    <button class="layui-btn layui-btn-xs maps_del_btn"
+                                                            th:attr="data-id=${mapsList.mapId}">删除
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!--电子名牌-->
+                                        <div class="layui-col-xs2" th:each="famousList : ${famousLists}">
+                                            <div class="grid-demo game_block">
+                                                <a href=""><img th:src="${famousList.bImg}" alt="" class="game_pic"
+                                                                th:onerror="'this.src=\''+@{/statics/images/backgroup.jpg}+'\''"></a>
+                                            </div>
+                                            <div class="game_card">
+                                                <div class="game_title">
+                                                    <span style="font-size: 20px;"
+                                                          th:text="${famousList.name}">电子名牌</span><br>
+                                                    <!--<span style="color: #867777;" th:text="${famousList.gameStime}">2018-10-25</span> / <span style="color: #3b43a9;" th:if="${famousList.status eq 0}" th:text="已经结束"></span>-->
+                                                    <!--<span style="color: #3b43a9;" th:if="${famousList.status eq 1}" th:text="正在进行"></span>-->
+                                                    <!--<span style="color: #3b43a9;" th:if="${famousList.status eq 2}" th:text="正在报名"></span>-->
+                                                </div>
+                                                <div class="operator_btn">
+                                                    <button class="layui-btn layui-btn-warm layui-btn-xs game_field_btn"
+                                                            th:attr="data-id=${famousList.id}">查看
+                                                    </button>
+                                                    <button class="layui-btn layui-btn-warm layui-btn-xs game_edit_btn"
+                                                            th:attr="data-id=${famousList.id}">编辑
+                                                    </button>
+                                                    <button class="layui-btn layui-btn-danger layui-btn-xs game_upload_btn"
+                                                            th:attr="data-id=${famousList.id}">下载
+                                                    </button>
+                                                    <button class="layui-btn layui-btn-xs famousBrand_del_btn"
+                                                            th:attr="data-id=${famousList.id}">删除
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit="" lay-filter="map_submit_btn">立即提交
+                                            </button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:src="@{/statics/custom_js/grail_game/grailedit.js}"></script>
+<script type="text/html" id="circuitListTableToolbar">
+    <a class="layui-btn  layui-btn-xs top" lay-event="detail">置顶</a>
+    <a href='javascript:void(0)' class="up" lay-event="edit">上移</a>
+    <a href='javascript:void(0)' class="down" lay-event="del">下移</a>
+    <a class="layui-btn  layui-btn-xs bottom" lay-event="deleteCircuitList">置底</a>
+    <a class="layui-btn  layui-btn-xs remove" lay-event="deleteCircuitList">置底</a>
+</script>
+
+<script>
+
+    $("#circuitListTable").on('click', 'a', function() {
+        var parent = $(this).parent().parent();
+        var parents = $(this).parents("#circuitListTable");
+        /* var len = parents.children().length; */
+        /* var len=$("table tr").length; */
+        var len=parents.find("tr").length;
+        if(($(this).is(".up") || $(this).is(".top")) && parent.index() == 0) {
+            alert("已经置顶！");
+            return false;
+        } else if(($(this).is(".down") || $(this).is(".bottom")) && parent.index() == len - 1) {
+            alert("已经置底！");
+            return false;
+        }
+
+
+        var tds=parent.children();
+
+        switch(true) {
+            //上移
+            case $(this).is(".up"):
+                var prev = parent.prev();
+                parent.insertBefore(prev);
+                var flag=updateSerialNumber(parent.index()-1);
+                break;
+            //下移
+            case $(this).is(".down"):
+                var next = parent.next();
+                parent.insertAfter(next);
+                var flag=updateSerialNumber(parent.index()+1);
+                if(flag==false){
+
+                }
+                break;
+            //置顶
+            case $(this).is(".top"):
+                parents.prepend(parent);
+                break;
+            //置底
+            case $(this).is(".bottom"):
+                parents.append(parent);
+                break;
+            //移除
+            case $(this).is(".remove"):
+                /* stttr = $(this.parentNode).find("span").text();
+                rLi += ("<li>");
+                rLi += ("<a href=\'javascript:void(0)\'>" + stttr + "</a>");
+                rLi += ("</li>");
+                $("#dom1").append(rLi);
+                stttr = "";
+                rLi = "";
+                $(this.parentNode).remove(); */
+                parent.remove();
+                break;
+        }
+
+
+
+        function updateSerialNumber(serialNumber){
+            var id=$(tds[0]).text();
+            console.log(id);
+            console.log(serialNumber);
+            var flag=false;
+            $.post(context+"/activity/updateGrailField"
+                ,{"id": id ,"serialNumber":serialNumber }
+                ,function(res){
+                    if(res.code == 100){
+                        layer.msg("移动成功");
+                        flag= true;
+                    }else{
+                        layer.msg("移动失败");
+                        flag= false;
+                    }
+                })
+
+            return flag;
+
+        }
+
+    });
+</script>
+
+<script type="text/javascript" data-th-inline="javascript">
+    layui.use(['form', 'layedit', 'upload', 'laydate'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , upload = layui.upload;
+
+        var layedit = layui.layedit;
+
+        layedit.set({
+            uploadImage: {
+                url:context+'/travel/upload_one_travelRoute/'
+                ,type: 'post'
+            }
+        });
+
+        //构建一个默认的编辑器
+        var index = layedit.build('LAY_demo1');
+
+        //编辑器外部操作
+
+        layedit.getContent(index); //获取编辑器内容
+
+        // layer.alert(index);
+
+        var active = {
+            content: function(){
+                // alert(layedit.getContent(index)); //获取编辑器内容
+                layedit.sync;
+
+                var prorichtxt=layedit.getContent(index);   //获取编辑器内容
+
+            }
+            ,text: function(){
+                alert(layedit.getText(index)); //获取编辑器纯文本内容
+            }
+            ,selection: function(){
+                alert(layedit.getSelection(index));
+            }
+        };
+
+        $('.site-demo-layedit').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+
+    })
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

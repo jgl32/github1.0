@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb">
+                <a href="/">CMS后台</a>
+                <a href="/demo/">定向管理</a>
+                <a><cite>历史线路</cite></a>
+            </span>
+            <hr class="layui-bg-orange">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <div class="layui-card-header demoTable">
+                                    <!--<button class="layui-btn" data-type="add_famousBrand">历史线路</button>-->
+                                    <a class="layui-btn" href="#" onclick="javascript:history.back(-1);"> 返回上一页</a>
+                                </div>
+                                <div class="layui-card-body">
+                                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="game_filed" lay-filter="demo"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<!--<script type="text/html" id="field_operator">
+    <a class="layui-btn layui-btn-sm" lay-event="add_famousBrand" >查看</a>
+    <a class="layui-btn layui-btn-sm" lay-event="edit_famousBrand" >编辑</a>
+    <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="deleteFamousBrand">删除</a>
+</script>-->
+<script type="text/html" id="ctime">
+    <time datetime="{{d.ctime}}"/>
+</script>
+
+<script th:replace="common/script::copy"></script>
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" value="{{d.cid}}" lay-skin="switch" lay-text="已添加|添加" lay-filter="sexDemo" {{ d.cstatus== 1
+           ? 'checked' : '' }} />
+</script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'jquery','form'], function() {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+        let cname = [[${cname}]];
+        let hId = [[${hId}]];
+        table.render({
+            elem: '#test'
+            ,url:context+'/activity/getselect?cname='+cname+"&hId="+hId
+            ,cols: [[
+                {field:'cid', title: 'ID', sort: true, width:'10%', align:'center'}
+                ,{field:'cname', title: '标题', width:'10%', align:'center'}
+                ,{field:'clockpoints', title: '地点', width:'10%', align:'center'}
+                ,{field:'cinitials', title: '初始积分', width:'10%', align:'center'}
+                ,{
+                    field: 'cstatus',
+                    title: '添加',
+                    name: "sysData",
+                    templet: '#switchTpl',
+                    unresize: true
+                }
+                /*,{fixed:'right', width:'20%', align:'center', toolbar:'#field_operator', title:'操作'}//*/
+            ]]
+            ,page:true
+        });
+
+
+
+
+        form.on('switch(sexDemo)', function (obj) {
+            if (obj.elem.checked == true) {
+                var x = obj.elem.checked;
+
+                $.post(context + "/activity/updateStatusByCircuitListId", {"cId": this.value ,"cstatus": 1 ,"hId":hId}, function (res) {
+                    console.log(res);
+                    if (res.code==100) {
+                        form.render();
+                        layer.alert("添加成功");
+                    } else {
+                        obj.elem.checked = !x;
+                        layer.alert("添加失败");
+                    }
+                })
+            } else {
+                console.log(this.value);
+                $.post(context + "/activity/updateStatusByCircuitListId", {"cId": this.value ,"cstatus": 0 ,"hId":hId}, function (res) {
+
+                    if (res.code==100) {
+                        layer.alert("取消成功");
+                    }
+                })
+            }
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        /*新增线路*/
+        var $ = layui.$, active = {
+            add_famousBrand : function(){
+                layer.open({
+                    type: 2,
+                    title: '新增设计线路',
+                    area: ['850px', '600px'],
+                    content: context+"/cards/addxianlu"
+                });
+            }
+        };
+
+        /*编辑修改线路*/
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+
+            console.log(obj)
+            if(obj.event === 'add_famousBrand'){
+                layer.open({
+                    type: 2,
+                    title: '上传线路修改',
+                    area: ['850px', '600px'],
+                    content: context+'/select/getItemDate/'+data.cid
+                });
+            }
+
+
+            if(obj.event === 'edit_famousBrand'){
+                layer.open({
+                    type: 2,
+                    title: '上传线路修改',
+                    area: ['850px', '600px'],
+                    content: context+'/select/getItemDate/'+data.cid
+                });
+            }
+
+            if(obj.event === 'info'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+
+            //监听行工具事件
+            if(obj.event === 'deleteFamousBrand'){
+                layer.confirm('确定要删除吗？', function(index){
+                    $.get(context+"/select/deleteById/"+data.cid, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }else{
+                            alert("删除失败");
+                        }
+                    })
+                });
+            } else if(obj.event === 'regain'){
+                layer.confirm('确定要重新上架这个活动吗？', function(index){
+                    $.get(context+"/first/history_re/"+data.tourId, function(res){
+                        if(res.code == 100){
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+        });
+
+
+    });
+</script>
+
+<script th:replace="common/script::copy"></script>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header::copy"></head>
+<body class="layui-layout-body">
+<div>
+    <table class="layui-hide" id="Finshs" lay-filter="demo"></table>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="deil">删除</a>
+</script>
+<script th:replace="common/script::copy"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use('table', function () {
+        var table = layui.table
+            , $ = layui.$
+            , form = layui.form;
+        table.render({
+            elem: '#Finshs'
+            , url: context + '/game/selectPeopleRecommend?gafeId='+[[${gafeId}]]
+            // , cellMinWidth: 80
+            , cols: [[
+                    {field: 'gameId', title: '游戏编号',sort: true,width:'20%'}
+                , {field: 'gafeId', title: '场次编号',width:'20%'}
+                , {field: 'uName', title: '用户姓名',width:'20%'}
+                , { field: 'uUrl', title: '图片', align: 'center',templet: '#imgTpl',event: 'browse',width:'20%' }
+                , {title: '删除用户', toolbar: '#barDemo', align: 'center',width:'20%'}//
+            ]]
+            , page: true
+            ,done: function (res, curr, count) {
+                hoverOpenImg();//显示大图
+            }
+        });
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+             if(obj.event==='deil'){
+                 console.log(data.peoId);
+                $.get(context+"/game/deletePeople/"+data.peoId,function (res) {
+                    if(res.extend.msg==="删除成功"){
+                        obj.del();
+                    }else{
+                        layui.alert("删除失败")
+                    }
+                    console.log(res);
+                })
+            }
+
+        });
+        function hoverOpenImg() {
+            var img_show = null; // tips提示
+            $('td img').hover(function () {
+                var img = "<img class='img_msg' src='" + $(this).attr('src') + "' style='width:130px;' />";
+                img_show = layer.tips(img, this, {
+                    tips: [2, 'rgba(41,41,41,.5)']
+                    , area: ['160px']
+                });
+            }, function () {
+                layer.close(img_show);
+            });
+            $('td img').attr('style', 'max-width:70px');
+        }
+    });
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.uUrl}}"/>
+</script>
+</body>
+</html>
